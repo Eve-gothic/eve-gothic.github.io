@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eve — gotycka bohaterka multiwersum gier</title><meta name="description" content="Eve — wirtualna, wygenerowana przez AI gotycka bohaterka darmowych gier z multiwersum Eve. Galeria, filmiki i gry w przeglądarce."><meta name="theme-color" content="#3a0b16">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0c0708;--bur:#3a0b16;--bur2:#5c1224;--gold:#c9a35b;--gold2:#e8cf96;--paper:#f3ece0;--mut:#b9a89a}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--paper);font-family:"Cormorant Garamond",Georgia,serif;font-size:20px;line-height:1.6;overflow-x:hidden}
+img{display:block;max-width:100%}a{color:var(--gold2)}
+.sc{font-family:Inter,system-ui,sans-serif;font-size:.68rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+h1,h2,h3{font-family:"Playfair Display",serif;font-weight:400}
+.top{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:26px clamp(18px,5vw,70px);border-bottom:1px solid rgba(201,163,91,.25)}
+.top .mast{font-family:"Playfair Display";font-style:italic;font-size:1.5rem;color:var(--gold2);text-decoration:none}
+.menu{display:flex;gap:34px}.menu a{text-decoration:none;color:var(--paper);font-family:Inter;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase}.menu a:hover{color:var(--gold)}
+.burger{display:none;background:none;border:1px solid var(--gold);color:var(--gold);padding:4px 10px;font-size:1.1rem;cursor:pointer}
+.cover{position:relative;height:min(100vh,960px);grid-template-rows:100%;display:grid;grid-template-columns:repeat(12,1fr);overflow:hidden;background:var(--bur)}
+.cover-img{grid-column:5/13;grid-row:1;position:relative}
+.cover-img img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.cover-img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bur) 0%,rgba(58,11,22,.35) 30%,transparent 60%),linear-gradient(0deg,rgba(12,7,8,.6),transparent 40%)}
+.cover-txt{grid-column:1/8;grid-row:1;z-index:2;align-self:end;padding:0 0 8vh clamp(18px,5vw,70px)}
+.cover h1{font-size:clamp(6rem,14vw,13rem);line-height:.85;color:var(--paper);letter-spacing:-.04em;margin:18px 0 26px;font-style:italic}
+.cover h1 span{color:var(--gold)}
+.cover .deck{font-size:1.45rem;max-width:30ch;color:#e9dccb;font-style:italic}
+.issue{position:absolute;right:clamp(18px,5vw,70px);bottom:9vh;z-index:2;text-align:right}
+.issue b{display:block;font-family:"Playfair Display";font-size:3.2rem;color:var(--gold2);font-weight:400;line-height:1}
+.cta{display:inline-block;margin-top:30px;padding:14px 30px;border:1px solid var(--gold);color:var(--gold2);text-decoration:none;font-family:Inter;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;transition:.3s;background:none;cursor:pointer}
+.cta:hover{background:var(--gold);color:var(--ink)}
+.cta.fill{background:var(--gold);color:var(--ink)}.cta.fill:hover{background:var(--gold2)}
+.wrap{max-width:1280px;margin:auto;padding:0 clamp(18px,5vw,70px)}
+.sec{padding:clamp(80px,12vw,150px) 0}
+.head{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:end;margin-bottom:60px;border-bottom:1px solid rgba(201,163,91,.3);padding-bottom:20px}
+.head .no{font-family:"Playfair Display";font-size:5rem;line-height:.8;color:var(--bur2);-webkit-text-stroke:1px var(--gold)}
+.head h2{font-size:clamp(2.6rem,6vw,4.8rem);line-height:1;font-style:italic}
+.about{display:grid;grid-template-columns:5fr 7fr;gap:clamp(30px,6vw,90px);align-items:center}
+.about .ph{position:relative}
+.about .ph img{width:100%;aspect-ratio:3/4;object-fit:cover}
+.about .ph::before{content:"";position:absolute;inset:-18px 18px 18px -18px;border:1px solid var(--gold);z-index:-1}
+.about .lede::first-letter{font-family:"Playfair Display";float:left;font-size:5.4rem;line-height:.8;padding:6px 12px 0 0;color:var(--gold)}
+.about .lede{font-size:1.35rem}
+.about strong{color:var(--gold2);font-weight:600}
+.quote{font-family:"Playfair Display";font-style:italic;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.25;margin:34px 0;padding-left:24px;border-left:2px solid var(--gold);color:#fff}
+.traits{columns:2;font-size:1.05rem;color:var(--mut);list-style:none}.traits li::before{content:"— ";color:var(--gold)}
+.spread{display:grid;grid-template-columns:repeat(12,1fr);gap:22px;grid-auto-flow:dense}
+.spread figure{position:relative}
+.spread button{all:unset;cursor:zoom-in;display:block;width:100%;overflow:hidden}
+.spread img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform 1.2s cubic-bezier(.2,.7,.2,1),filter .8s;filter:grayscale(.25) sepia(.08)}
+.spread button:hover img{transform:scale(1.04);filter:none}
+.spread figcaption{font-style:italic;color:var(--mut);font-size:1rem;margin-top:8px}
+.spread figcaption::before{content:attr(data-n)" · ";font-family:Inter;font-style:normal;font-size:.65rem;letter-spacing:.25em;color:var(--gold)}
+.s1{grid-column:1/8}.s1 button{aspect-ratio:4/5}
+.s2{grid-column:9/13;margin-top:140px}.s2 button{aspect-ratio:3/4}
+.s3{grid-column:2/6}.s3 button{aspect-ratio:3/4}
+.s4{grid-column:7/13;margin-top:-80px}.s4 button{aspect-ratio:4/5}
+.s5{grid-column:1/5}.s5 button{aspect-ratio:3/4}
+.s6{grid-column:5/9;margin-top:90px}.s6 button{aspect-ratio:3/4}
+.s7{grid-column:9/13}.s7 button{aspect-ratio:1}
+.s8{grid-column:1/4;margin-top:40px}.s8 button{aspect-ratio:9/16}
+.s9{grid-column:4/9}.s9 button{aspect-ratio:1}
+.s10{grid-column:9/12;margin-top:120px}.s10 button{aspect-ratio:9/16}
+.s11{grid-column:2/7}.s11 button{aspect-ratio:16/10}
+.s12{grid-column:7/12;margin-top:60px}.s12 button{aspect-ratio:16/10}
+.film{background:var(--bur);padding:clamp(80px,12vw,150px) 0;position:relative}
+.film::before,.film::after{content:"";position:absolute;left:0;right:0;height:18px;background:repeating-linear-gradient(90deg,var(--ink) 0 14px,transparent 14px 28px)}
+.film::before{top:14px}.film::after{bottom:14px}
+.reel{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:28px;align-items:center}
+.reel article{background:var(--ink);padding:12px 12px 18px;border:1px solid rgba(201,163,91,.35)}
+.reel video{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#000}
+.reel article:nth-child(2) video{aspect-ratio:4/5}
+.reel h3{font-size:1.3rem;font-style:italic;margin-top:12px}
+.games{display:grid;grid-template-columns:7fr 5fr;gap:clamp(30px,5vw,70px)}
+.game{border-top:1px solid var(--gold);padding-top:24px}
+.game h3{font-size:2.4rem;font-style:italic;margin:6px 0 10px}
+.game p{color:#e2d4c3}
+.embed{position:relative;aspect-ratio:16/10;margin:24px 0 14px;background:#000;display:grid;place-items:center;overflow:hidden;outline:1px solid var(--gold);outline-offset:8px}
+.embed-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(4px) brightness(.4) sepia(.3)}
+.embed .cta{position:relative;z-index:1;background:rgba(12,7,8,.6);margin:0}
+.aside img{width:100%;aspect-ratio:4/5;object-fit:cover;margin-bottom:24px;filter:grayscale(.2)}
+.aside .soon{font-family:"Playfair Display";font-style:italic;font-size:1.6rem;color:var(--gold)}
+.small{font-size:1rem;color:var(--mut)}
+.slot:empty{display:none}
+footer{border-top:1px solid rgba(201,163,91,.3);padding:60px clamp(18px,5vw,70px);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--mut);font-size:1rem}
+footer .mast{font-family:"Playfair Display";font-style:italic;font-size:2.4rem;color:var(--gold2)}
+@media(max-width:900px){
+.menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--ink);border-bottom:1px solid var(--gold)}.menu.open{display:flex}.menu a{padding:16px 20px;border-top:1px solid rgba(201,163,91,.2)}.burger{display:block}
+.cover{grid-template-columns:1fr;height:auto;grid-template-rows:auto auto}.cover-img{grid-column:1;grid-row:1;height:78vh}.cover-img::after{background:linear-gradient(0deg,var(--bur) 5%,transparent 60%)}
+.cover-txt{grid-column:1;grid-row:2;padding:0 20px 50px;margin-top:-110px}.cover-img{height:64vh}.issue{display:none}.cover h1{font-size:9rem}
+.about,.games,.reel{grid-template-columns:1fr}.about .ph{margin:0 18px}
+.spread{grid-template-columns:repeat(2,1fr);gap:14px}.spread figure{grid-column:auto!important;margin-top:0!important}.spread figure button{aspect-ratio:3/4!important}.s1,.s4,.s11{grid-column:1/3!important}.s1 button,.s4 button,.s11 button{aspect-ratio:4/5!important}
+.head .no{font-size:3.4rem}}
+</style></head><body>
+<header class="top"><a class="mast" href="#top">Eve.</a><button class="burger" data-burger aria-label="Menu" aria-expanded="false">☰</button>
+<nav class="menu" data-menu><a href="#o-eve">O Eve</a><a href="#galeria">Galeria</a><a href="#filmiki">Filmiki</a><a href="#gry">Gry</a></nav></header>
+<main id="top">
+<section class="cover">
+ <div class="cover-img"><img src="../../assets/img/eve-londyn.webp" alt="Eve w płaszczu z parasolem na deszczowej londyńskiej ulicy" fetchpriority="high"></div>
+ <div class="cover-txt"><span class="sc">Multiwersum Eve · Wydanie specjalne</span>
+  <h1>Eve<span>.</span></h1>
+  <p class="deck">Gotycka bohaterka darmowych gier. Elegancja w czerni, spojrzenie spod grzywki i świat, do którego wchodzisz jednym kliknięciem.</p>
+  <a class="cta fill" href="#gry">Zagraj teraz</a> <a class="cta" href="#galeria">Sesja zdjęciowa</a></div>
+ <div class="issue"><span class="sc">Numer</span><b>Nº 01</b><span class="sc">Jesień 2026</span></div>
+</section>
+<div class="slot" aria-hidden="true"></div>
+<div class="wrap">
+<section id="o-eve" class="sec">
+ <div class="head"><span class="no">I</span><h2>O Eve</h2></div>
+ <div class="about">
+  <div class="ph"><img loading="lazy" src="../../assets/img/eve-biblioteka.webp" alt="Eve w golfie czyta książkę w bibliotece przy świecach"></div>
+  <div><p class="lede">Eve to <strong>wirtualna bohaterka gier</strong> — dorosła, gotycka postać wygenerowana przez AI. Nie jest prawdziwą osobą. Jest twarzą <strong>multiwersum Eve</strong>: serii darmowych gier HTML5, w które zagrasz prosto w przeglądarce, bez instalowania czegokolwiek.</p>
+   <p class="quote">„Czerń nigdy nie wychodzi z mody. Ja też nie.”</p>
+   <ul class="traits"><li>czarny bob</li><li>brązowe oczy i ostry eyeliner</li><li>septum i dwa kolczyki pod wargą</li><li>złote koła w uszach</li><li>czarny choker</li></ul></div>
+ </div></section>
+<section id="galeria" class="sec" style="padding-top:0">
+ <div class="head"><span class="no">II</span><h2>Galeria</h2></div>
+ <div class="spread"><figure class="s1"><button data-full="../../assets/img/eve-portret.webp" data-cap="Portret" aria-label="Powiększ: Portret"><img loading="lazy" src="../../assets/img/eve-portret.webp" alt="Eve — portret z bliska"></button><figcaption data-n="01">Portret</figcaption></figure>
+<figure class="s2"><button data-full="../../assets/img/eve-barista.webp" data-cap="Baristka z Eve's Café" aria-label="Powiększ: Baristka z Eve's Café"><img loading="lazy" src="../../assets/img/eve-barista-thumb.webp" alt="Eve jako baristka z filiżanką kawy"></button><figcaption data-n="02">Baristka z Eve's Café</figcaption></figure>
+<figure class="s3"><button data-full="../../assets/img/eve-londyn.webp" data-cap="Deszczowy Londyn" aria-label="Powiększ: Deszczowy Londyn"><img loading="lazy" src="../../assets/img/eve-londyn-thumb.webp" alt="Eve w płaszczu z parasolem na deszczowej ulicy"></button><figcaption data-n="03">Deszczowy Londyn</figcaption></figure>
+<figure class="s4"><button data-full="../../assets/img/eve-biblioteka.webp" data-cap="W bibliotece" aria-label="Powiększ: W bibliotece"><img loading="lazy" src="../../assets/img/eve-biblioteka.webp" alt="Eve w golfie czyta książkę w bibliotece"></button><figcaption data-n="04">W bibliotece</figcaption></figure>
+<figure class="s5"><button data-full="../../assets/img/eve-park.webp" data-cap="Jesień w parku" aria-label="Powiększ: Jesień w parku"><img loading="lazy" src="../../assets/img/eve-park-thumb.webp" alt="Eve z kawą w jesiennym parku"></button><figcaption data-n="05">Jesień w parku</figcaption></figure>
+<figure class="s6"><button data-full="../../assets/img/eve-gracz.webp" data-cap="Wieczór z grami" aria-label="Powiększ: Wieczór z grami"><img loading="lazy" src="../../assets/img/eve-gracz-thumb.webp" alt="Eve w bluzie z padem przy konsoli"></button><figcaption data-n="06">Wieczór z grami</figcaption></figure>
+<figure class="s7"><button data-full="../../assets/img/eve-usmiech.webp" data-cap="Uśmiech" aria-label="Powiększ: Uśmiech"><img loading="lazy" src="../../assets/img/eve-usmiech-thumb.webp" alt="Uśmiechnięta Eve"></button><figcaption data-n="07">Uśmiech</figcaption></figure>
+<figure class="s8"><button data-full="../../assets/img/eve-okulary.webp" data-cap="Znad okularów" aria-label="Powiększ: Znad okularów"><img loading="lazy" src="../../assets/img/eve-okulary-thumb.webp" alt="Eve zerka znad okularów przeciwsłonecznych"></button><figcaption data-n="08">Znad okularów</figcaption></figure>
+<figure class="s9"><button data-full="../../assets/img/eve-calus.webp" data-cap="Spojrzenie" aria-label="Powiększ: Spojrzenie"><img loading="lazy" src="../../assets/img/eve-calus-thumb.webp" alt="Eve patrzy w obiektyw"></button><figcaption data-n="09">Spojrzenie</figcaption></figure>
+<figure class="s10"><button data-full="../../assets/img/eve-spojrzenie.webp" data-cap="Szelmowski uśmiech" aria-label="Powiększ: Szelmowski uśmiech"><img loading="lazy" src="../../assets/img/eve-spojrzenie-thumb.webp" alt="Eve z uśmiechem w okularach"></button><figcaption data-n="10">Szelmowski uśmiech</figcaption></figure>
+<figure class="s11"><button data-full="../../assets/img/eve-nie-nie.webp" data-cap="Gotycki styl" aria-label="Powiększ: Gotycki styl"><img loading="lazy" src="../../assets/img/eve-nie-nie.webp" alt="Eve w czarnej koszulce"></button><figcaption data-n="11">Gotycki styl</figcaption></figure>
+<figure class="s12"><button data-full="../../assets/img/eve-gest.webp" data-cap="Nie, nie, nie" aria-label="Powiększ: Nie, nie, nie"><img loading="lazy" src="../../assets/img/eve-gest.webp" alt="Eve grozi palcem: nie, nie"></button><figcaption data-n="12">Nie, nie, nie</figcaption></figure>
+</div></section>
+</div>
+<section id="filmiki" class="film"><div class="wrap">
+ <div class="head"><span class="no">III</span><h2>Filmiki</h2></div>
+ <div class="reel"><article><video muted playsinline controls loop preload="none" data-hover poster="../../assets/video/kiss-poster.webp"><source src="../../assets/video/kiss.webm" type="video/webm"><source src="../../assets/video/kiss.mp4" type="video/mp4">Twoja przeglądarka nie obsługuje wideo.</video><h3>Buziak na powitanie</h3><span class="sc">Kadr 01</span></article><article><video muted playsinline controls loop preload="none" data-hover poster="../../assets/video/flirt-poster.webp"><source src="../../assets/video/flirt.webm" type="video/webm"><source src="../../assets/video/flirt.mp4" type="video/mp4">Twoja przeglądarka nie obsługuje wideo.</video><h3>Znad okularów</h3><span class="sc">Kadr 02</span></article><article><video muted playsinline controls loop preload="none" data-hover poster="../../assets/video/leave-poster.webp"><source src="../../assets/video/leave.webm" type="video/webm"><source src="../../assets/video/leave.mp4" type="video/mp4">Twoja przeglądarka nie obsługuje wideo.</video><h3>Nie, nie, nie!</h3><span class="sc">Kadr 03</span></article></div>
+ <p class="small" style="margin-top:28px">Krótkie, ciche scenki z gier. Najedź lub dotknij, by odtworzyć.</p></div></section>
+<div class="slot" aria-hidden="true"></div>
+<div class="wrap">
+<section id="gry" class="sec">
+ <div class="head"><span class="no">IV</span><h2>Gry</h2></div>
+ <div class="games">
+  <article class="game"><span class="sc">Dostępna teraz</span><h3>Eve's Café</h3><p>Prowadź kawiarnię razem z Eve — parz kawę, obsługuj gości i rozwijaj lokal.</p>
+   <div class="embed" data-embed="https://wodzu2207.github.io/eve-cafe/"><img src="../../assets/img/eve-barista-thumb.webp" alt="" class="embed-bg"><button class="cta" data-play>▶ Uruchom grę tutaj</button></div>
+   <p class="small">Gra się nie wyświetla? <a href="https://wodzu2207.github.io/eve-cafe/" target="_blank" rel="noopener">Zagraj w nowej karcie ↗</a></p></article>
+  <aside class="aside game"><img loading="lazy" src="../../assets/img/eve-gracz.webp" alt="Eve w bluzie z kapturem gra na konsoli">
+   <span class="sc">Wkrótce</span><h3>Eve — tamagotchi</h3><p>Opiekuj się Eve, rozmawiaj z nią i odkrywaj jej humory. Wersja dla wszystkich już w drodze.</p><p class="soon">Wkrótce w multiwersum.</p></aside>
+ </div></section>
+</div>
+<div class="slot" aria-hidden="true"></div>
+</main>
+<footer><div><span class="mast">Eve.</span><br>© <span id="y">2026</span> Daniel Wodziński · Multiwersum Eve</div><div style="max-width:46ch">Eve jest fikcyjną postacią wygenerowaną przez AI. Wszelkie podobieństwo do prawdziwych osób jest przypadkowe.<br><a href="../">← wszystkie warianty</a></div></footer>
+<script src="../shared.js"></script></body></html>
