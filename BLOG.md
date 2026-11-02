@@ -80,14 +80,19 @@ SLUG=moj-nowy-wpis; D=$(date +%F)
 python3 scripts/build.py          # wypisuje: OK: N wpisów (pl:…, en:…, es:…, pt:…)
 # 3) podgląd lokalny (opcjonalnie):
 python3 -m http.server 8765       # http://localhost:8765/  i /blog/$SLUG/
-# 4) opublikuj:
+# 4) commit + push (GitHub = źródło; kopia GitHub Pages tylko przekierowuje):
 git add -A
 git -c user.name="woDzu2207" -c user.email="woDzu2207@users.noreply.github.com" commit -qm "Blog: $SLUG"
 git push -q
-# 5) sprawdź po ~1 min (GitHub Pages):
-for p in "" en/ es/ pt/; do for u in "$p" "${p}blog/" "${p}blog/$SLUG/" "${p}blog/feed.xml"; do
-  echo "$(curl -s -o /dev/null -w '%{http_code}' https://wodzu2207.github.io/eve-strona/$u) $u"; done; done
-curl -s -o /dev/null -w '%{http_code} og\n' https://wodzu2207.github.io/eve-strona/blog/og/$SLUG.jpg
+# 5) deploy na Cloudflare — patrz „Hosting i deploy” niżej (automatycznie po pushu, jeśli jest sekret CLOUDFLARE_API_TOKEN;
+#    inaczej tryb MCP w 3 krokach)
+# 6) sprawdź (od razu po deployu):
+B=https://eve-gothic.wodzu2207.workers.dev
+for p in "" en/ es/ pt/; do for u in "$p" "${p}blog/" "${p}blog/$SLUG/" "${p}blog/feed.xml" "${p}18/"; do
+  echo "$(curl -s -o /dev/null -w '%{http_code}' $B/$u) $u"; done; done
+curl -s -o /dev/null -w '%{http_code} og\n' $B/blog/og/$SLUG.jpg
+curl -s -o /dev/null -w '%{http_code} sitemap\n' $B/sitemap.xml
+curl -s $B/blog/$SLUG/ | grep -o '/eve-strona/' | wc -l    # ma być 0
 ```
 
 Obrazek do ogłoszenia na Facebooku: `blog/og/<slug>.jpg` (PL; wersje językowe z sufiksem `-en/-es/-pt`).
@@ -106,3 +111,36 @@ Generowana przez ten sam `python3 scripts/build.py` (teksty: `GATE` w `scripts/i
 Zewnętrzny link pojawia się/otwiera dopiero po kliknięciu „Mam 18 lat — przejdź” (wstawiany przez JS,
 `rel="nofollow noopener noreferrer"`). Adresu docelowego **nie wpisuj** w żadnej innej stronie, stopce, sitemap ani OG —
 pozostałe strony mają tylko mały link „18+” w stopce, prowadzący do bramki w danym języku.
+
+## Hosting i deploy
+
+- **Adres główny:** https://eve-gothic.wodzu2207.workers.dev/ — Cloudflare Worker `eve-gothic` (same pliki statyczne,
+  darmowy plan) na koncie wodzinski.d@gmail.com. Adres jest w JEDNYM miejscu: `SITE` w `scripts/build.py`
+  (canonical, hreflang, og:url, og:image, RSS, sitemap, stopka obrazków OG, przekierowanie z GitHub Pages).
+  Zmiana domeny (np. na `eve-gothic.pages.dev` albo własną): zmień `SITE`, `python3 scripts/build.py`, commit, deploy.
+- **GitHub Pages** (https://wodzu2207.github.io/eve-strona/) dalej działa, ale każda generowana strona ma w `<head>`
+  skrypt, który TYLKO na hoście `*.github.io` robi `location.replace` + meta refresh na ten sam adres pod `SITE`.
+  Canonical wskazuje nowy adres. Na Cloudflare skrypt nic nie robi.
+- **Bramka 18+** (`/18/`, `/en|es|pt/18/`): `noindex,nofollow`, celowo poza `sitemap.xml` — tak ma zostać.
+- Na Cloudflare trafia wszystko z repo poza: `.git`, `.github`, `scripts/`, `blog/posts/` (źródła .md), `*.md`.
+
+### Deploy A — automatyczny (GitHub Actions), po jednorazowej konfiguracji
+
+`.github/workflows/cloudflare.yml` po każdym pushu na `main` uruchamia `python3 scripts/deploy_cf.py deploy`.
+Wymaga sekretu repo **`CLOUDFLARE_API_TOKEN`** (token z https://dash.cloudflare.com/profile/api-tokens, szablon
+„Edit Cloudflare Workers” / uprawnienie Account → Workers Scripts → Edit). Bez sekretu job jest pomijany.
+Ręcznie z tokenem: `CLOUDFLARE_API_TOKEN=… python3 scripts/deploy_cf.py deploy`. Wysyłane są tylko zmienione pliki.
+
+### Deploy B — agent przez MCP Cloudflare (`user-Cloudflare` → `execute`), bez tokena na dysku
+
+```bash
+python3 scripts/deploy_cf.py manifest        # -> /tmp/eve-cf/manifest.json
+```
+1. MCP `execute` (wklej manifest):
+   `POST /accounts/${accountId}/workers/scripts/eve-gothic/assets-upload-session` z body `{manifest}` → zwróć `result.jwt`, `result.buckets`.
+2. Jeśli `buckets` nie jest puste: `python3 scripts/deploy_cf.py upload '<jwt>' '<buckets-json>'` → wypisuje completion JWT
+   (gdy `buckets` puste, completion JWT = `jwt` z kroku 1).
+3. MCP `execute`: `PUT /accounts/${accountId}/workers/scripts/eve-gothic` z FormData `metadata` =
+   `{"compatibility_date":"2026-10-01","assets":{"jwt":"<completion JWT>","config":{"html_handling":"auto-trailing-slash","not_found_handling":"none"}}}`
+   (typ `application/json`). Potem sprawdź URL-e z kroku 6 wyżej.
+

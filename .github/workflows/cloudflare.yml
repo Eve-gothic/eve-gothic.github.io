@@ -1,0 +1,24 @@
+# Auto-deploy na Cloudflare (Worker „eve-gothic”) po każdym pushu na main.
+# Działa dopiero po dodaniu sekretu repozytorium CLOUDFLARE_API_TOKEN (Settings → Secrets and variables → Actions),
+# token: dash.cloudflare.com/profile/api-tokens → szablon „Edit Cloudflare Workers” (wystarczy: Account · Workers Scripts · Edit).
+# Bez sekretu job jest pomijany (nic się nie psuje). Strona budowana jest lokalnie (build.py) i commitowana — tu tylko upload.
+name: Deploy to Cloudflare
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+concurrency: cloudflare-deploy
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.CLOUDFLARE_API_TOKEN != ''
+      - name: Deploy static assets
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        run: python3 scripts/deploy_cf.py deploy
+      - name: Skipped (no CLOUDFLARE_API_TOKEN secret)
+        if: env.CLOUDFLARE_API_TOKEN == ''
+        run: echo "Brak sekretu CLOUDFLARE_API_TOKEN — deploy pominięty. Zobacz BLOG.md."
