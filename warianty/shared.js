@@ -20,5 +20,5 @@ if(items.length){
  let tx=0;lb.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});lb.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)show(i+(d<0?1:-1))});
 }
 document.querySelectorAll('video[data-hover]').forEach(v=>{if(matchMedia('(hover:hover)').matches){v.addEventListener('mouseenter',()=>v.play().catch(()=>{}));v.addEventListener('mouseleave',()=>v.pause())}});
-document.querySelectorAll('[data-embed]').forEach(box=>{const btn=box.querySelector('[data-play]');if(!btn)return;btn.addEventListener('click',()=>{const f=document.createElement('iframe');f.src=box.dataset.embed;f.title="Gra Eve's Café";f.allow='autoplay; fullscreen; gamepad';f.allowFullscreen=true;f.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0';box.appendChild(f);btn.remove()})});
+document.querySelectorAll('[data-embed]').forEach(box=>{const btn=box.querySelector('[data-play]');if(!btn)return;btn.addEventListener('click',()=>{const f=document.createElement('iframe');f.src=box.dataset.embed;f.title=box.dataset.title||"Gra Eve's Café";f.allow='autoplay; fullscreen';f.allowFullscreen=true;f.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0';box.appendChild(f);btn.remove()})});
 })();

@@ -76,7 +76,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 @media(max-width:900px){.hero{grid-template-columns:1fr;padding:40px 0 70px;gap:40px}.hero-art{justify-self:center;order:-1;max-width:400px}
 .about,.games{grid-template-columns:1fr}.gal{grid-template-columns:repeat(2,1fr);gap:12px}.vids{grid-template-columns:1fr}
 .burger{display:block}.menu{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--bg);padding:10px 16px 16px;border-bottom:1px solid var(--line)}.menu.open{display:flex}}
-</style></head><body>
+.embed.phone{aspect-ratio:400/720!important;width:min(400px,100%);margin-left:auto;margin-right:auto}</style></head><body>
 <header class="nav"><div class="in"><a class="logo" href="#top"><i></i>Eve</a><button class="burger" data-burger aria-label="Menu" aria-expanded="false">☰</button>
 <nav class="menu" data-menu><a href="#o-eve">O Eve</a><a href="#galeria">Galeria</a><a href="#filmiki">Filmiki</a><a class="cta" href="#gry">Gry</a></nav></div></header>
 <main id="top" class="wrap">
@@ -114,8 +114,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
   <article class="game"><span class="tag live">Dostępna</span><h3>Eve's Café</h3><p>Prowadź kawiarnię razem z Eve — parz kawę, obsługuj gości i rozwijaj lokal.</p>
    <div class="embed" data-embed="https://wodzu2207.github.io/eve-cafe/"><img src="../../assets/img/eve-barista-thumb.webp" alt="" class="embed-bg"><button class="btn" data-play>▶ Uruchom grę tutaj</button></div>
    <a class="btn" href="https://wodzu2207.github.io/eve-cafe/" target="_blank" rel="noopener">Zagraj w nowej karcie ↗</a></article>
-  <article class="game t"><span class="tag">Wkrótce</span><h3>Eve — tamagotchi</h3><p>Opiekuj się Eve, rozmawiaj z nią i odkrywaj jej humory. Wersja dla wszystkich już w drodze.</p>
-   <div class="gm"><img loading="lazy" src="../../assets/img/eve-gracz.webp" alt="Eve w bluzie z kapturem gra na konsoli"></div></article>
+  <article class="game t"><span class="tag live">Dostępna</span><h3>Eve — tamagotchi</h3><p>Opiekuj się Eve, rozmawiaj z nią i odkrywaj jej humory. Gra na telefon i w przeglądarce — dla wszystkich.</p>
+   <div class="embed phone" data-embed="https://wodzu2207.github.io/eve-game-public/" data-title="Gra Eve — tamagotchi"><img src="../../assets/img/eve-gracz-thumb.webp" alt="" class="embed-bg"><button class="btn" data-play>▶ Uruchom grę tutaj</button></div>
+   <a class="btn" style="align-self:flex-start" href="https://wodzu2207.github.io/eve-game-public/" target="_blank" rel="noopener">Zagraj w nowej karcie ↗</a></article>
  </div></section>
 <div class="slot" aria-hidden="true"></div>
 </main>

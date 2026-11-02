@@ -17,4 +17,4 @@ let tx=0;lb.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:tr
 // videos: hover play on desktop
 document.querySelectorAll('.vcard video').forEach(v=>{if(matchMedia('(hover:hover)').matches){v.addEventListener('mouseenter',()=>v.play().catch(()=>{}));v.addEventListener('mouseleave',()=>v.pause())}});
 // lazy game embed
-document.querySelectorAll('.embed[data-src]').forEach(box=>box.querySelector('.play').addEventListener('click',()=>{const f=document.createElement('iframe');f.src=box.dataset.src;f.title='Gra Eve\'s Café';f.allow='autoplay; fullscreen; gamepad';f.allowFullscreen=true;f.loading='lazy';box.appendChild(f);box.querySelector('.play').remove()}));
+document.querySelectorAll('.embed[data-src]').forEach(box=>box.querySelector('.play').addEventListener('click',()=>{const f=document.createElement('iframe');f.src=box.dataset.src;f.title=box.dataset.title||'Gra Eve\'s Café';f.allow='autoplay; fullscreen';f.allowFullscreen=true;f.loading='lazy';box.appendChild(f);box.querySelector('.play').remove()}));
