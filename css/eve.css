@@ -129,3 +129,11 @@ footer .mast{font-family:"Playfair Display";font-style:italic;font-size:2.4rem;c
 .postnav{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:40px}
 .rss{font-family:Inter;font-size:.68rem;letter-spacing:.25em;text-transform:uppercase}
 @media(max-width:900px){.top .right{gap:12px}.blogsec .cards{grid-template-columns:1fr}.pcard.big{grid-template-columns:1fr;gap:16px}.post .body{font-size:1.15rem}.langs{font-size:.62rem}.langs a{padding:3px 4px}}
+footer a.adult{font-family:Inter,system-ui,sans-serif;font-size:.62rem;letter-spacing:.15em;color:var(--mut);opacity:.7;text-decoration:none;border:1px solid rgba(185,168,154,.35);padding:1px 5px}
+.gate{max-width:720px;margin:auto;padding:clamp(70px,12vw,150px) 0 clamp(60px,10vw,120px);text-align:center}
+.gate h1{font-size:clamp(3rem,9vw,6.5rem);font-style:italic;line-height:.95;margin:14px 0 30px}
+.gate h1 span{color:var(--gold)}
+.gate .warn{font-size:1.45rem;line-height:1.5;color:#efe3d2;border-top:1px solid rgba(201,163,91,.4);border-bottom:1px solid rgba(201,163,91,.4);padding:26px 0;margin-bottom:36px}
+.gate-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.gate button.cta{cursor:pointer;font-family:Inter,system-ui,sans-serif}
+#gate-out{margin-top:34px}#gate-out .small{margin-top:14px}

@@ -151,3 +151,23 @@ T = {
   variants='Variantes de design', sources='Fontes',
 ),
 }
+
+# Bramka 18+ (/18/, /en/18/, ...): tylko tekst, bez obrazków i reklam
+GATE = {
+'pl': dict(title='18+ — tylko dla pełnoletnich', h='Tylko dla dorosłych',
+  warn='Treści wyłącznie dla osób pełnoletnich (18+). Kolejna strona zawiera materiały erotyczne. Kontynuując potwierdzasz, że masz ukończone 18 lat.',
+  yes='Mam 18 lat — przejdź', back='Wróć', open='Otwórz profil ↗',
+  note='Link prowadzi do zewnętrznego serwisu (Bluesky). Jeśli nowa karta się nie otworzyła, użyj przycisku powyżej.'),
+'en': dict(title='18+ — adults only', h='Adults only',
+  warn='Content for adults only (18+). The next page contains erotic material. By continuing you confirm that you are at least 18 years old.',
+  yes="I'm 18 or older — continue", back='Go back', open='Open profile ↗',
+  note='The link leads to an external service (Bluesky). If a new tab did not open, use the button above.'),
+'es': dict(title='18+ — solo para adultos', h='Solo para adultos',
+  warn='Contenido exclusivo para mayores de edad (18+). La página siguiente contiene material erótico. Al continuar confirmas que tienes 18 años o más.',
+  yes='Tengo 18 años — continuar', back='Volver', open='Abrir perfil ↗',
+  note='El enlace lleva a un servicio externo (Bluesky). Si no se abrió una pestaña nueva, usa el botón de arriba.'),
+'pt': dict(title='18+ — somente para maiores', h='Somente para maiores',
+  warn='Conteúdo exclusivo para maiores de idade (18+). A próxima página contém material erótico. Ao continuar, você confirma que tem 18 anos ou mais.',
+  yes='Tenho 18 anos — continuar', back='Voltar', open='Abrir perfil ↗',
+  note='O link leva a um serviço externo (Bluesky). Se uma nova aba não abriu, use o botão acima.'),
+}

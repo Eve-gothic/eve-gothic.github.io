@@ -98,3 +98,11 @@ odśwież go w https://developers.facebook.com/tools/debug/ .
 
 Edytuj lub usuń pliki w `blog/posts/<lang>/`, uruchom `python3 scripts/build.py` (strony usuniętych wpisów
 zostaną skasowane automatycznie; stare `blog/og/<slug>*.jpg` usuń ręcznie), potem commit + push jak wyżej.
+
+## Bramka 18+ (`/18/`, `/en/18/`, `/es/18/`, `/pt/18/`)
+
+Generowana przez ten sam `python3 scripts/build.py` (teksty: `GATE` w `scripts/i18n.py`, adres docelowy:
+`GATE_URL` w `scripts/build.py`). Tylko tekst — bez zdjęć, reklam i slotów; `noindex,nofollow`; nie ma jej w `sitemap.xml`.
+Zewnętrzny link pojawia się/otwiera dopiero po kliknięciu „Mam 18 lat — przejdź” (wstawiany przez JS,
+`rel="nofollow noopener noreferrer"`). Adresu docelowego **nie wpisuj** w żadnej innej stronie, stopce, sitemap ani OG —
+pozostałe strony mają tylko mały link „18+” w stopce, prowadzący do bramki w danym języku.

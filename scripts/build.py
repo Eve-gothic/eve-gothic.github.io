@@ -170,8 +170,9 @@ def og_image(out, photo, kicker, title, foot='wodzu2207.github.io/eve-strona'):
 def og_name(slug, lang): return f'blog/og/{slug}.jpg' if lang == 'pl' else f'blog/og/{slug}-{lang}.jpg'
 
 # ---------------- szablon ----------------
-def head(lang, path, title, desc, alts, og_img, og_type='website', extra=''):
+def head(lang, path, title, desc, alts, og_img, og_type='website', extra='', gate=False):
     r = root_for(path)
+    if gate: return head_gate(lang, path, title, desc, alts)
     links = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{p}">' for l, p in alts.items())
     if 'pl' in alts: links += f'<link rel="alternate" hreflang="x-default" href="{SITE}{alts["pl"]}">'
     return f'''<!doctype html>
@@ -200,11 +201,54 @@ def topbar(lang, path, alts, solid=False):
 <div class="right"><nav class="langs" aria-label="{t['langs_label']}">{langs}</nav><button class="burger" data-burger aria-label="{t['menu']}" aria-expanded="false">☰</button></div>
 <nav class="menu" data-menu>{nav}</nav></header>'''
 
+def path_gate(lang): return prefix(lang) + '18/'
+
+def head_gate(lang, path, title, desc, alts):
+    r = root_for(path)
+    links = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{p}">' for l, p in alts.items())
+    return f'''<!doctype html>
+<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#3a0b16">
+<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">{links}
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?{FONTS}&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{r}css/eve.css"></head>
+<body>'''
+
+# Zewnętrzny link 18+ — TYLKO na stronach bramki, wstawiany przez JS po potwierdzeniu.
+GATE_URL = 'https://bsky.app/profile/18erosai.bsky.social'
+
+def gate_page(lang):
+    t, g = T[lang], GATE[lang]; path = path_gate(lang); r = root_for(path)
+    alts = {l: path_gate(l) for l in LANGS}
+    home = r + path_home(lang)
+    langs = ''.join(f'<a href="{r}{alts[l]}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}" title="{LANG_NAME[l]}"' + (' aria-current="true"' if l == lang else '') + f'>{LANG_LABEL[l]}</a>' for l in LANGS)
+    import json
+    return head(lang, path, g['title'], g['warn'], alts, None, gate=True) + f'''
+<header class="top solid"><a class="mast" href="{home}">Eve.</a><div class="right"><nav class="langs" aria-label="{t['langs_label']}">{langs}</nav></div></header>
+<main class="wrap"><section class="gate">
+ <span class="sc">18+</span>
+ <h1>{g['h']}<span>.</span></h1>
+ <p class="warn">{g['warn']}</p>
+ <div class="gate-btns"><button class="cta fill" type="button" id="gate-yes">{g['yes']}</button><a class="cta" id="gate-back" href="{home}">{g['back']}</a></div>
+ <div id="gate-out" hidden><p class="small">{g['note']}</p></div>
+</section></main>
+<footer><div><span class="mast">Eve.</span><br>© <span id="y">2026</span> Daniel Wodziński · Multiwersum Eve</div><div style="max-width:52ch">{t['foot']}</div></footer>
+<script>
+(()=>{{const U={json.dumps(GATE_URL)},L={json.dumps(g['open'], ensure_ascii=False)};
+document.getElementById('y').textContent=new Date().getFullYear();
+document.getElementById('gate-back').addEventListener('click',e=>{{try{{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){{e.preventDefault();history.back()}}}}catch(_){{}}}});
+document.getElementById('gate-yes').addEventListener('click',()=>{{const box=document.getElementById('gate-out');
+ if(!box.querySelector('a')){{const a=document.createElement('a');a.href=U;a.rel='nofollow noopener noreferrer';a.target='_blank';a.className='cta fill';a.textContent=L;box.prepend(a)}}
+ box.hidden=false;window.open(U,'_blank','noopener,noreferrer')}});}})();
+</script></body></html>'''
+
 def footer(lang, path, blog=False):
     t, r = T[lang], root_for(path)
     note = f'<br><strong>{t["ai_note"]}</strong>' if blog else ''
     return f'''<footer><div><span class="mast">Eve.</span><br>© <span id="y">2026</span> Daniel Wodziński · Multiwersum Eve</div>
-<div style="max-width:52ch">{t['foot']}{note}<br><a href="{r}{path_blog(lang)}feed.xml">{t['rss']}</a> · <a href="{r}warianty/">{t['variants']}</a></div></footer>
+<div style="max-width:52ch">{t['foot']}{note}<br><a href="{r}{path_blog(lang)}feed.xml">{t['rss']}</a> · <a href="{r}warianty/">{t['variants']}</a> · <a class="adult" href="{r}{path_gate(lang)}" rel="nofollow">18+</a></div></footer>
 <script src="{r}js/eve.js"></script></body></html>'''
 
 SLOT = '<div class="slot" aria-hidden="true"></div>'   # miejsce na przyszłe reklamy (bez kodu reklam)
@@ -369,6 +413,7 @@ def main():
         write(path_blog(l) + 'feed.xml', feed(l, posts))
         for p in posts[l]:
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
+        write(path_gate(l) + 'index.html', gate_page(l))   # bramka 18+ — celowo NIE w sitemap.xml
     urls = [path_home(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
