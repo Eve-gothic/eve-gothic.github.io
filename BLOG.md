@@ -80,19 +80,17 @@ SLUG=moj-nowy-wpis; D=$(date +%F)
 python3 scripts/build.py          # wypisuje: OK: N wpisów (pl:…, en:…, es:…, pt:…)
 # 3) podgląd lokalny (opcjonalnie):
 python3 -m http.server 8765       # http://localhost:8765/  i /blog/$SLUG/
-# 4) commit + push (GitHub = źródło; kopia GitHub Pages tylko przekierowuje):
+# 4) opublikuj (repo eve-gothic/eve-gothic.github.io, GitHub Pages z main / root):
 git add -A
 git -c user.name="woDzu2207" -c user.email="woDzu2207@users.noreply.github.com" commit -qm "Blog: $SLUG"
 git push -q
-# 5) deploy na Cloudflare — patrz „Hosting i deploy” niżej (automatycznie po pushu, jeśli jest sekret CLOUDFLARE_API_TOKEN;
-#    inaczej tryb MCP w 3 krokach)
-# 6) sprawdź (od razu po deployu):
-B=https://eve-gothic.wodzu2207.workers.dev
+# 5) sprawdź po ~1–2 min (build GitHub Pages: gh run list -R eve-gothic/eve-gothic.github.io -L 1):
+B=https://eve-gothic.github.io
 for p in "" en/ es/ pt/; do for u in "$p" "${p}blog/" "${p}blog/$SLUG/" "${p}blog/feed.xml" "${p}18/"; do
   echo "$(curl -s -o /dev/null -w '%{http_code}' $B/$u) $u"; done; done
 curl -s -o /dev/null -w '%{http_code} og\n' $B/blog/og/$SLUG.jpg
 curl -s -o /dev/null -w '%{http_code} sitemap\n' $B/sitemap.xml
-curl -s $B/blog/$SLUG/ | grep -o '/eve-strona/' | wc -l    # ma być 0
+curl -s $B/blog/$SLUG/ | grep -cE 'eve-strona|workers\.dev'    # ma być 0
 ```
 
 Obrazek do ogłoszenia na Facebooku: `blog/og/<slug>.jpg` (PL; wersje językowe z sufiksem `-en/-es/-pt`).
@@ -112,35 +110,15 @@ Zewnętrzny link pojawia się/otwiera dopiero po kliknięciu „Mam 18 lat — p
 `rel="nofollow noopener noreferrer"`). Adresu docelowego **nie wpisuj** w żadnej innej stronie, stopce, sitemap ani OG —
 pozostałe strony mają tylko mały link „18+” w stopce, prowadzący do bramki w danym języku.
 
-## Hosting i deploy
+## Hosting
 
-- **Adres główny:** https://eve-gothic.wodzu2207.workers.dev/ — Cloudflare Worker `eve-gothic` (same pliki statyczne,
-  darmowy plan) na koncie wodzinski.d@gmail.com. Adres jest w JEDNYM miejscu: `SITE` w `scripts/build.py`
-  (canonical, hreflang, og:url, og:image, RSS, sitemap, stopka obrazków OG, przekierowanie z GitHub Pages).
-  Zmiana domeny (np. na `eve-gothic.pages.dev` albo własną): zmień `SITE`, `python3 scripts/build.py`, commit, deploy.
-- **GitHub Pages** (https://wodzu2207.github.io/eve-strona/) dalej działa, ale każda generowana strona ma w `<head>`
-  skrypt, który TYLKO na hoście `*.github.io` robi `location.replace` + meta refresh na ten sam adres pod `SITE`.
-  Canonical wskazuje nowy adres. Na Cloudflare skrypt nic nie robi.
+- **Adres:** https://eve-gothic.github.io/ — GitHub Pages z repo `eve-gothic/eve-gothic.github.io` (organizacja
+  `eve-gothic`), gałąź `main`, katalog `/`; `.nojekyll` w korzeniu (bez Jekylla). Nie ma osobnego kroku „deploy”:
+  push na `main` = publikacja.
+- Adres jest w JEDNYM miejscu: `SITE` w `scripts/build.py` (canonical, hreflang, og:url, og:image, RSS, sitemap,
+  stopka obrazków OG). Zmiana domeny: zmień `SITE`, `python3 scripts/build.py`, commit, push.
+- **Stary adres** https://wodzu2207.github.io/eve-strona/ (repo `woDzu2207/eve-strona`) to już tylko strony-przekierowania
+  (meta refresh + JS, noindex) na ten sam path pod nowym adresem, plus `404.html` przekierowujący dowolny path.
+  Nowe wpisy pod starym adresem trafiają do nowego przez `404.html` — nie trzeba tam nic robić.
 - **Bramka 18+** (`/18/`, `/en|es|pt/18/`): `noindex,nofollow`, celowo poza `sitemap.xml` — tak ma zostać.
-- Na Cloudflare trafia wszystko z repo poza: `.git`, `.github`, `scripts/`, `blog/posts/` (źródła .md), `*.md`.
-
-### Deploy A — automatyczny (GitHub Actions), po jednorazowej konfiguracji
-
-`.github/workflows/cloudflare.yml` po każdym pushu na `main` uruchamia `python3 scripts/deploy_cf.py deploy`.
-Wymaga sekretu repo **`CLOUDFLARE_API_TOKEN`** (token z https://dash.cloudflare.com/profile/api-tokens, szablon
-„Edit Cloudflare Workers” / uprawnienie Account → Workers Scripts → Edit). Bez sekretu job jest pomijany.
-Ręcznie z tokenem: `CLOUDFLARE_API_TOKEN=… python3 scripts/deploy_cf.py deploy`. Wysyłane są tylko zmienione pliki.
-
-### Deploy B — agent przez MCP Cloudflare (`user-Cloudflare` → `execute`), bez tokena na dysku
-
-```bash
-python3 scripts/deploy_cf.py manifest        # -> /tmp/eve-cf/manifest.json
-```
-1. MCP `execute` (wklej manifest):
-   `POST /accounts/${accountId}/workers/scripts/eve-gothic/assets-upload-session` z body `{manifest}` → zwróć `result.jwt`, `result.buckets`.
-2. Jeśli `buckets` nie jest puste: `python3 scripts/deploy_cf.py upload '<jwt>' '<buckets-json>'` → wypisuje completion JWT
-   (gdy `buckets` puste, completion JWT = `jwt` z kroku 1).
-3. MCP `execute`: `PUT /accounts/${accountId}/workers/scripts/eve-gothic` z FormData `metadata` =
-   `{"compatibility_date":"2026-10-01","assets":{"jwt":"<completion JWT>","config":{"html_handling":"auto-trailing-slash","not_found_handling":"none"}}}`
-   (typ `application/json`). Potem sprawdź URL-e z kroku 6 wyżej.
-
+- Gry osadzone/linkowane zostają na swoich adresach (`wodzu2207.github.io/eve-cafe/`, `wodzu2207.github.io/eve-game-public/`).

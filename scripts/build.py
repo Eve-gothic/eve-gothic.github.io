@@ -14,10 +14,10 @@ from i18n import *
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 # >>> JEDYNE miejsce z adresem strony (kanoniczny adres, hreflang, og:url, RSS, sitemap, przekierowanie z GH Pages).
-#     Zmiana domeny = zmień SITE, uruchom build.py i deploy (BLOG.md). Można też nadpisać: EVE_SITE=https://… python3 scripts/build.py
-SITE = os.environ.get('EVE_SITE', 'https://eve-gothic.wodzu2207.workers.dev/').rstrip('/') + '/'
+#     Zmiana domeny = zmień SITE, uruchom build.py, commit + push (BLOG.md). Można też nadpisać: EVE_SITE=https://… python3 scripts/build.py
+SITE = os.environ.get('EVE_SITE', 'https://eve-gothic.github.io').rstrip('/') + '/'
 SITE_HOST = SITE.split('://', 1)[1].rstrip('/')
-# Stara kopia na GitHub Pages (wodzu2207.github.io/eve-strona/) zostaje, ale przekierowuje na SITE.
+# Stare repo woDzu2207/eve-strona (wodzu2207.github.io/eve-strona/) zawiera już tylko strony-przekierowania na SITE.
 CAFE = 'https://wodzu2207.github.io/eve-cafe/'
 TAMA = 'https://wodzu2207.github.io/eve-game-public/'   # TYLKO wersja publiczna (dla wszystkich)
 FONTS = 'family=Playfair+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@500'
@@ -175,19 +175,13 @@ def og_image(out, photo, kicker, title, foot=None):
 def og_name(slug, lang): return f'blog/og/{slug}.jpg' if lang == 'pl' else f'blog/og/{slug}-{lang}.jpg'
 
 # ---------------- szablon ----------------
-def gh_redirect(path):
-    # Tylko na kopii GitHub Pages (hostname *.github.io): JS + meta refresh na ten sam adres w SITE.
-    u = SITE + path
-    return ('<script>(function(){if(/\\.github\\.io$/i.test(location.hostname)){var u="' + u + '"+location.search+location.hash;'
-            'var m=document.createElement("meta");m.httpEquiv="refresh";m.content="0;url="+u;document.head.appendChild(m);location.replace(u)}})()</script>')
-
 def head(lang, path, title, desc, alts, og_img, og_type='website', extra='', gate=False):
     r = root_for(path)
     if gate: return head_gate(lang, path, title, desc, alts)
     links = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{p}">' for l, p in alts.items())
     if 'pl' in alts: links += f'<link rel="alternate" hreflang="x-default" href="{SITE}{alts["pl"]}">'
     return f'''<!doctype html>
-<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8">{gh_redirect(path)}<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#3a0b16">
 <link rel="canonical" href="{SITE}{path}">{links}
 <link rel="alternate" type="application/rss+xml" title="{esc(T[lang]['blog_h'])}" href="{SITE}{path_blog(lang)}feed.xml">
@@ -218,7 +212,7 @@ def head_gate(lang, path, title, desc, alts):
     r = root_for(path)
     links = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{p}">' for l, p in alts.items())
     return f'''<!doctype html>
-<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8">{gh_redirect(path)}<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#3a0b16">
 <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">{links}
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
