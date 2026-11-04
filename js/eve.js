@@ -21,5 +21,11 @@ if(items.length){
  let tx=0;lb.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});lb.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)show(i+(d<0?1:-1))});
 }
 document.querySelectorAll('video[data-hover]').forEach(v=>{if(matchMedia('(hover:hover)').matches){v.addEventListener('mouseenter',()=>v.play().catch(()=>{}));v.addEventListener('mouseleave',()=>v.pause())}});
-document.querySelectorAll('[data-embed]').forEach(box=>{const btn=box.querySelector('[data-play]');if(!btn)return;btn.addEventListener('click',()=>{const f=document.createElement('iframe');f.src=box.dataset.embed;f.title=box.dataset.title||"Gra Eve's Café";f.allow='autoplay; fullscreen';f.allowFullscreen=true;f.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0';box.appendChild(f);btn.remove()})});
+const startEmbed=box=>{if(box.querySelector('iframe'))return;const f=document.createElement('iframe');f.src=box.dataset.embed;f.title=box.dataset.title||"Gra Eve's Café";f.allow='autoplay; fullscreen';f.allowFullscreen=true;f.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0;z-index:2';box.appendChild(f);const b=box.querySelector('[data-play]');if(b)b.remove()};
+document.querySelectorAll('[data-embed]').forEach(box=>{const btn=box.querySelector('[data-play]');if(btn)btn.addEventListener('click',()=>startEmbed(box))});
+// pełny ekran: Fullscreen API na ramce gry; bez wsparcia (np. iPhone) — gra w nowej karcie
+const fsOK=document.fullscreenEnabled||document.webkitFullscreenEnabled;
+document.querySelectorAll('[data-fs]').forEach(b=>{const g=b.closest('.game'),box=g&&g.querySelector('[data-embed]');if(!box)return;
+ b.addEventListener('click',()=>{if(!fsOK){window.open(box.dataset.embed,'_blank','noopener');return}
+  startEmbed(box);const rq=box.requestFullscreen||box.webkitRequestFullscreen;try{const p=rq.call(box);if(p&&p.catch)p.catch(()=>window.open(box.dataset.embed,'_blank','noopener'))}catch(_){window.open(box.dataset.embed,'_blank','noopener')}})});
 })();

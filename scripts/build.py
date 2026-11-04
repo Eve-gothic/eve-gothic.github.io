@@ -278,9 +278,13 @@ def home(lang, posts):
     for k, (n, cap) in enumerate(zip(GALLERY, GAL_CAP[lang]), 1):
         figs += f'<figure class="s{k}"><button data-full="{img(n, True)}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img loading="lazy" src="{img(n, True) if k in (1, 4, 11, 12) else img(n)}" alt="Eve — {esc(cap)}"></button><figcaption data-n="{k:02d}">{esc(cap)}</figcaption></figure>\n'
     vid = lambda n: f'<video muted playsinline controls loop preload="none" data-hover poster="{A}video/{n}-poster.webp"><source src="{A}video/{n}.webm" type="video/webm"><source src="{A}video/{n}.mp4" type="video/mp4">{t["novideo"]}</video>'
+    figs2 = ''
+    for n, cap, alt in zip(GALLERY2, GAL2_CAP[lang], GAL2_ALT[lang]):
+        figs2 += f'<figure><button data-full="{img(n, True)}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img loading="lazy" src="{img(n)}" alt="{esc(alt)}" width="450" height="600"></button><figcaption>{esc(cap)}</figcaption></figure>\n'
     reel = ''.join(f'<article>{vid(n)}<h3>{vt}</h3><span class="sc">{t["frame"]} {i + 1:02d}</span></article>' for i, (n, vt) in enumerate(zip(VIDEOS, t['video_titles'])))
     traits = ''.join(f'<li>{x}</li>' for x in t['traits'])
-    newtab = lambda u: f'<a href="{u}" target="_blank" rel="noopener">{t["newtab"]}</a>'
+    newtab = lambda u: f'<a class="cta fill" href="{u}" target="_blank" rel="noopener">{t["newtab"]}</a>'
+    gbar = lambda u: f'<p class="small gnote">{t["notshowing"]}</p><div class="gbar">{newtab(u)}<button class="cta" type="button" data-fs>{t["fs"]}</button></div>'
     blog = cards(posts[lang][:3], r, lang)
     out += topbar(lang, path, alts) + f'''
 <main id="top">
@@ -289,7 +293,7 @@ def home(lang, posts):
  <div class="cover-txt"><span class="sc">{t['kicker']}</span>
   <h1>Eve<span>.</span></h1>
   <p class="deck">{t['deck']}</p>
-  <a class="cta fill" href="#gry">{t['cta_play']}</a> <a class="cta" href="#galeria">{t['cta_gallery']}</a></div>
+  <a class="cta fill" href="#galeria">{t['cta_play']}</a> <a class="cta" href="{r}{path_blog(lang)}">{t['cta_gallery']}</a></div>
  <div class="issue"><span class="sc">{t['issue']}</span><b>Nº 01</b><span class="sc">{t['season']}</span></div>
 </section>
 {SLOT}
@@ -300,11 +304,14 @@ def home(lang, posts):
   <div class="ph"><img loading="lazy" src="{img('biblioteka', True)}" alt="{t['about_alt']}"></div>
   <div><p class="lede">{t['about']}</p>
    <p class="quote">{t['quote']}</p>
-   <ul class="traits">{traits}</ul></div>
+   <ul class="traits">{traits}</ul>
+   <p class="follow">{t['follow']} <a href="{r}{path_blog(lang)}">{t['blog_h']} →</a> · <a href="{r}{path_blog(lang)}feed.xml">RSS</a></p></div>
  </div></section>
 <section id="galeria" class="sec" style="padding-top:0">
  <div class="head"><span class="no">II</span><h2>{t['gal_h']}</h2></div>
- <div class="spread">{figs}</div></section>
+ <div class="spread">{figs}</div>
+ <div class="sub"><h3>{t['gal2_h']}</h3><p class="small">{t['gal2_lead']}</p></div>
+ <div class="grid2">{figs2}</div></section>
 </div>
 <section id="filmiki" class="film"><div class="wrap">
  <div class="head"><span class="no">III</span><h2>{t['videos_h']}</h2></div>
@@ -314,14 +321,15 @@ def home(lang, posts):
 <div class="wrap">
 <section id="gry" class="sec">
  <div class="head"><span class="no">IV</span><h2>{t['games_h']}</h2></div>
+ <p class="small" style="margin:-30px 0 40px;max-width:60ch">{t['games_lead']}</p>
  <div class="games">
-  <article class="game"><span class="sc">{t['available']}</span><h3>Eve's Café</h3><p>{t['cafe_desc']}</p>
-   <div class="embed" data-embed="{CAFE}" data-title="Eve's Café"><img src="{img('barista')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
-   <p class="small">{t['notshowing']} {newtab(CAFE)}</p></article>
-  <aside class="aside game"><img loading="lazy" src="{img('gracz', True)}" alt="Eve — {GAL_CAP[lang][5]}">
-   <span class="sc">{t['available']}</span><h3>{t['tama_title']}</h3><p>{t['tama_desc']}</p>
-   <div class="embed phone" data-embed="{TAMA}" data-title="{t['tama_title']}"><img src="{img('gracz')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
-   <p class="small">{t['notshowing']} {newtab(TAMA)}</p></aside>
+  <article class="game" id="eve-cafe"><span class="sc">{t['available']}</span><h3>Eve's Café</h3><p>{t['cafe_desc']}</p>
+   <!-- Gra pionowa (Phaser, 720 px szer., Scale.FIT): okno 9:16 -->
+   <div class="embed tall" data-embed="{CAFE}" data-title="Eve's Café"><img src="{img('barista')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
+   {gbar(CAFE)}</article>
+  <article class="game" id="eve-tamagotchi"><span class="sc">{t['available']}</span><h3>{t['tama_title']}</h3><p>{t['tama_desc']}</p>
+   <div class="embed tall" data-embed="{TAMA}" data-title="{t['tama_title']}"><img src="{img('gracz')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
+   {gbar(TAMA)}</article>
  </div></section>
 <section id="blog" class="sec blogsec">
  <div class="head"><span class="no">V</span><h2>{t['blog_h']}</h2></div>

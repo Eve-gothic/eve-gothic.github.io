@@ -137,3 +137,23 @@ footer a.adult{font-family:Inter,system-ui,sans-serif;font-size:.62rem;letter-sp
 .gate-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .gate button.cta{cursor:pointer;font-family:Inter,system-ui,sans-serif}
 #gate-out{margin-top:34px}#gate-out .small{margin-top:14px}
+
+/* --- gry: duże, responsywne okna (obie gry są pionowe, Phaser Scale.FIT) --- */
+.games{grid-template-columns:1fr 1fr}
+.embed.tall{aspect-ratio:9/16;width:min(100%,460px,calc(84vh*9/16));min-height:0;margin:28px auto 16px}
+.embed.tall .embed-bg{object-position:center 25%}
+.embed:fullscreen{aspect-ratio:auto!important;width:100vw!important;height:100vh!important;margin:0;outline:0}
+.embed:-webkit-full-screen{width:100vw!important;height:100vh!important;margin:0;outline:0}
+.gnote{text-align:center;margin-top:18px}
+.gbar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}.gbar .cta{margin-top:10px}
+/* --- O Eve: obserwuj --- */
+.follow{margin-top:28px;font-size:1.1rem;color:#e2d4c3;border-top:1px solid rgba(201,163,91,.3);padding-top:18px}
+/* --- Galeria II: nowa sesja --- */
+.sub{margin:110px 0 30px;border-bottom:1px solid rgba(201,163,91,.3);padding-bottom:14px}
+.sub h3{font-size:clamp(2rem,4vw,3rem);font-style:italic;color:var(--gold2)}
+.grid2{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.grid2 button{all:unset;cursor:zoom-in;display:block;width:100%;aspect-ratio:3/4;overflow:hidden}
+.grid2 img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform 1.2s cubic-bezier(.2,.7,.2,1),filter .8s;filter:grayscale(.2) sepia(.06)}
+.grid2 button:hover img{transform:scale(1.04);filter:none}
+.grid2 figcaption{font-style:italic;color:var(--mut);font-size:1rem;margin-top:8px}
+@media(max-width:900px){.games{grid-template-columns:1fr}.grid2{grid-template-columns:repeat(2,1fr);gap:14px}.embed.tall{width:min(100%,440px,calc(80svh*9/16));min-width:min(100%,300px)}.sub{margin-top:70px}}

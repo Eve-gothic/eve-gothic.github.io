@@ -1,6 +1,6 @@
 # Eve — strona multiwersum Eve
 
-Statyczna strona (HTML/CSS/JS) o Eve, wirtualnej, wygenerowanej przez AI bohaterce gier. Hostowana na GitHub Pages
+Statyczna strona (HTML/CSS/JS) o Eve — gotyckiej influencerce i modelce AI (blog o alternatywie i popkulturze; przy okazji bohaterce gier). Hostowana na GitHub Pages
 (repo `eve-gothic/eve-gothic.github.io`, gałąź `main`, katalog główny): https://eve-gothic.github.io/ (PL), `/en/`, `/es/`, `/pt/`.
 Adres strony: `SITE` w `scripts/build.py`. Stare repo `woDzu2207/eve-strona` (wodzu2207.github.io/eve-strona/) zawiera
 tylko przekierowania na nowy adres. Publikacja = build + commit + push — patrz **BLOG.md**.
