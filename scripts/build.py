@@ -37,6 +37,9 @@ esc = lambda s: html.escape(str(s), quote=True)
 def prefix(lang): return '' if lang == 'pl' else lang + '/'
 def path_home(lang): return prefix(lang)
 def path_blog(lang): return prefix(lang) + 'blog/'
+KOMIKS_N = 31   # liczba stron komiksu (assets/komiks/eve-komiks-NN.webp)
+KOMIKS_PDF = 'assets/komiks/eve-main-character.pdf'
+def path_komiks(lang): return prefix(lang) + 'komiks/'
 def path_post(lang, slug): return prefix(lang) + f'blog/{slug}/'
 def root_for(path): return '../' * path.count('/')   # path = katalog strony względem korzenia
 
@@ -144,10 +147,10 @@ def og_image(out, photo, kicker, title, foot=None):
         gd.line([(x, 0), (x, H)], fill=c)
     im.paste(g)
     # zdjęcie po lewej
-    ph = Image.open(os.path.join(ROOT, 'assets/img', photo + '.webp')).convert('RGB')
+    ph = Image.open(os.path.join(ROOT, photo) if '/' in photo else os.path.join(ROOT, 'assets/img', photo + '.webp')).convert('RGB')
     pw = 470; sc = max(pw / ph.width, H / ph.height)
     ph = ph.resize((round(ph.width * sc), round(ph.height * sc)), Image.LANCZOS)
-    top = int((ph.height - H) * 0.25); left = (ph.width - pw) // 2
+    top = int((ph.height - H) * (0 if '/' in photo else 0.25)); left = (ph.width - pw) // 2
     im.paste(ph.crop((left, top, left + pw, top + H)), (0, 0))
     d = ImageDraw.Draw(im)
     gold, gold2, paper, mut = '#c9a35b', '#e8cf96', '#f3ece0', '#b9a89a'
@@ -210,6 +213,7 @@ def topbar(lang, path, alts, solid=False):
     home = r + path_home(lang); on_home = path == path_home(lang)
     h = (lambda a: '#' + a) if on_home else (lambda a: home + '#' + a)
     nav = ''.join(f'<a href="{h(a)}">{n}</a>' for a, n in zip(['o-eve', 'galeria', 'filmiki', 'gry'], t['nav'][:4]))
+    nav += f'<a href="{r}{path_komiks(lang)}">{t["nav_komiks"]}</a>'
     nav += f'<a href="{r}{path_blog(lang)}">{t["nav"][4]}</a>'
     langs = ''.join(f'<a href="{(r + alts.get(l, path_home(l))) or "./"}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}" title="{LANG_NAME[l]}"' + (' aria-current="true"' if l == lang else '') + f'>{LANG_LABEL[l]}</a>' for l in LANGS)
     return f'''<header class="top{' solid' if solid else ''}"><a class="mast" href="{'#top' if on_home else home}">Eve.</a>
@@ -344,8 +348,12 @@ def home(lang, posts):
    <div class="embed tall" data-embed="{tama}" data-title="{t['tama_title']}"><img src="{img('gracz')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
    {gbar(tama)}</article>
  </div></section>
+<section id="komiks" class="sec ktease">
+ <div class="head"><span class="no">V</span><h2>{t['komiks_h']}</h2></div>
+ <a class="kcard" href="{r}{path_komiks(lang)}"><div class="ph"><img loading="lazy" src="{r}assets/komiks/eve-komiks-okladka.webp" alt="{esc(t['komiks_alt'])} 1" width="1120" height="1682"></div>
+ <div><span class="sc">{t['komiks_kicker']} · {KOMIKS_N} {t['komiks_pages']}</span><h3>Main Character</h3><p>{t['komiks_lead']} {t['komiks_note']}</p><span class="cta fill">{t['komiks_read']} →</span></div></a></section>
 <section id="blog" class="sec blogsec">
- <div class="head"><span class="no">V</span><h2>{t['blog_h']}</h2></div>
+ <div class="head"><span class="no">VI</span><h2>{t['blog_h']}</h2></div>
  <p class="small" style="margin:-10px 0 34px;max-width:60ch">{t['blog_lead']}</p>
  <!-- BLOG: generowane przez scripts/build.py (3 najnowsze wpisy) -->
  {blog}
@@ -399,6 +407,36 @@ def post_page(p, slugs):
 ''' + footer(lang, path, blog=True)
     return out
 
+def komiks_page(lang):
+    t = T[lang]; path = path_komiks(lang); r = root_for(path)
+    alts = {l: path_komiks(l) for l in LANGS}
+    og = f'og/komiks-{lang}.jpg'
+    extra = f'''<script type="application/ld+json">{{"@context":"https://schema.org","@type":"ComicStory","name":"Main Character","inLanguage":"en","url":"{SITE}{path}","image":"{SITE}{og}","description":{json_str(t['komiks_desc'])},"author":{{"@type":"Person","name":"Eve (AI)","sameAs":["{FB}","{IG}"]}}}}</script>'''
+    out = head(lang, path, f"{t['komiks_title']} — Eve", t['komiks_desc'], alts, og, 'website', extra)
+    pages = ''
+    for n in range(1, KOMIKS_N + 1):
+        src = f'{r}assets/komiks/eve-komiks-{n:02d}.webp'; cap = f"Main Character — {t['komiks_page']} {n} / {KOMIKS_N}"
+        pages += f'<figure class="kpage" id="s{n}"><button data-full="{src}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img src="{src}" alt="{esc(t["komiks_alt"])} {n}" width="1190" height="1682"' + (' fetchpriority="high"' if n == 1 else ' loading="lazy" decoding="async"') + f'></button><figcaption>{t["komiks_page"]} {n} / {KOMIKS_N}</figcaption></figure>\n'
+    pdf_mb = os.path.getsize(os.path.join(ROOT, KOMIKS_PDF)) / 1e6
+    size = f'{pdf_mb:.1f} MB' if lang == 'en' else f'{pdf_mb:.1f} MB'.replace('.', ',')
+    pdf = f'<a class="cta" href="{r}{KOMIKS_PDF}" download>{t["komiks_pdf"]} ({size})</a>'
+    note = f' <em>{t["komiks_note"]}</em>' if t['komiks_note'] else ''
+    out += topbar(lang, path, alts, solid=True) + f'''
+<main class="wrap">
+<section class="bloghead khead"><span class="sc">{t['komiks_kicker']} · {KOMIKS_N} {t['komiks_pages']}</span>
+<h1>Main Character<span>.</span></h1><p>{t['komiks_lead']}{note}</p>
+<p style="margin-top:18px"><a class="cta fill" href="#s1">{t['komiks_read']} ↓</a> {pdf}</p>
+{social(lang)}</section>
+{SLOT}
+<section class="reader">{pages}</section>
+<p class="small" style="text-align:center;font-style:italic">{t['komiks_next']}</p>
+<div class="postnav" style="margin-bottom:60px">{pdf}<a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
+{social(lang)}
+<div style="height:50px"></div>
+</main>
+''' + footer(lang, path)
+    return out
+
 def json_str(s):
     import json; return json.dumps(s, ensure_ascii=False)
 
@@ -436,11 +474,13 @@ def main():
                      f"{T[l]['blog_h']} · {CATEGORIES[p['category']][l]}", p['title'])
         write(path_home(l) + 'index.html', home(l, posts))
         write(path_blog(l) + 'index.html', blog_index(l, posts))
+        og_image(os.path.join(ROOT, f'og/komiks-{l}.jpg'), 'assets/komiks/eve-komiks-okladka.webp', T[l]['komiks_kicker'], T[l]['komiks_title'])
+        write(path_komiks(l) + 'index.html', komiks_page(l))
         write(path_blog(l) + 'feed.xml', feed(l, posts))
         for p in posts[l]:
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
         write(path_gate(l) + 'index.html', gate_page(l))   # bramka 18+ — celowo NIE w sitemap.xml
-    urls = [path_home(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
+    urls = [path_home(l) for l in LANGS] + [path_komiks(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
 
