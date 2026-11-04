@@ -53,6 +53,7 @@ VIDEOS = ['kiss', 'flirt', 'leave']
 
 T = {
 'pl': dict(
+  follow_btn='Obserwuj Eve',
   title='Eve — gotycka influencerka i modelka AI',
   desc='Eve — gotycka influencerka i modelka AI: czarny bob, ostry eyeliner, septum i złote koła. Sesje zdjęciowe, blog o alternatywie i popkulturze, a przy okazji darmowe gry. Obserwuj Eve!',
   nav=['O Eve','Galeria','Filmiki','Gry','Blog'], menu='Menu', langs_label='Język',
@@ -86,6 +87,7 @@ T = {
   variants='Warianty projektu', sources='Źródła',
 ),
 'en': dict(
+  follow_btn='Follow Eve',
   title='Eve — gothic AI influencer and model',
   desc='Eve is a gothic AI influencer and model: black bob, sharp eyeliner, septum and gold hoops. Photo shoots, a blog about alt and pop culture, and free games on the side. Follow Eve!',
   nav=['About Eve','Gallery','Clips','Games','Blog'], menu='Menu', langs_label='Language',
@@ -119,6 +121,7 @@ T = {
   variants='Design variants', sources='Sources',
 ),
 'es': dict(
+  follow_btn='Sigue a Eve',
   title='Eve — influencer y modelo IA de estilo gótico',
   desc='Eve es una influencer y modelo IA de estilo gótico: melena bob negra, delineado marcado, septum y aros dorados. Sesiones de fotos, un blog de cultura alternativa y pop y, de paso, juegos gratis. ¡Sigue a Eve!',
   nav=['Sobre Eve','Galería','Vídeos','Juegos','Blog'], menu='Menú', langs_label='Idioma',
@@ -152,6 +155,7 @@ T = {
   variants='Variantes de diseño', sources='Fuentes',
 ),
 'pt': dict(
+  follow_btn='Siga a Eve',
   title='Eve — influenciadora e modelo de IA com estilo gótico',
   desc='Eve é uma influenciadora e modelo de IA com estilo gótico: chanel preto, delineado marcado, septo e argolas douradas. Ensaios de fotos, um blog sobre cultura alternativa e pop e, de quebra, jogos grátis. Siga a Eve!',
   nav=['Sobre a Eve','Galeria','Vídeos','Jogos','Blog'], menu='Menu', langs_label='Idioma',
