@@ -284,6 +284,7 @@ def home(lang, posts):
     reel = ''.join(f'<article>{vid(n)}<h3>{vt}</h3><span class="sc">{t["frame"]} {i + 1:02d}</span></article>' for i, (n, vt) in enumerate(zip(VIDEOS, t['video_titles'])))
     traits = ''.join(f'<li>{x}</li>' for x in t['traits'])
     newtab = lambda u: f'<a class="cta fill" href="{u}" target="_blank" rel="noopener">{t["newtab"]}</a>'
+    cafe, tama = f'{CAFE}?lang={lang}', f'{TAMA}?lang={lang}'   # gry obsługują ?lang=pl|en|es|pt
     gbar = lambda u: f'<p class="small gnote">{t["notshowing"]}</p><div class="gbar">{newtab(u)}<button class="cta" type="button" data-fs>{t["fs"]}</button></div>'
     blog = cards(posts[lang][:3], r, lang)
     out += topbar(lang, path, alts) + f'''
@@ -325,11 +326,11 @@ def home(lang, posts):
  <div class="games">
   <article class="game" id="eve-cafe"><span class="sc">{t['available']}</span><h3>Eve's Café</h3><p>{t['cafe_desc']}</p>
    <!-- Gra pionowa (Phaser, 720 px szer., Scale.FIT): okno 9:16 -->
-   <div class="embed tall" data-embed="{CAFE}" data-title="Eve's Café"><img src="{img('barista')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
-   {gbar(CAFE)}</article>
+   <div class="embed tall" data-embed="{cafe}" data-title="Eve's Café"><img src="{img('barista')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
+   {gbar(cafe)}</article>
   <article class="game" id="eve-tamagotchi"><span class="sc">{t['available']}</span><h3>{t['tama_title']}</h3><p>{t['tama_desc']}</p>
-   <div class="embed tall" data-embed="{TAMA}" data-title="{t['tama_title']}"><img src="{img('gracz')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
-   {gbar(TAMA)}</article>
+   <div class="embed tall" data-embed="{tama}" data-title="{t['tama_title']}"><img src="{img('gracz')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
+   {gbar(tama)}</article>
  </div></section>
 <section id="blog" class="sec blogsec">
  <div class="head"><span class="no">V</span><h2>{t['blog_h']}</h2></div>
