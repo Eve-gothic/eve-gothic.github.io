@@ -261,3 +261,27 @@ GATE = {
   yes='Tenho 18 anos — continuar', back='Voltar', open='Abrir perfil ↗',
   note='O link leva a um serviço externo (Bluesky). Se uma nova aba não abriu, use o botão acima.'),
 }
+
+# ---------------- /linki/ (link-in-bio) ----------------
+LINKI = {
+ 'en': dict(title='Eve — links', desc='All of Eve in one place: the gothic AI influencer & model, her alt & pop culture blog, free games and the webcomic “Main Character”.',
+   kicker='Link in bio', bio='Gothic AI influencer & model · alt & pop culture blog · free games · webcomic', ai='AI character',
+   latest='Latest on the blog', comic='Comic: “Main Character”', comic_sub='31 pages · new episode', cafe='Play Eve’s Café', cafe_sub='free browser game',
+   tama='Eve Tamagotchi', tama_sub='look after Eve', gallery='Gallery', gallery_sub='photo sessions', blog='Blog', blog_sub='alt & pop culture',
+   fb='Facebook', ig='Instagram', site='Full website', langs='Language'),
+ 'pl': dict(title='Eve — linki', desc='Cała Eve w jednym miejscu: gotycka influencerka i modelka AI, jej blog o kulturze alternatywnej i popkulturze, darmowe gry i komiks „Main Character”.',
+   kicker='Link w bio', bio='Gotycka influencerka i modelka AI · blog o alt i popkulturze · darmowe gry · komiks', ai='Postać AI',
+   latest='Najnowszy wpis na blogu', comic='Komiks „Main Character”', comic_sub='31 stron · nowy odcinek (po angielsku)', cafe='Zagraj w Eve’s Café', cafe_sub='darmowa gra w przeglądarce',
+   tama='Tamagotchi z Eve', tama_sub='zaopiekuj się Eve', gallery='Galeria', gallery_sub='sesje zdjęciowe', blog='Blog', blog_sub='alt i popkultura',
+   fb='Facebook', ig='Instagram', site='Cała strona', langs='Język'),
+ 'es': dict(title='Eve — enlaces', desc='Toda Eve en un solo lugar: la influencer y modelo IA gótica, su blog de cultura alternativa y pop, juegos gratis y el cómic «Main Character».',
+   kicker='Link en la bio', bio='Influencer y modelo IA gótica · blog de cultura alt y pop · juegos gratis · webcómic', ai='Personaje IA',
+   latest='Lo último del blog', comic='Cómic «Main Character»', comic_sub='31 páginas · nuevo episodio (en inglés)', cafe='Juega a Eve’s Café', cafe_sub='juego gratis en el navegador',
+   tama='Tamagotchi de Eve', tama_sub='cuida de Eve', gallery='Galería', gallery_sub='sesiones de fotos', blog='Blog', blog_sub='cultura alt y pop',
+   fb='Facebook', ig='Instagram', site='Web completa', langs='Idioma'),
+ 'pt': dict(title='Eve — links', desc='Toda a Eve em um só lugar: a influenciadora e modelo IA gótica, seu blog de cultura alternativa e pop, jogos grátis e o quadrinho “Main Character”.',
+   kicker='Link na bio', bio='Influenciadora e modelo IA gótica · blog de cultura alt e pop · jogos grátis · webcomic', ai='Personagem IA',
+   latest='Novidade no blog', comic='Quadrinho “Main Character”', comic_sub='31 páginas · novo episódio (em inglês)', cafe='Jogue Eve’s Café', cafe_sub='jogo grátis no navegador',
+   tama='Tamagotchi da Eve', tama_sub='cuide da Eve', gallery='Galeria', gallery_sub='ensaios de fotos', blog='Blog', blog_sub='cultura alt e pop',
+   fb='Facebook', ig='Instagram', site='Site completo', langs='Idioma'),
+}

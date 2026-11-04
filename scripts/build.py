@@ -21,6 +21,19 @@ SITE_HOST = SITE.split('://', 1)[1].rstrip('/')
 CAFE = 'https://wodzu2207.github.io/eve-cafe/'
 TAMA = 'https://wodzu2207.github.io/eve-game-public/'   # TYLKO wersja publiczna (dla wszystkich)
 # Profile społecznościowe Eve (dla wszystkich) — NIE dodawać do bramki /18/
+# Analityka GoatCounter (bez cookies, bez banera). Wpisz kod strony, np. 'eve-gothic' -> https://eve-gothic.goatcounter.com
+# Puste = analityka wyłączona (żaden skrypt nie jest dodawany).
+ANALYTICS_CODE = ''
+def analytics():
+    if not ANALYTICS_CODE: return ''
+    return f'<script data-goatcounter="https://{ANALYTICS_CODE}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
+
+UTM = 'utm_source=instagram&utm_medium=bio&utm_campaign=linkinbio'
+def utm(url):
+    base, _, frag = url.partition('#')
+    base += ('&' if '?' in base else '?') + UTM
+    return base + ('#' + frag if frag else '')
+
 FB = 'https://www.facebook.com/profile.php?id=61590647888748'
 IG = 'https://www.instagram.com/eve.ai.digital.legacy/'
 SVG_FB = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>'
@@ -40,6 +53,8 @@ def path_blog(lang): return prefix(lang) + 'blog/'
 KOMIKS_N = 31   # liczba stron komiksu (assets/komiks/eve-komiks-NN.webp)
 KOMIKS_PDF = 'assets/komiks/eve-main-character.pdf'
 def path_komiks(lang): return prefix(lang) + 'komiks/'
+# link w bio: angielski jest główny pod /linki/ (adres do bio na Instagramie); /en/linki/ to kopia z canonical -> /linki/
+def path_linki(lang): return {'en': 'linki/', 'pl': 'pl/linki/'}.get(lang, lang + '/linki/')
 def path_post(lang, slug): return prefix(lang) + f'blog/{slug}/'
 def root_for(path): return '../' * path.count('/')   # path = katalog strony względem korzenia
 
@@ -268,7 +283,7 @@ def footer(lang, path, blog=False):
     note = f'<br><strong>{t["ai_note"]}</strong>' if blog else ''
     return f'''<footer><div><span class="mast">Eve.</span><br>© <span id="y">2026</span> Daniel Wodziński · Multiwersum Eve</div>
 {social(lang, 'foot')}<div style="max-width:52ch">{t['foot']}{note}<br><a href="{r}{path_blog(lang)}feed.xml">{t['rss']}</a> · <a href="{r}warianty/">{t['variants']}</a> · <a class="adult" href="{r}{path_gate(lang)}" rel="nofollow">18+</a></div></footer>
-<script src="{r}js/eve.js"></script></body></html>'''
+<script src="{r}js/eve.js"></script>{analytics()}</body></html>'''
 
 SLOT = '<div class="slot" aria-hidden="true"></div>'   # miejsce na przyszłe reklamy (bez kodu reklam)
 
@@ -437,6 +452,59 @@ def komiks_page(lang):
 ''' + footer(lang, path)
     return out
 
+def linki_page(lang, posts, path=None):
+    L, t = LINKI[lang], T[lang]
+    path = path or path_linki(lang); r = root_for(path); canon = path_linki(lang)
+    alts = {l: path_linki(l) for l in LANGS}
+    hre = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{p}">' for l, p in alts.items()) + f'<link rel="alternate" hreflang="x-default" href="{SITE}{alts["en"]}">'
+    og = f'og/linki-{lang}.jpg'
+    p = posts[lang][0] if posts[lang] else None
+    def btn(href, label, sub='', icon='', ext=False, cls='', ev=''):
+        tgt = ' target="_blank" rel="noopener"' if ext else ''
+        sub = f'<small>{esc(sub)}</small>' if sub else ''
+        return f'<a class="lbtn{cls}" href="{esc(href)}"{tgt} data-goatcounter-click="bio-{ev}"><span class="li">{icon}</span><span class="lt">{esc(label)}{sub}</span><span class="la" aria-hidden="true">→</span></a>\n'
+    links = ''
+    if p:
+        cv = p['cover'] and (p['cover'] + '-thumb' if os.path.exists(os.path.join(ROOT, f'assets/img/{p["cover"]}-thumb.webp')) else p['cover'])
+        ph = f'<img src="{r}assets/img/{cv}.webp" alt="" width="56" height="56" loading="lazy">' if cv else '✦'
+        links += btn(utm(r + path_post(lang, p['slug'])), p['title'], L['latest'], ph, cls=' feat', ev='latest-post')
+    links += btn(utm(r + path_komiks(lang)), L['comic'], L['comic_sub'], '✎', ev='komiks')
+    links += btn(utm(f'{CAFE}?lang={lang}'), L['cafe'], L['cafe_sub'], '☕', ev='cafe')
+    links += btn(utm(f'{TAMA}?lang={lang}'), L['tama'], L['tama_sub'], '♡', ev='tamagotchi')
+    links += btn(utm(r + path_home(lang) + '#galeria'), L['gallery'], L['gallery_sub'], '◐', ev='galeria')
+    links += btn(utm(r + path_blog(lang)), L['blog'], L['blog_sub'], '✦', ev='blog')
+    links += btn(FB, L['fb'], t['follow_btn'] if 'follow_btn' in t else '', SVG_FB, True, ' soc', 'facebook')
+    links += btn(IG, L['ig'], '@eve.ai.digital.legacy', SVG_IG, True, ' soc', 'instagram')
+    langs = ''.join(f'<a href="{r}{path_linki(l)}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}"' + (' aria-current="true"' if l == lang else '') + f'>{LANG_LABEL[l]}</a>' for l in ['en', 'pl', 'es', 'pt'])
+    return f'''<!doctype html>
+<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{esc(L['title'])}</title><meta name="description" content="{esc(L['desc'])}"><meta name="theme-color" content="#0c0708">
+<meta name="robots" content="index, follow"><link rel="canonical" href="{SITE}{canon}">{hre}
+<meta property="og:type" content="profile"><meta property="og:site_name" content="Eve"><meta property="og:locale" content="{OG_LOCALE[lang]}">
+<meta property="og:title" content="{esc(L['title'])}"><meta property="og:description" content="{esc(L['desc'])}"><meta property="og:url" content="{SITE}{canon}">
+<meta property="og:image" content="{SITE}{og}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(L['title'])}"><meta name="twitter:description" content="{esc(L['desc'])}"><meta name="twitter:image" content="{SITE}{og}">
+<script type="application/ld+json">{{"@context":"https://schema.org","@type":"ProfilePage","url":"{SITE}{canon}","inLanguage":"{HTML_LANG[lang]}","mainEntity":{{"@type":"Person","name":"Eve (AI)","description":{json_str(L['bio'])},"image":"{SITE}assets/img/eve-avatar.webp","sameAs":["{FB}","{IG}"]}}}}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?{FONTS}&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{r}css/eve.css"></head>
+<body class="linki">
+<main class="lbio">
+<nav class="llangs" aria-label="{esc(L['langs'])}">{langs}</nav>
+<header class="lhead">
+<img class="lav" src="{r}assets/img/eve-avatar.webp" alt="Eve — {esc(L['ai'])}" width="240" height="240" fetchpriority="high">
+<span class="sc">{esc(L['kicker'])}</span>
+<h1>Eve<span>.</span></h1>
+<p class="lbiot">{esc(L['bio'])}</p>
+<span class="aitag">✦ {esc(L['ai'])}</span>
+</header>
+<nav class="llist">
+{links}</nav>
+<footer class="lfoot"><a href="{esc(utm(r + path_home(lang)))}">{esc(L['site'])} · {SITE_HOST}</a><br><small>{esc(t['ai_note'])}</small></footer>
+</main>{analytics()}
+</body></html>'''
+
 def json_str(s):
     import json; return json.dumps(s, ensure_ascii=False)
 
@@ -476,11 +544,14 @@ def main():
         write(path_blog(l) + 'index.html', blog_index(l, posts))
         og_image(os.path.join(ROOT, f'og/komiks-{l}.jpg'), 'assets/komiks/eve-komiks-okladka.webp', T[l]['komiks_kicker'], T[l]['komiks_title'])
         write(path_komiks(l) + 'index.html', komiks_page(l))
+        og_image(os.path.join(ROOT, f'og/linki-{l}.jpg'), 'assets/img/eve-spojrzenie-noir.webp', LINKI[l]['kicker'], LINKI[l]['bio'].split(' · ')[0])
+        write(path_linki(l) + 'index.html', linki_page(l, posts))
         write(path_blog(l) + 'feed.xml', feed(l, posts))
         for p in posts[l]:
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
         write(path_gate(l) + 'index.html', gate_page(l))   # bramka 18+ — celowo NIE w sitemap.xml
-    urls = [path_home(l) for l in LANGS] + [path_komiks(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
+    write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
+    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in ['en', 'pl', 'es', 'pt']] + [path_komiks(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
 

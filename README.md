@@ -9,3 +9,7 @@ tylko przekierowania na nowy adres. Publikacja = build + commit + push — patrz
 - Strony główne, Blog Eve, RSS, obrazki OG i sitemap generuje `python3 scripts/build.py` — patrz **BLOG.md**.
 - Teksty UI: `scripts/i18n.py`, style: `css/eve.css`, skrypty: `js/eve.js`, zdjęcia/wideo: `assets/`.
 - Fonty do obrazków OG: `scripts/fonts/` (Playfair Display, Inter — licencja SIL OFL, `scripts/fonts/OFL.txt`).
+
+## Link w bio i analityka
+- `/linki/` (EN, główny adres do bio), `/pl/linki/`, `/es/linki/`, `/pt/linki/` (+ kopia `/en/linki/` z canonical → `/linki/`). Linki wewnętrzne mają UTM `utm_source=instagram&utm_medium=bio&utm_campaign=linkinbio`.
+- Analityka GoatCounter (bez cookies): w `scripts/build.py` ustaw `ANALYTICS_CODE = 'kod'` (z konta https://<kod>.goatcounter.com) i przebuduj. Puste = wyłączone.
