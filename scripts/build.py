@@ -23,7 +23,7 @@ TAMA = 'https://wodzu2207.github.io/eve-game-public/'   # TYLKO wersja publiczna
 # Profile społecznościowe Eve (dla wszystkich) — NIE dodawać do bramki /18/
 # Analityka GoatCounter (bez cookies, bez banera). Wpisz kod strony, np. 'eve-gothic' -> https://eve-gothic.goatcounter.com
 # Puste = analityka wyłączona (żaden skrypt nie jest dodawany).
-ANALYTICS_CODE = ''
+ANALYTICS_CODE = 'eve-ai'
 def analytics():
     if not ANALYTICS_CODE: return ''
     return f'<script data-goatcounter="https://{ANALYTICS_CODE}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
