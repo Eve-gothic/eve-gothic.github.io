@@ -204,3 +204,5 @@ body.linki{min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,var(--
 .lbtn .la{color:var(--gold);font-family:Inter;opacity:.8}.lbtn:hover .la{color:var(--ink)}
 .lbtn.soc{font-style:italic}
 .lfoot{display:block;border:0;padding:0;text-align:center;margin-top:30px;font-size:.9rem;color:var(--mut);line-height:1.5}.lfoot a{color:var(--gold2)}.lfoot small{display:block;margin-top:8px;font-size:.78rem}
+/* Galeria I: równa siatka na komputerze (jak Galeria II) — 5.11.2026 */
+@media(min-width:901px){.spread{grid-template-columns:repeat(4,1fr);gap:22px}.spread figure{grid-column:auto!important;margin-top:0!important}.spread figure button{aspect-ratio:3/4!important}}
