@@ -251,7 +251,7 @@ def head_gate(lang, path, title, desc, alts):
 <body>'''
 
 # Zewnętrzny link 18+ — TYLKO na stronach bramki, wstawiany przez JS po potwierdzeniu.
-GATE_URL = 'https://bsky.app/profile/18erosai.bsky.social'
+GATE_URL = ''  # usunięte 5.11.2026 — żadnych linków 18+
 
 def gate_page(lang):
     t, g = T[lang], GATE[lang]; path = path_gate(lang); r = root_for(path)
@@ -282,7 +282,7 @@ def footer(lang, path, blog=False):
     t, r = T[lang], root_for(path)
     note = f'<br><strong>{t["ai_note"]}</strong>' if blog else ''
     return f'''<footer><div><span class="mast">Eve.</span><br>© <span id="y">2026</span> Daniel Wodziński · Multiwersum Eve</div>
-{social(lang, 'foot')}<div style="max-width:52ch">{t['foot']}{note}<br><a href="{r}{path_blog(lang)}feed.xml">{t['rss']}</a> · <a href="{r}warianty/">{t['variants']}</a> · <a class="adult" href="{r}{path_gate(lang)}" rel="nofollow">18+</a></div></footer>
+{social(lang, 'foot')}<div style="max-width:52ch">{t['foot']}{note}<br><a href="{r}{path_blog(lang)}feed.xml">{t['rss']}</a> · <a href="{r}warianty/">{t['variants']}</a></div></footer>
 <script src="{r}js/eve.js"></script>{analytics()}</body></html>'''
 
 SLOT = '<div class="slot" aria-hidden="true"></div>'   # miejsce na przyszłe reklamy (bez kodu reklam)
@@ -549,7 +549,7 @@ def main():
         write(path_blog(l) + 'feed.xml', feed(l, posts))
         for p in posts[l]:
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
-        write(path_gate(l) + 'index.html', gate_page(l))   # bramka 18+ — celowo NIE w sitemap.xml
+        pass  # bramka 18+ usunięta na prośbę Daniela (5.11.2026)   # bramka 18+ — celowo NIE w sitemap.xml
     write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
     urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in ['en', 'pl', 'es', 'pt']] + [path_komiks(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')

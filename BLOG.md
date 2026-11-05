@@ -102,7 +102,9 @@ odśwież go w https://developers.facebook.com/tools/debug/ .
 Edytuj lub usuń pliki w `blog/posts/<lang>/`, uruchom `python3 scripts/build.py` (strony usuniętych wpisów
 zostaną skasowane automatycznie; stare `blog/og/<slug>*.jpg` usuń ręcznie), potem commit + push jak wyżej.
 
-## Bramka 18+ (`/18/`, `/en/18/`, `/es/18/`, `/pt/18/`)
+## Bramka 18+ — USUNIĘTA 5.11.2026 na prośbę Daniela. Nie przywracać, żadnych linków do Bluesky ani 18+.
+
+(stara notatka, nieaktualna:)
 
 Generowana przez ten sam `python3 scripts/build.py` (teksty: `GATE` w `scripts/i18n.py`, adres docelowy:
 `GATE_URL` w `scripts/build.py`). Tylko tekst — bez zdjęć, reklam i slotów; `noindex,nofollow`; nie ma jej w `sitemap.xml`.
