@@ -466,7 +466,7 @@ def path_sesja(lang): return prefix(lang) + 'sesje/czern/'
 
 def sesja_tease(lang, r):
     S = SESJA[lang]
-    return f'<div class="sub"><h3>{S["kicker"]}: {S["title"]}</h3><p class="small">{S["lead"]}</p><p style="margin-top:14px"><a class="cta fill" href="{r}{path_sesja(lang)}">{S["cta"]} →</a></p></div>'
+    return f'<div class="sub ktease" style="margin-top:50px"><a class="kcard" href="{r}{path_sesja(lang)}"><div class="ph"><img loading="lazy" src="{r}assets/sesje/czern/01.webp" alt="Eve — {esc(S["title"])}" width="1200" height="1600"></div><div><span class="sc">{S["kicker"]} · {SESJA_N}</span><h3>{S["title"]}</h3><p>{S["lead"]}</p><span class="cta fill">{S["cta"]} →</span></div></a></div>'
 
 def sesja_page(lang):
     t = T[lang]; S = SESJA[lang]; path = path_sesja(lang); r = root_for(path)
