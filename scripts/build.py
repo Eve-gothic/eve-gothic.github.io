@@ -343,7 +343,8 @@ def home(lang, posts):
  <div class="head"><span class="no">II</span><h2>{t['gal_h']}</h2></div>
  <div class="spread">{figs}</div>
  <div class="sub"><h3>{t['gal2_h']}</h3><p class="small">{t['gal2_lead']}</p></div>
- <div class="grid2">{figs2}</div></section>
+ <div class="grid2">{figs2}</div>
+ {sesja_tease(lang, r)}</section>
 </div>
 <section id="filmiki" class="film"><div class="wrap">
  <div class="head"><span class="no">III</span><h2>{t['videos_h']}</h2></div>
@@ -452,6 +453,45 @@ def komiks_page(lang):
 ''' + footer(lang, path)
     return out
 
+
+# ── Sesje zdjęciowe (7.11.2026, akceptacja Daniela) ──
+SESJA_N = 5
+SESJA = {
+ 'pl': dict(title='Czerń na własnych zasadach', kicker='Sesja', lead='Czerń, złote kółka w uszach i zero przeprosin za zajmowanie miejsca. Moje ciało nie potrzebuje pozwolenia — a odrobina buntu pasuje do wszystkiego.', cta='Zobacz sesję', photo='Zdjęcie', ai='Zdjęcia wygenerowane przez AI · Eve to wirtualna, dorosła postać.'),
+ 'en': dict(title='Black, on My Terms', kicker='Photo session', lead='Black straps, gold hoops in my ears, and zero apologies for taking up space. My body needs no permission — and a little rebellion goes with everything.', cta='See the session', photo='Photo', ai='AI-generated images · Eve is a virtual adult character.'),
+ 'es': dict(title='Negro, a mi manera', kicker='Sesión', lead='Tiras negras, aros dorados en las orejas y ninguna disculpa por ocupar mi espacio. Mi cuerpo no necesita permiso, y un poco de rebeldía combina con todo.', cta='Ver la sesión', photo='Foto', ai='Imágenes generadas por IA · Eve es un personaje virtual adulto.'),
+ 'pt': dict(title='Preto, do meu jeito', kicker='Ensaio', lead='Tiras pretas, argolas douradas nas orelhas e zero desculpas por ocupar meu espaço. Meu corpo não precisa de permissão — e um pouco de rebeldia combina com tudo.', cta='Ver o ensaio', photo='Foto', ai='Imagens geradas por IA · Eve é uma personagem virtual adulta.'),
+}
+def path_sesja(lang): return prefix(lang) + 'sesje/czern/'
+
+def sesja_tease(lang, r):
+    S = SESJA[lang]
+    return f'<div class="sub"><h3>{S["kicker"]}: {S["title"]}</h3><p class="small">{S["lead"]}</p><p style="margin-top:14px"><a class="cta fill" href="{r}{path_sesja(lang)}">{S["cta"]} →</a></p></div>'
+
+def sesja_page(lang):
+    t = T[lang]; S = SESJA[lang]; path = path_sesja(lang); r = root_for(path)
+    alts = {l: path_sesja(l) for l in LANGS}
+    og = f'og/sesja-czern-{lang}.jpg'
+    out = head(lang, path, f"{S['title']} — Eve", S['lead'], alts, og, 'website')
+    figs = ''
+    for n in range(1, SESJA_N + 1):
+        src = f'{r}assets/sesje/czern/{n:02d}.webp'; cap = f"{S['title']} — {S['photo']} {n} / {SESJA_N}"
+        figs += f'<figure><button data-full="{src}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img src="{src}" alt="Eve — {esc(cap)}" width="1200" height="1600"' + (' fetchpriority="high"' if n == 1 else ' loading="lazy" decoding="async"') + '></button></figure>\n'
+    out += topbar(lang, path, alts, solid=True) + f'''
+<main class="wrap">
+<section class="bloghead khead"><span class="sc">{S['kicker']} · {SESJA_N}</span>
+<h1>{S['title']}<span>.</span></h1><p>{S['lead']}</p>
+<p class="small" style="margin-top:10px">{S['ai']}</p>
+{social(lang)}</section>
+{SLOT}
+<section class="sec" style="padding-top:20px"><div class="grid2">{figs}</div></section>
+<div class="postnav" style="margin-bottom:60px"><a class="cta" href="{r}{path_home(lang)}#galeria">{t['back_home']}</a></div>
+{social(lang)}
+<div style="height:50px"></div>
+</main>
+''' + footer(lang, path)
+    return out
+
 def linki_page(lang, posts, path=None):
     L, t = LINKI[lang], T[lang]
     path = path or path_linki(lang); r = root_for(path); canon = path_linki(lang)
@@ -544,6 +584,8 @@ def main():
         write(path_blog(l) + 'index.html', blog_index(l, posts))
         og_image(os.path.join(ROOT, f'og/komiks-{l}.jpg'), 'assets/komiks/eve-komiks-okladka.webp', T[l]['komiks_kicker'], T[l]['komiks_title'])
         write(path_komiks(l) + 'index.html', komiks_page(l))
+        og_image(os.path.join(ROOT, f'og/sesja-czern-{l}.jpg'), 'assets/sesje/czern/01.webp', SESJA[l]['kicker'], SESJA[l]['title'])
+        write(path_sesja(l) + 'index.html', sesja_page(l))
         og_image(os.path.join(ROOT, f'og/linki-{l}.jpg'), 'assets/img/eve-spojrzenie-noir.webp', LINKI[l]['kicker'], LINKI[l]['bio'].split(' · ')[0])
         write(path_linki(l) + 'index.html', linki_page(l, posts))
         write(path_blog(l) + 'feed.xml', feed(l, posts))
@@ -551,7 +593,7 @@ def main():
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
         pass  # bramka 18+ usunięta na prośbę Daniela (5.11.2026)   # bramka 18+ — celowo NIE w sitemap.xml
     write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
-    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in ['en', 'pl', 'es', 'pt']] + [path_komiks(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
+    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in ['en', 'pl', 'es', 'pt']] + [path_komiks(l) for l in LANGS] + [path_sesja(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
 
