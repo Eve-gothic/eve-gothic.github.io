@@ -367,7 +367,8 @@ def home(lang, posts):
 <section id="komiks" class="sec ktease">
  <div class="head"><span class="no">V</span><h2>{t['komiks_h']}</h2></div>
  <a class="kcard" href="{r}{path_komiks(lang)}"><div class="ph"><img loading="lazy" src="{r}assets/komiks/eve-komiks-okladka.webp" alt="{esc(t['komiks_alt'])} 1" width="1120" height="1682"></div>
- <div><span class="sc">{t['komiks_kicker']} · {KOMIKS_N} {t['komiks_pages']}</span><h3>Main Character</h3><p>{t['komiks_lead']} {t['komiks_note']}</p><span class="cta fill">{t['komiks_read']} →</span></div></a></section>
+ <div><span class="sc">{t['komiks_kicker']} · {KOMIKS_N} {t['komiks_pages']}</span><h3>Main Character</h3><p>{t['komiks_lead']} {t['komiks_note']}</p><span class="cta fill">{t['komiks_read']} →</span></div></a>
+ {komiks2_tease(lang, r)}</section>
 <section id="blog" class="sec blogsec">
  <div class="head"><span class="no">VI</span><h2>{t['blog_h']}</h2></div>
  <p class="small" style="margin:-10px 0 34px;max-width:60ch">{t['blog_lead']}</p>
@@ -492,6 +493,50 @@ def sesja_page(lang):
 ''' + footer(lang, path)
     return out
 
+
+# ── Komiks 2: It Was Always You (9.11.2026) ──
+K2_N = 21
+K2_PDF = 'assets/komiks2/it-was-always-you.pdf'
+K2 = {
+ 'pl': dict(kicker='Komiks · Nowość', title='It Was Always You — komiks z multiwersum Eve', desc='It Was Always You — darmowy romantyczny komiks fantasy (21 stron, po angielsku). Konserwatorka zabytków przypadkiem cofa się w czasie, ratuje rannego ducha lisa i zaczyna miłosną pętlę, która trwa pięćset lat.', lead='Konserwatorka zabytków przypadkiem cofa się w czasie i ratuje rannego ducha lisa. Tak zaczyna się miłosna pętla, która trwa pięćset lat i prowadzi prosto do jej dzisiejszego partnera. Romans, fantasy i trochę magii — dokładnie taki, jaki lubię.', note='(komiks po angielsku)', read='Czytaj komiks', page='Strona', pages='stron', pdf='Pobierz PDF'),
+ 'en': dict(kicker='Comic · New', title='It Was Always You — a comic from the Eve multiverse', desc='It Was Always You — a free romantic fantasy comic (21 pages). A restorer accidentally travels back in time, saves a wounded fox spirit and starts a five-hundred-year love loop.', lead='A restorer accidentally slips back in time and saves a wounded fox spirit. It starts a five-hundred-year love loop that leads straight back to her partner today. Romance, fantasy and a little magic — exactly my kind of story.', note='', read='Read the comic', page='Page', pages='pages', pdf='Download PDF'),
+ 'es': dict(kicker='Cómic · Nuevo', title='It Was Always You — un cómic del multiverso de Eve', desc='It Was Always You — un cómic gratuito de fantasía romántica (21 páginas, en inglés). Una restauradora viaja por accidente al pasado, salva a un espíritu zorro herido y empieza un bucle de amor de quinientos años.', lead='Una restauradora viaja por accidente al pasado y salva a un espíritu zorro herido. Así empieza un bucle de amor de quinientos años que la lleva de vuelta a su pareja de hoy. Romance, fantasía y un poco de magia: justo lo que me gusta.', note='(cómic en inglés)', read='Leer el cómic', page='Página', pages='páginas', pdf='Descargar PDF'),
+ 'pt': dict(kicker='Quadrinho · Novo', title='It Was Always You — um quadrinho do multiverso da Eve', desc='It Was Always You — um quadrinho gratuito de fantasia romântica (21 páginas, em inglês). Uma restauradora volta no tempo por acidente, salva um espírito de raposa ferido e começa um ciclo de amor de quinhentos anos.', lead='Uma restauradora volta no tempo por acidente e salva um espírito de raposa ferido. Assim começa um ciclo de amor de quinhentos anos que a leva de volta ao seu parceiro de hoje. Romance, fantasia e um pouco de magia — bem do jeito que eu gosto.', note='(quadrinho em inglês)', read='Ler o quadrinho', page='Página', pages='páginas', pdf='Baixar PDF'),
+}
+def path_komiks2(lang): return prefix(lang) + 'komiks/it-was-always-you/'
+
+def komiks2_tease(lang, r):
+    K = K2[lang]
+    return f'<a class="kcard" style="margin-top:50px" href="{r}{path_komiks2(lang)}"><div class="ph"><img loading="lazy" src="{r}assets/komiks2/k2-01.webp" alt="It Was Always You" width="1190" height="1785"></div><div><span class="sc">{K["kicker"]} · {K2_N} {K["pages"]}</span><h3>It Was Always You</h3><p>{K["lead"]} {K["note"]}</p><span class="cta fill">{K["read"]} →</span></div></a>'
+
+def komiks2_page(lang):
+    t = T[lang]; K = K2[lang]; path = path_komiks2(lang); r = root_for(path)
+    alts = {l: path_komiks2(l) for l in LANGS}
+    og = f'og/komiks2-{lang}.jpg'
+    out = head(lang, path, K['title'], K['desc'], alts, og, 'website')
+    pages = ''
+    for n in range(1, K2_N + 1):
+        src = f'{r}assets/komiks2/k2-{n:02d}.webp'; cap = f"It Was Always You — {K['page']} {n} / {K2_N}"
+        pages += f'<figure class="kpage" id="s{n}"><button data-full="{src}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img src="{src}" alt="{esc(cap)}" width="1190" height="1785"' + (' fetchpriority="high"' if n == 1 else ' loading="lazy" decoding="async"') + f'></button><figcaption>{K["page"]} {n} / {K2_N}</figcaption></figure>\n'
+    mb = os.path.getsize(os.path.join(ROOT, K2_PDF)) / 1e6
+    size = f'{mb:.1f} MB' if lang == 'en' else f'{mb:.1f} MB'.replace('.', ',')
+    pdf = f'<a class="cta" href="{r}{K2_PDF}" download>{K["pdf"]} ({size})</a>'
+    note = f' <em>{K["note"]}</em>' if K['note'] else ''
+    out += topbar(lang, path, alts, solid=True) + f"""
+<main class="wrap">
+<section class="bloghead khead"><span class="sc">{K['kicker']} · {K2_N} {K['pages']}</span>
+<h1>It Was Always You<span>.</span></h1><p>{K['lead']}{note}</p>
+<p style="margin-top:18px"><a class="cta fill" href="#s1">{K['read']} ↓</a> {pdf}</p>
+{social(lang)}</section>
+{SLOT}
+<section class="reader">{pages}</section>
+<div class="postnav" style="margin-bottom:60px">{pdf}<a class="cta" href="{r}{path_komiks(lang)}">Main Character →</a><a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
+{social(lang)}
+<div style="height:50px"></div>
+</main>
+""" + footer(lang, path)
+    return out
+
 def linki_page(lang, posts, path=None):
     L, t = LINKI[lang], T[lang]
     path = path or path_linki(lang); r = root_for(path); canon = path_linki(lang)
@@ -584,6 +629,8 @@ def main():
         write(path_blog(l) + 'index.html', blog_index(l, posts))
         og_image(os.path.join(ROOT, f'og/komiks-{l}.jpg'), 'assets/komiks/eve-komiks-okladka.webp', T[l]['komiks_kicker'], T[l]['komiks_title'])
         write(path_komiks(l) + 'index.html', komiks_page(l))
+        og_image(os.path.join(ROOT, f'og/komiks2-{l}.jpg'), 'assets/komiks2/k2-01.webp', K2[l]['kicker'], 'It Was Always You')
+        write(path_komiks2(l) + 'index.html', komiks2_page(l))
         og_image(os.path.join(ROOT, f'og/sesja-czern-{l}.jpg'), 'assets/sesje/czern/01.webp', SESJA[l]['kicker'], SESJA[l]['title'])
         write(path_sesja(l) + 'index.html', sesja_page(l))
         og_image(os.path.join(ROOT, f'og/linki-{l}.jpg'), 'assets/img/eve-spojrzenie-noir.webp', LINKI[l]['kicker'], LINKI[l]['bio'].split(' · ')[0])
@@ -593,7 +640,7 @@ def main():
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
         pass  # bramka 18+ usunięta na prośbę Daniela (5.11.2026)   # bramka 18+ — celowo NIE w sitemap.xml
     write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
-    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in ['en', 'pl', 'es', 'pt']] + [path_komiks(l) for l in LANGS] + [path_sesja(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
+    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in ['en', 'pl', 'es', 'pt']] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + [path_sesja(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
 
