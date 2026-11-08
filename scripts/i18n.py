@@ -49,7 +49,7 @@ GAL2_ALT = {
  'es': ['Eve con chaqueta de parches tocando una guitarra eléctrica junto a un amplificador','Eve con abrigo de borreguito color crema en una mesa de un parque otoñal','Eve envuelta en una bufanda cobriza entre hojas de otoño','Eve con gorro y jersey tapándose un ojo con una hoja de arce','Eve con camiseta sobre una prenda de rayas delante de un grafiti de colores','Eve con chaqueta de cuero hablando a un micrófono con pie','Eve con chaqueta negra en un estadio entre aficionados y bengalas','Retrato en blanco y negro de Eve con jersey negro de cuello alto','Eve con gorro color crema, bufanda y abrigo en otoño','Primer plano en blanco y negro de Eve con sus piercings','Eve con jersey negro de cuello alto sobre fondo azul oscuro','Perfil en blanco y negro de Eve con sombrero de ala ancha'],
  'pt': ['Eve de jaqueta com patches tocando guitarra elétrica ao lado de um amplificador','Eve de casaco de pelúcia creme numa mesa de um parque no outono','Eve enrolada num cachecol cor de ferrugem entre folhas de outono','Eve de gorro e suéter cobrindo um olho com uma folha de bordo','Eve de camiseta sobre blusa listrada diante de um grafite colorido','Eve de jaqueta de couro falando num microfone com pedestal','Eve de jaqueta preta num estádio entre torcedores e sinalizadores','Retrato em preto e branco da Eve de gola alta preta','Eve de gorro creme, cachecol e casaco no outono','Close em preto e branco da Eve com seus piercings','Eve de gola alta preta sobre fundo azul-escuro','Perfil em preto e branco da Eve com chapéu de aba larga'],
 }
-VIDEOS = ['kiss', 'flirt', 'leave']
+VIDEOS = ['kiss', 'flirt', 'leave', 'suknie', 'selfie', 'plaza']
 
 T = {
 'pl': dict(
@@ -80,7 +80,7 @@ T = {
   traits=['czarny bob','brązowe oczy i ostry eyeliner','septum i dwa kolczyki pod wargą','złote koła w uszach','czarny choker'],
   about_alt='Eve w golfie czyta książkę w bibliotece przy świecach',
   gal_h='Galeria', zoom='Powiększ', videos_h='Filmiki', frame='Kadr',
-  video_titles=['Buziak na powitanie','Znad okularów','Nie, nie, nie!'],
+  video_titles=['Buziak na powitanie','Znad okularów','Nie, nie, nie!','Pięć sukienek, zero wyjść','Selfie w czerwieni','Jeden kolor na wakacje'],
   video_hint='Krótkie, ciche scenki z gier. Najedź lub dotknij, by odtworzyć.', novideo='Twoja przeglądarka nie obsługuje wideo.',
   games_h='Gry', available='Dostępna teraz',
   cafe_desc='Prowadź kawiarnię razem z Eve — parz kawę, obsługuj gości i rozwijaj lokal.',
@@ -127,7 +127,7 @@ T = {
   traits=['black bob','brown eyes and sharp eyeliner','septum and two piercings below the lip','gold hoop earrings','black choker'],
   about_alt='Eve in a turtleneck reading a book in a candlelit library',
   gal_h='Gallery', zoom='Enlarge', videos_h='Clips', frame='Frame',
-  video_titles=['A hello kiss','Over the sunglasses','No, no, no!'],
+  video_titles=['A hello kiss','Over the sunglasses','No, no, no!','Five outfits, still not leaving','Red selfie','I packed one colour'],
   video_hint='Short, silent scenes from the games. Hover or tap to play.', novideo='Your browser does not support video.',
   games_h='Games', available='Available now',
   cafe_desc='Run a café with Eve — brew coffee, serve guests and grow the place.',
@@ -174,7 +174,7 @@ T = {
   traits=['melena bob negra','ojos marrones y delineado marcado','septum y dos piercings bajo el labio','aros dorados','gargantilla negra'],
   about_alt='Eve con jersey de cuello alto leyendo un libro en una biblioteca a la luz de las velas',
   gal_h='Galería', zoom='Ampliar', videos_h='Vídeos', frame='Toma',
-  video_titles=['Un beso de bienvenida','Por encima de las gafas','¡No, no, no!'],
+  video_titles=['Un beso de bienvenida','Por encima de las gafas','¡No, no, no!','Cinco vestidos, cero salidas','Selfie en rojo','Un solo color en la maleta'],
   video_hint='Escenas breves y sin sonido de los juegos. Pasa el cursor o toca para reproducir.', novideo='Tu navegador no admite vídeo.',
   games_h='Juegos', available='Disponible ahora',
   cafe_desc='Lleva una cafetería con Eve: prepara café, atiende a los clientes y haz crecer el local.',
@@ -221,7 +221,7 @@ T = {
   traits=['chanel preto','olhos castanhos e delineado marcado','septo e dois piercings abaixo do lábio','argolas douradas','gargantilha preta'],
   about_alt='Eve de gola alta lendo um livro numa biblioteca à luz de velas',
   gal_h='Galeria', zoom='Ampliar', videos_h='Vídeos', frame='Cena',
-  video_titles=['Um beijo de oi','Por cima dos óculos','Não, não, não!'],
+  video_titles=['Um beijo de oi','Por cima dos óculos','Não, não, não!','Cinco vestidos, zero saídas','Selfie de vermelho','Uma só cor na mala'],
   video_hint='Cenas curtas e sem som dos jogos. Passe o mouse ou toque para reproduzir.', novideo='Seu navegador não suporta vídeo.',
   games_h='Jogos', available='Disponível agora',
   cafe_desc='Administre um café com a Eve — prepare cafés, atenda os clientes e faça o lugar crescer.',

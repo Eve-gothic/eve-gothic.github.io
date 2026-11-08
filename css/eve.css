@@ -60,7 +60,7 @@ h1,h2,h3{font-family:"Playfair Display",serif;font-weight:400}
 .reel{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:28px;align-items:center}
 .reel article{background:var(--ink);padding:12px 12px 18px;border:1px solid rgba(201,163,91,.35)}
 .reel video{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#000}
-.reel article:nth-child(2) video{aspect-ratio:4/5}
+.reel article:nth-child(3n+2) video{aspect-ratio:4/5}
 .reel h3{font-size:1.3rem;font-style:italic;margin-top:12px}
 .games{display:grid;grid-template-columns:7fr 5fr;gap:clamp(30px,5vw,70px)}
 .game{border-top:1px solid var(--gold);padding-top:24px}
