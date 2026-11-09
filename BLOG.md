@@ -35,6 +35,8 @@ Wynik buildu:
 Slug bierze się z nazwy pliku (część po dacie) i **musi być identyczny we wszystkich 7 językach** —
 dzięki temu działa przełącznik języków i tagi `hreflang`. Brak którejś wersji językowej = ostrzeżenie w buildzie.
 Strona główna każdego języka sama pokazuje 3 najnowsze wpisy.
+Na końcu każdego wpisu (a także komiksów i sesji) build sam dodaje blok „Obserwuj Eve” (IG + FB, UTM `utm_source=site&utm_medium=follow_block`,
+zdarzenia GoatCounter `follow-<post|komiks|komiks2|sesja>-<instagram|facebook>`) — nic nie trzeba dopisywać w Markdownie. Tekst: `FOLLOW_LINE` w `scripts/i18n.py`.
 
 ## Format pliku
 

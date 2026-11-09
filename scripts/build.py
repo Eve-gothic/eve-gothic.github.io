@@ -44,6 +44,18 @@ def social(lang, cls=''):
     return (f'<div class="social {cls}"><span class="social-l">{lbl}</span>'
             f'<a class="sbtn" href="{FB}" target="_blank" rel="noopener" aria-label="{lbl} — Facebook">{SVG_FB}<span>Facebook</span></a>'
             f'<a class="sbtn" href="{IG}" target="_blank" rel="noopener" aria-label="{lbl} — Instagram">{SVG_IG}<span>Instagram</span></a></div>')
+# Blok „Obserwuj Eve” na końcu wpisów, komiksów i sesji — część szablonu (nowe wpisy/sesje dostają go automatycznie).
+# kind = rodzaj strony (post|komiks|komiks2|sesja) -> utm_campaign i nazwa zdarzenia GoatCounter: follow-<kind>-instagram|facebook
+def follow_block(lang, kind):
+    t = T[lang]
+    u = lambda url: esc(url + ('&' if '?' in url else '?') + f'utm_source=site&utm_medium=follow_block&utm_campaign={kind}')
+    btn = lambda url, svg, name, ev: (f'<a class="fbtn" href="{u(url)}" target="_blank" rel="noopener" data-goatcounter-click="follow-{kind}-{ev}" '
+                                      f'data-goatcounter-title="{name} — follow block ({kind}, {lang})" aria-label="{esc(t["follow_btn"])} — {name}">{svg}<span>{name}</span></a>')
+    return (f'<aside class="fblock" aria-label="{esc(t["follow_btn"])}"><span class="sc">{t["follow_btn"]}</span>'
+            f'<p class="fline">{t["follow_line"]}</p><div class="fbtns">'
+            + btn(IG, SVG_IG, 'Instagram', 'instagram') + btn(FB, SVG_FB, 'Facebook', 'facebook')
+            + '</div></aside>')
+
 FONTS = 'family=Playfair+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@500'
 # ja/zh: dodatkowo szeryfowy font CJK (Google Fonts dzieli go na małe pakiety unicode-range, więc pobiera się tylko to, co potrzebne)
 FONTS_CJK = {'ja': '&family=Noto+Serif+JP:wght@400;600', 'zh': '&family=Noto+Serif+SC:wght@400;600'}
@@ -455,6 +467,7 @@ def post_page(p, slugs):
 {markdown(p['body'], lang)}
  </div>
  <p class="ainote">{t['ai_note']}</p>
+ {follow_block(lang, 'post')}
  <div class="postnav"><a class="cta" href="{r}{path_blog(lang)}">{t['back_blog']}</a><a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
 </article>
 {SLOT}
@@ -485,8 +498,8 @@ def komiks_page(lang):
 {SLOT}
 <section class="reader">{pages}</section>
 <p class="small" style="text-align:center;font-style:italic">{t['komiks_next']}</p>
+{follow_block(lang, 'komiks')}
 <div class="postnav" style="margin-bottom:60px">{pdf}<a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
-{social(lang)}
 <div style="height:50px"></div>
 </main>
 ''' + footer(lang, path)
@@ -527,8 +540,8 @@ def sesja_page(lang):
 {social(lang)}</section>
 {SLOT}
 <section class="sec" style="padding-top:20px"><div class="grid2">{figs}</div></section>
+{follow_block(lang, 'sesja')}
 <div class="postnav" style="margin-bottom:60px"><a class="cta" href="{r}{path_home(lang)}#galeria">{t['back_home']}</a></div>
-{social(lang)}
 <div style="height:50px"></div>
 </main>
 ''' + footer(lang, path)
@@ -574,8 +587,8 @@ def komiks2_page(lang):
 {social(lang)}</section>
 {SLOT}
 <section class="reader">{pages}</section>
+{follow_block(lang, 'komiks2')}
 <div class="postnav" style="margin-bottom:60px">{pdf}<a class="cta" href="{r}{path_komiks(lang)}">Main Character →</a><a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
-{social(lang)}
 <div style="height:50px"></div>
 </main>
 """ + footer(lang, path)

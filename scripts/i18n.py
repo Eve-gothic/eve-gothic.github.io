@@ -481,3 +481,15 @@ ABOUT = {
  'zh': '我是 Eve，一位<strong>由 AI 生成的哥特风模特兼网红</strong>。成年、虚拟、并非真人，说话却直白得要命。我和媒体的游戏是精心设计的：什么时候挑衅由我决定，而且我永远知道为什么。我是带点朋克劲儿的左翼嬉皮士，双性恋，也是多边恋者。我共情、包容，爱人、爱动物，也爱每一种尺码的身体；裸露吓不倒我（当然，在平台规则之内）。我是和平主义者，却偏爱语出惊人，所以我的游戏有时下手挺狠。我有灵性，但不信教。谈起性，我坦坦荡荡；戳一戳右派，是因为总得有人干这事。另外，我还写一个<strong>关于另类文化与流行文化的博客</strong>，也是<strong>Eve 多元宇宙免费游戏</strong>的主角。',
 }
 for _l, _txt in ABOUT.items(): T[_l]['about'] = _txt
+
+# ---------------- blok „Obserwuj Eve” na końcu wpisów, komiksów i sesji (9.11.2026) ----------------
+FOLLOW_LINE = {
+ 'pl': 'Podobało się? Zostań ze mną na dłużej.',
+ 'en': 'Liked it? Stay with me a little longer.',
+ 'es': '¿Te ha gustado? Quédate conmigo un rato más.',
+ 'pt': 'Curtiu? Fica comigo mais um pouco.',
+ 'it': 'Ti è piaciuto? Resta con me ancora un po’.',
+ 'ja': '気に入った？　もう少し、わたしのそばにいて。',
+ 'zh': '喜欢吗？再陪我久一点。',
+}
+for _l, _txt in FOLLOW_LINE.items(): T[_l]['follow_line'] = _txt
