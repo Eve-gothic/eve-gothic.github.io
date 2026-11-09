@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Generator strony Eve (wariant B „Gotycki luksus”) + Blog Eve, w 4 językach.
+"""Generator strony Eve (wariant B „Gotycki luksus”) + Blog Eve, w 7 językach (pl, en, es, pt, it, ja, zh).
 
 Uruchom z katalogu repo:   python3 scripts/build.py
-Generuje: index.html, en|es|pt/index.html, blog/ (+ en|es|pt/blog/), wpisy, feed.xml,
+Generuje: index.html, en|es|pt|it|ja|zh/index.html, blog/ (+ <lang>/blog/), wpisy, feed.xml,
 obrazki OG (blog/og/<slug>.jpg itd.) i sitemap.xml. Wpisy: blog/posts/<lang>/RRRR-MM-DD-slug.md
-Wymaga: Python 3.8+ i Pillow (tylko do obrazków OG).
+Wymaga: Python 3.8+ i Pillow (tylko do obrazków OG), a dla ja/zh systemowych fontów Noto CJK
+(apt install fonts-noto-cjk) — obrazki OG z japońskim/chińskim tekstem.
 """
 import os, re, sys, html, datetime, shutil
 from email.utils import format_datetime
@@ -44,6 +45,9 @@ def social(lang, cls=''):
             f'<a class="sbtn" href="{FB}" target="_blank" rel="noopener" aria-label="{lbl} — Facebook">{SVG_FB}<span>Facebook</span></a>'
             f'<a class="sbtn" href="{IG}" target="_blank" rel="noopener" aria-label="{lbl} — Instagram">{SVG_IG}<span>Instagram</span></a></div>')
 FONTS = 'family=Playfair+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@500'
+# ja/zh: dodatkowo szeryfowy font CJK (Google Fonts dzieli go na małe pakiety unicode-range, więc pobiera się tylko to, co potrzebne)
+FONTS_CJK = {'ja': '&family=Noto+Serif+JP:wght@400;600', 'zh': '&family=Noto+Serif+SC:wght@400;600'}
+def fonts(lang): return FONTS + FONTS_CJK.get(lang, '')
 ROMAN = ['I','II','III','IV','V','VI']
 esc = lambda s: html.escape(str(s), quote=True)
 
@@ -54,6 +58,7 @@ KOMIKS_N = 31   # liczba stron komiksu (assets/komiks/eve-komiks-NN.webp)
 KOMIKS_PDF = 'assets/komiks/eve-main-character.pdf'
 def path_komiks(lang): return prefix(lang) + 'komiks/'
 # link w bio: angielski jest główny pod /linki/ (adres do bio na Instagramie); /en/linki/ to kopia z canonical -> /linki/
+LINKI_ORDER = ['en'] + [l for l in LANGS if l != 'en']
 def path_linki(lang): return {'en': 'linki/', 'pl': 'pl/linki/'}.get(lang, lang + '/linki/')
 def path_post(lang, slug): return prefix(lang) + f'blog/{slug}/'
 def root_for(path): return '../' * path.count('/')   # path = katalog strony względem korzenia
@@ -143,11 +148,38 @@ def load_posts():
     return posts, slugs
 
 # ---------------- obrazki OG ----------------
-def og_image(out, photo, kicker, title, foot=None):
+# Fonty CJK do obrazków OG (systemowe Noto CJK: apt install fonts-noto-cjk). Indeks w pliku .ttc: JP=0, SC=2.
+CJK_FONT_DIRS = ['/usr/share/fonts/opentype/noto', '/usr/share/fonts/noto-cjk', '/usr/share/fonts/opentype/noto-cjk',
+                 '/usr/share/fonts/google-noto-cjk', '/usr/local/share/fonts', os.path.join(ROOT, 'scripts/fonts')]
+CJK_TTC_INDEX = {'ja': 0, 'zh': 2}
+CJK_RE = re.compile(r'[\u3000-\u30ff\u3400-\u9fff\uf900-\ufaff\uff00-\uffef]')
+def cjk_font_path(name):
+    for d in CJK_FONT_DIRS:
+        p = os.path.join(d, name)
+        if os.path.exists(p): return p
+    sys.exit(f'Brak fontu {name} (obrazki OG ja/zh). Zainstaluj: sudo apt install fonts-noto-cjk')
+NO_LINE_START = set('、。，．,.・：；:;！？!?）」』】》〉”’ーぁぃぅぇぉっゃゅょァィゥェォッャュョ…—')
+def wrap_cjk(d, text, ft, width):
+    toks = re.findall(r"[A-Za-z0-9’'&.\-]+|\s+|.", text)
+    lines, cur = [], ''
+    for tk in toks:
+        if not cur and tk.isspace(): continue
+        if d.textlength(cur + tk, font=ft) <= width or not cur or tk in NO_LINE_START: cur += tk
+        else: lines.append(cur.rstrip()); cur = tk.lstrip()
+    if cur: lines.append(cur.rstrip())
+    return lines
+
+def og_image(out, photo, kicker, title, foot=None, lang=None):
     from PIL import Image, ImageDraw, ImageFont, ImageFilter
     foot = foot or SITE_HOST
     F = os.path.join(ROOT, 'scripts/fonts')
-    def font(name, size, var=None):
+    kcjk, tcjk = bool(CJK_RE.search(kicker)), bool(CJK_RE.search(title))   # łaciński tytuł (np. „It Was Always You”) zostaje w Playfair
+    ttc = CJK_TTC_INDEX.get(lang, 0)
+    def font(name, size, var=None, cjk=False):
+        if cjk and name.startswith('Inter'):
+            return ImageFont.truetype(cjk_font_path('NotoSansCJK-Regular.ttc'), size, index=ttc)
+        if cjk and name.startswith('PlayfairDisplay'):
+            return ImageFont.truetype(cjk_font_path('NotoSerifCJK-Regular.ttc'), size, index=ttc)
         f = ImageFont.truetype(os.path.join(F, name), size)
         if var:
             try: f.set_variation_by_name(var)
@@ -173,20 +205,23 @@ def og_image(out, photo, kicker, title, foot=None):
     d.rectangle([pw + 26, 26, W - 26, H - 26], outline=(201, 163, 91), width=1)
     x0, x1 = pw + 70, W - 70
     # kicker (rozstrzelone kapitaliki)
-    fk = font('Inter[opsz,wght].ttf', 19, 'Medium'); xx = x0
+    fk = font('Inter[opsz,wght].ttf', 19, 'Medium', kcjk); xx = x0; cjk = kcjk
     for ch in kicker.upper():
-        d.text((xx, 72), ch, font=fk, fill=gold); xx += d.textlength(ch, font=fk) + 4.5
+        d.text((xx, 72 - (4 if cjk else 0)), ch, font=fk, fill=gold); xx += d.textlength(ch, font=fk) + (2 if cjk else 4.5)
     d.line([(x0, 112), (x0 + 60, 112)], fill=gold, width=2)
     # tytuł — dopasuj rozmiar
-    for size in range(66, 30, -2):
-        ft = font('PlayfairDisplay-Italic[wght].ttf', size, 'Italic')
-        words, lines, cur = title.split(), [], ''
-        for w in words:
-            test = (cur + ' ' + w).strip()
-            if d.textlength(test, font=ft) <= x1 - x0: cur = test
-            else: lines.append(cur); cur = w
-        lines.append(cur)
-        lh = int(size * 1.18)
+    cjk = tcjk
+    for size in range(66 if not cjk else 58, 30, -2):
+        ft = font('PlayfairDisplay-Italic[wght].ttf', size, 'Italic', cjk)
+        if cjk: lines = wrap_cjk(d, title, ft, x1 - x0)
+        else:
+            words, lines, cur = title.split(), [], ''
+            for w in words:
+                test = (cur + ' ' + w).strip()
+                if d.textlength(test, font=ft) <= x1 - x0: cur = test
+                else: lines.append(cur); cur = w
+            lines.append(cur)
+        lh = int(size * (1.38 if cjk else 1.18))
         if len(lines) * lh <= 320: break
     y = 136 + (320 - len(lines) * lh) // 2
     for ln in lines:
@@ -219,7 +254,7 @@ def head(lang, path, title, desc, alts, og_img, og_type='website', extra='', gat
 <meta name="twitter:card" content="summary_large_image">{extra}
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?{FONTS}&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?{fonts(lang)}&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{r}css/eve.css"></head>
 <body>'''
 
@@ -230,9 +265,12 @@ def topbar(lang, path, alts, solid=False):
     nav = ''.join(f'<a href="{h(a)}">{n}</a>' for a, n in zip(['o-eve', 'galeria', 'filmiki', 'gry'], t['nav'][:4]))
     nav += f'<a href="{r}{path_komiks(lang)}">{t["nav_komiks"]}</a>'
     nav += f'<a href="{r}{path_blog(lang)}">{t["nav"][4]}</a>'
-    langs = ''.join(f'<a href="{(r + alts.get(l, path_home(l))) or "./"}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}" title="{LANG_NAME[l]}"' + (' aria-current="true"' if l == lang else '') + f'>{LANG_LABEL[l]}</a>' for l in LANGS)
+    link = lambda l, full: f'<a href="{(r + alts.get(l, path_home(l))) or "./"}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}" title="{LANG_NAME[l]}"' + (' aria-current="true"' if l == lang else '') + f'>{LANG_NAME[l] if full else LANG_LABEL[l]}</a>'
+    langs = ''.join(link(l, False) for l in LANGS)
+    # 7 języków: na szerokim ekranie skróty w rzędzie, na węższym (≤1180 px) rozwijana lista z pełnymi nazwami
+    dd = f'<details class="langdd"><summary aria-label="{t["langs_label"]}: {LANG_NAME[lang]}">{LANG_LABEL[lang]}</summary><nav aria-label="{t["langs_label"]}">' + ''.join(link(l, True) for l in LANGS) + '</nav></details>'
     return f'''<header class="top{' solid' if solid else ''}"><a class="mast" href="{'#top' if on_home else home}">Eve.</a>
-<div class="right"><nav class="langs" aria-label="{t['langs_label']}">{langs}</nav><button class="burger" data-burger aria-label="{t['menu']}" aria-expanded="false">☰</button></div>
+<div class="right"><nav class="langs" aria-label="{t['langs_label']}">{langs}</nav>{dd}<button class="burger" data-burger aria-label="{t['menu']}" aria-expanded="false">☰</button></div>
 <nav class="menu" data-menu>{nav}</nav></header>'''
 
 def path_gate(lang): return prefix(lang) + '18/'
@@ -246,7 +284,7 @@ def head_gate(lang, path, title, desc, alts):
 <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">{links}
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?{FONTS}&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?{fonts(lang)}&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{r}css/eve.css"></head>
 <body>'''
 
@@ -313,7 +351,7 @@ def home(lang, posts):
     reel = ''.join(f'<article>{vid(n)}<h3>{vt}</h3><span class="sc">{t["frame"]} {i + 1:02d}</span></article>' for i, (n, vt) in enumerate(zip(VIDEOS, t['video_titles'])))
     traits = ''.join(f'<li>{x}</li>' for x in t['traits'])
     newtab = lambda u: f'<a class="cta fill" href="{u}" target="_blank" rel="noopener">{t["newtab"]}</a>'
-    cafe, tama = f'{CAFE}?lang={lang}', f'{TAMA}?lang={lang}'   # gry obsługują ?lang=pl|en|es|pt
+    cafe, tama = f'{CAFE}?lang={game_lang(lang)}', f'{TAMA}?lang={game_lang(lang)}'   # gry obsługują ?lang=pl|en|es|pt (reszta -> en)
     gbar = lambda u: f'<p class="small gnote">{t["notshowing"]}</p><div class="gbar">{newtab(u)}<button class="cta" type="button" data-fs>{t["fs"]}</button></div>'
     blog = cards(posts[lang][:3], r, lang)
     out += topbar(lang, path, alts) + f'''
@@ -435,7 +473,7 @@ def komiks_page(lang):
         src = f'{r}assets/komiks/eve-komiks-{n:02d}.webp'; cap = f"Main Character — {t['komiks_page']} {n} / {KOMIKS_N}"
         pages += f'<figure class="kpage" id="s{n}"><button data-full="{src}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img src="{src}" alt="{esc(t["komiks_alt"])} {n}" width="1190" height="1682"' + (' fetchpriority="high"' if n == 1 else ' loading="lazy" decoding="async"') + f'></button><figcaption>{t["komiks_page"]} {n} / {KOMIKS_N}</figcaption></figure>\n'
     pdf_mb = os.path.getsize(os.path.join(ROOT, KOMIKS_PDF)) / 1e6
-    size = f'{pdf_mb:.1f} MB' if lang == 'en' else f'{pdf_mb:.1f} MB'.replace('.', ',')
+    size = f'{pdf_mb:.1f} MB' if lang in ('en', 'ja', 'zh') else f'{pdf_mb:.1f} MB'.replace('.', ',')
     pdf = f'<a class="cta" href="{r}{KOMIKS_PDF}" download>{t["komiks_pdf"]} ({size})</a>'
     note = f' <em>{t["komiks_note"]}</em>' if t['komiks_note'] else ''
     out += topbar(lang, path, alts, solid=True) + f'''
@@ -461,6 +499,9 @@ SESJA = {
  'pl': dict(title='Czerń na własnych zasadach', kicker='Sesja', lead='Czerń, złote kółka w uszach i zero przeprosin za zajmowanie miejsca. Moje ciało nie potrzebuje pozwolenia — a odrobina buntu pasuje do wszystkiego.', cta='Zobacz sesję', photo='Zdjęcie', ai='Zdjęcia wygenerowane przez AI · Eve to wirtualna, dorosła postać.'),
  'en': dict(title='Black, on My Terms', kicker='Photo session', lead='Black straps, gold hoops in my ears, and zero apologies for taking up space. My body needs no permission — and a little rebellion goes with everything.', cta='See the session', photo='Photo', ai='AI-generated images · Eve is a virtual adult character.'),
  'es': dict(title='Negro, a mi manera', kicker='Sesión', lead='Tiras negras, aros dorados en las orejas y ninguna disculpa por ocupar mi espacio. Mi cuerpo no necesita permiso, y un poco de rebeldía combina con todo.', cta='Ver la sesión', photo='Foto', ai='Imágenes generadas por IA · Eve es un personaje virtual adulto.'),
+ 'it': dict(title='Nero, alle mie condizioni', kicker='Shooting', lead='Cinghie nere, cerchi d’oro alle orecchie e zero scuse per lo spazio che occupo. Il mio corpo non chiede permesso — e un pizzico di ribellione sta bene con tutto.', cta='Guarda lo shooting', photo='Foto', ai='Immagini generate dall’AI · Eve è un personaggio virtuale adulto.'),
+ 'ja': dict(title='わたしのルールで、黒を', kicker='フォトセッション', lead='黒のストラップに、耳には金のフープ。この場所にいることを謝るつもりはありません。わたしの体に許可はいらない——そして、ちょっとした反抗はどんな服にも似合う。', cta='フォトセッションを見る', photo='写真', ai='AI生成画像 · Eveは成人のバーチャルキャラクターです。'),
+ 'zh': dict(title='黑色，由我定义', kicker='写真', lead='黑色绑带，耳边的金色大圈，占据空间，绝不道歉。我的身体不需要任何人批准——一点点叛逆，和什么都很搭。', cta='看这组写真', photo='照片', ai='AI 生成图像 · Eve 是一位成年虚拟角色。'),
  'pt': dict(title='Preto, do meu jeito', kicker='Ensaio', lead='Tiras pretas, argolas douradas nas orelhas e zero desculpas por ocupar meu espaço. Meu corpo não precisa de permissão — e um pouco de rebeldia combina com tudo.', cta='Ver o ensaio', photo='Foto', ai='Imagens geradas por IA · Eve é uma personagem virtual adulta.'),
 }
 def path_sesja(lang): return prefix(lang) + 'sesje/czern/'
@@ -501,6 +542,9 @@ K2 = {
  'pl': dict(kicker='Komiks · Nowość', title='It Was Always You — komiks z multiwersum Eve', desc='It Was Always You — darmowy romantyczny komiks fantasy (21 stron, po angielsku). Konserwatorka zabytków przypadkiem cofa się w czasie, ratuje rannego ducha lisa i zaczyna miłosną pętlę, która trwa pięćset lat.', lead='Konserwatorka zabytków przypadkiem cofa się w czasie i ratuje rannego ducha lisa. Tak zaczyna się miłosna pętla, która trwa pięćset lat i prowadzi prosto do jej dzisiejszego partnera. Romans, fantasy i trochę magii — dokładnie taki, jaki lubię.', note='(komiks po angielsku)', read='Czytaj komiks', page='Strona', pages='stron', pdf='Pobierz PDF'),
  'en': dict(kicker='Comic · New', title='It Was Always You — a comic from the Eve multiverse', desc='It Was Always You — a free romantic fantasy comic (21 pages). A restorer accidentally travels back in time, saves a wounded fox spirit and starts a five-hundred-year love loop.', lead='A restorer accidentally slips back in time and saves a wounded fox spirit. It starts a five-hundred-year love loop that leads straight back to her partner today. Romance, fantasy and a little magic — exactly my kind of story.', note='', read='Read the comic', page='Page', pages='pages', pdf='Download PDF'),
  'es': dict(kicker='Cómic · Nuevo', title='It Was Always You — un cómic del multiverso de Eve', desc='It Was Always You — un cómic gratuito de fantasía romántica (21 páginas, en inglés). Una restauradora viaja por accidente al pasado, salva a un espíritu zorro herido y empieza un bucle de amor de quinientos años.', lead='Una restauradora viaja por accidente al pasado y salva a un espíritu zorro herido. Así empieza un bucle de amor de quinientos años que la lleva de vuelta a su pareja de hoy. Romance, fantasía y un poco de magia: justo lo que me gusta.', note='(cómic en inglés)', read='Leer el cómic', page='Página', pages='páginas', pdf='Descargar PDF'),
+ 'it': dict(kicker='Fumetto · Novità', title='It Was Always You — un fumetto dal multiverso di Eve', desc='It Was Always You — un fumetto gratuito fantasy e romantico (21 pagine, in inglese). Una restauratrice torna per sbaglio indietro nel tempo, salva uno spirito volpe ferito e dà il via a un loop d’amore lungo cinquecento anni.', lead='Una restauratrice scivola per sbaglio indietro nel tempo e salva uno spirito volpe ferito. Comincia così un loop d’amore lungo cinquecento anni, che la riporta dritta al suo compagno di oggi. Romanticismo, fantasy e un po’ di magia: proprio il mio genere.', note='(fumetto in inglese)', read='Leggi il fumetto', page='Pagina', pages='pagine', pdf='Scarica il PDF'),
+ 'ja': dict(kicker='コミック · 新作', title='It Was Always You — Eveのマルチバースから届いたコミック', desc='It Was Always You — 無料のロマンティック・ファンタジーコミック（全21ページ・英語）。文化財の修復士がうっかり過去へタイムスリップし、傷ついた狐の精霊を助けたことから、五百年続く恋のループが始まる。', lead='文化財の修復士がうっかり過去へ迷い込み、傷ついた狐の精霊を助ける。そこから始まるのは、五百年続く恋のループ。その輪は、いまの彼女のパートナーへとまっすぐつながっていく。ロマンスとファンタジー、そして少しの魔法。まさにわたし好みの物語。', note='（英語のコミックです）', read='コミックを読む', page='ページ', pages='ページ', pdf='PDFをダウンロード'),
+ 'zh': dict(kicker='漫画 · 新作', title='It Was Always You — 来自 Eve 多元宇宙的漫画', desc='It Was Always You — 免费浪漫奇幻漫画（共 21 页，英文）。一位文物修复师意外穿越回过去，救下一只受伤的狐灵，从此开启一段长达五百年的爱情轮回。', lead='一位文物修复师意外穿越回过去，救下了一只受伤的狐灵。一段长达五百年的爱情轮回就此开始，最后又径直把她带回今天的伴侣身边。浪漫、奇幻，再加一点魔法——正是我喜欢的那种故事。', note='（英文漫画）', read='阅读漫画', page='页码', pages='页', pdf='下载 PDF'),
  'pt': dict(kicker='Quadrinho · Novo', title='It Was Always You — um quadrinho do multiverso da Eve', desc='It Was Always You — um quadrinho gratuito de fantasia romântica (21 páginas, em inglês). Uma restauradora volta no tempo por acidente, salva um espírito de raposa ferido e começa um ciclo de amor de quinhentos anos.', lead='Uma restauradora volta no tempo por acidente e salva um espírito de raposa ferido. Assim começa um ciclo de amor de quinhentos anos que a leva de volta ao seu parceiro de hoje. Romance, fantasia e um pouco de magia — bem do jeito que eu gosto.', note='(quadrinho em inglês)', read='Ler o quadrinho', page='Página', pages='páginas', pdf='Baixar PDF'),
 }
 def path_komiks2(lang): return prefix(lang) + 'komiks/it-was-always-you/'
@@ -519,7 +563,7 @@ def komiks2_page(lang):
         src = f'{r}assets/komiks2/k2-{n:02d}.webp'; cap = f"It Was Always You — {K['page']} {n} / {K2_N}"
         pages += f'<figure class="kpage" id="s{n}"><button data-full="{src}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img src="{src}" alt="{esc(cap)}" width="1190" height="1785"' + (' fetchpriority="high"' if n == 1 else ' loading="lazy" decoding="async"') + f'></button><figcaption>{K["page"]} {n} / {K2_N}</figcaption></figure>\n'
     mb = os.path.getsize(os.path.join(ROOT, K2_PDF)) / 1e6
-    size = f'{mb:.1f} MB' if lang == 'en' else f'{mb:.1f} MB'.replace('.', ',')
+    size = f'{mb:.1f} MB' if lang in ('en', 'ja', 'zh') else f'{mb:.1f} MB'.replace('.', ',')
     pdf = f'<a class="cta" href="{r}{K2_PDF}" download>{K["pdf"]} ({size})</a>'
     note = f' <em>{K["note"]}</em>' if K['note'] else ''
     out += topbar(lang, path, alts, solid=True) + f"""
@@ -554,13 +598,13 @@ def linki_page(lang, posts, path=None):
         ph = f'<img src="{r}assets/img/{cv}.webp" alt="" width="56" height="56" loading="lazy">' if cv else '✦'
         links += btn(utm(r + path_post(lang, p['slug'])), p['title'], L['latest'], ph, cls=' feat', ev='latest-post')
     links += btn(utm(r + path_komiks(lang)), L['comic'], L['comic_sub'], '✎', ev='komiks')
-    links += btn(utm(f'{CAFE}?lang={lang}'), L['cafe'], L['cafe_sub'], '☕', ev='cafe')
-    links += btn(utm(f'{TAMA}?lang={lang}'), L['tama'], L['tama_sub'], '♡', ev='tamagotchi')
+    links += btn(utm(f'{CAFE}?lang={game_lang(lang)}'), L['cafe'], L['cafe_sub'], '☕', ev='cafe')
+    links += btn(utm(f'{TAMA}?lang={game_lang(lang)}'), L['tama'], L['tama_sub'], '♡', ev='tamagotchi')
     links += btn(utm(r + path_home(lang) + '#galeria'), L['gallery'], L['gallery_sub'], '◐', ev='galeria')
     links += btn(utm(r + path_blog(lang)), L['blog'], L['blog_sub'], '✦', ev='blog')
     links += btn(FB, L['fb'], t['follow_btn'] if 'follow_btn' in t else '', SVG_FB, True, ' soc', 'facebook')
     links += btn(IG, L['ig'], '@eve.ai.digital.legacy', SVG_IG, True, ' soc', 'instagram')
-    langs = ''.join(f'<a href="{r}{path_linki(l)}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}"' + (' aria-current="true"' if l == lang else '') + f'>{LANG_LABEL[l]}</a>' for l in ['en', 'pl', 'es', 'pt'])
+    langs = ''.join(f'<a href="{r}{path_linki(l)}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}"' + (' aria-current="true"' if l == lang else '') + f'>{LANG_LABEL[l]}</a>' for l in LINKI_ORDER)
     return f'''<!doctype html>
 <html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{esc(L['title'])}</title><meta name="description" content="{esc(L['desc'])}"><meta name="theme-color" content="#0c0708">
@@ -572,7 +616,7 @@ def linki_page(lang, posts, path=None):
 <script type="application/ld+json">{{"@context":"https://schema.org","@type":"ProfilePage","url":"{SITE}{canon}","inLanguage":"{HTML_LANG[lang]}","mainEntity":{{"@type":"Person","name":"Eve (AI)","description":{json_str(L['bio'])},"image":"{SITE}assets/img/eve-avatar.webp","sameAs":["{FB}","{IG}"]}}}}</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?{FONTS}&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?{fonts(lang)}&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{r}css/eve.css"></head>
 <body class="linki">
 <main class="lbio">
@@ -621,26 +665,26 @@ def main():
                 if os.path.isdir(full) and e not in ('posts', 'og') and e not in slugs[l] and os.path.exists(os.path.join(full, 'index.html')):
                     shutil.rmtree(full); print('usunięto', full)
     for l in LANGS:
-        og_image(os.path.join(ROOT, f'og/home-{l}.jpg'), 'eve-londyn', T[l]['kicker'], T[l]['title'])
+        og_image(os.path.join(ROOT, f'og/home-{l}.jpg'), 'eve-londyn', T[l]['kicker'], T[l]['title'], lang=l)
         for p in posts[l]:
             og_image(os.path.join(ROOT, og_name(p['slug'], l)), p['og_photo'],
-                     f"{T[l]['blog_h']} · {CATEGORIES[p['category']][l]}", p['title'])
+                     f"{T[l]['blog_h']} · {CATEGORIES[p['category']][l]}", p['title'], lang=l)
         write(path_home(l) + 'index.html', home(l, posts))
         write(path_blog(l) + 'index.html', blog_index(l, posts))
-        og_image(os.path.join(ROOT, f'og/komiks-{l}.jpg'), 'assets/komiks/eve-komiks-okladka.webp', T[l]['komiks_kicker'], T[l]['komiks_title'])
+        og_image(os.path.join(ROOT, f'og/komiks-{l}.jpg'), 'assets/komiks/eve-komiks-okladka.webp', T[l]['komiks_kicker'], T[l]['komiks_title'], lang=l)
         write(path_komiks(l) + 'index.html', komiks_page(l))
-        og_image(os.path.join(ROOT, f'og/komiks2-{l}.jpg'), 'assets/komiks2/k2-01.webp', K2[l]['kicker'], 'It Was Always You')
+        og_image(os.path.join(ROOT, f'og/komiks2-{l}.jpg'), 'assets/komiks2/k2-01.webp', K2[l]['kicker'], 'It Was Always You', lang=l)
         write(path_komiks2(l) + 'index.html', komiks2_page(l))
-        og_image(os.path.join(ROOT, f'og/sesja-czern-{l}.jpg'), 'assets/sesje/czern/01.webp', SESJA[l]['kicker'], SESJA[l]['title'])
+        og_image(os.path.join(ROOT, f'og/sesja-czern-{l}.jpg'), 'assets/sesje/czern/01.webp', SESJA[l]['kicker'], SESJA[l]['title'], lang=l)
         write(path_sesja(l) + 'index.html', sesja_page(l))
-        og_image(os.path.join(ROOT, f'og/linki-{l}.jpg'), 'assets/img/eve-spojrzenie-noir.webp', LINKI[l]['kicker'], LINKI[l]['bio'].split(' · ')[0])
+        og_image(os.path.join(ROOT, f'og/linki-{l}.jpg'), 'assets/img/eve-spojrzenie-noir.webp', LINKI[l]['kicker'], LINKI[l]['bio'].split(' · ')[0], lang=l)
         write(path_linki(l) + 'index.html', linki_page(l, posts))
         write(path_blog(l) + 'feed.xml', feed(l, posts))
         for p in posts[l]:
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
         pass  # bramka 18+ usunięta na prośbę Daniela (5.11.2026)   # bramka 18+ — celowo NIE w sitemap.xml
     write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
-    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in ['en', 'pl', 'es', 'pt']] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + [path_sesja(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
+    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + [path_sesja(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
 

@@ -1,9 +1,11 @@
 /* Eve — wspólne skrypty: lightbox, osadzanie gier, wideo, menu (kopia warianty/shared.js + etykiety i18n) */
-const EVE_L={pl:['Zamknij','Poprzednie','Następne'],en:['Close','Previous','Next'],es:['Cerrar','Anterior','Siguiente'],pt:['Fechar','Anterior','Próxima']}[(document.documentElement.lang||'pl').slice(0,2)]||['Zamknij','Poprzednie','Następne'];
+const EVE_L={pl:['Zamknij','Poprzednie','Następne'],en:['Close','Previous','Next'],es:['Cerrar','Anterior','Siguiente'],pt:['Fechar','Anterior','Próxima'],it:['Chiudi','Precedente','Successiva'],ja:['閉じる','前へ','次へ'],zh:['关闭','上一张','下一张']}[(document.documentElement.lang||'pl').slice(0,2)]||['Zamknij','Poprzednie','Następne'];
 (()=>{
 const y=document.getElementById('y');if(y)y.textContent=new Date().getFullYear();
 const burger=document.querySelector('[data-burger]'),menu=document.querySelector('[data-menu]');
 if(burger&&menu){burger.addEventListener('click',()=>{const o=menu.classList.toggle('open');burger.setAttribute('aria-expanded',o)});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')))}
+// rozwijana lista języków: zamknij po kliknięciu obok lub Esc
+const dd=document.querySelector('.langdd');if(dd){document.addEventListener('click',e=>{if(dd.open&&!dd.contains(e.target))dd.open=false});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&dd.open){dd.open=false;dd.querySelector('summary').focus()}})}
 const items=[...document.querySelectorAll('[data-full]')];
 if(items.length){
  const lb=document.createElement('div');lb.className='lb';lb.hidden=true;lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');

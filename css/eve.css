@@ -206,3 +206,29 @@ body.linki{min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,var(--
 .lfoot{display:block;border:0;padding:0;text-align:center;margin-top:30px;font-size:.9rem;color:var(--mut);line-height:1.5}.lfoot a{color:var(--gold2)}.lfoot small{display:block;margin-top:8px;font-size:.78rem}
 /* Galeria I: równa siatka na komputerze (jak Galeria II) — 5.11.2026 */
 @media(min-width:901px){.spread{grid-template-columns:repeat(4,1fr);gap:22px}.spread figure{grid-column:auto!important;margin-top:0!important}.spread figure button{aspect-ratio:3/4!important}}
+
+/* ---- przełącznik 7 języków (9.11.2026): rząd skrótów na szerokim ekranie, rozwijana lista na węższym ---- */
+.langdd{display:none;position:relative;font-family:Inter,system-ui,sans-serif}
+.langdd summary{list-style:none;cursor:pointer;color:var(--gold2);border:1px solid rgba(201,163,91,.5);padding:5px 10px;font-size:.68rem;letter-spacing:.18em;min-height:32px;display:flex;align-items:center;gap:6px;user-select:none}
+.langdd summary::-webkit-details-marker{display:none}
+.langdd summary::after{content:"▾";font-size:.8em;letter-spacing:0}
+.langdd[open] summary::after{content:"▴"}
+.langdd nav{position:absolute;right:0;top:calc(100% + 6px);z-index:40;display:flex;flex-direction:column;min-width:170px;background:var(--ink);border:1px solid var(--gold);box-shadow:0 14px 40px rgba(0,0,0,.6)}
+.langdd nav a{color:var(--paper);text-decoration:none;padding:12px 16px;font-size:.92rem;letter-spacing:.02em;border-top:1px solid rgba(201,163,91,.18)}
+.langdd nav a:first-child{border-top:0}
+.langdd nav a:hover,.langdd nav a:focus-visible{background:var(--bur);color:var(--gold2)}
+.langdd nav a[aria-current]{color:var(--gold2)}.langdd nav a[aria-current]::before{content:"✓ ";color:var(--gold)}
+@media(max-width:1180px){.top .langs{display:none}.langdd{display:block}}
+.llangs{flex-wrap:wrap}
+
+/* ---- japoński i chiński: fonty CJK, łamanie wierszy, bez sztucznej kursywy ---- */
+:lang(ja){--cjk-serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif CJK JP","Source Han Serif JP";--cjk-sans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo","Noto Sans JP","Noto Sans CJK JP"}
+:lang(zh){--cjk-serif:"Noto Serif SC","Songti SC","STSong","SimSun","Noto Serif CJK SC","Source Han Serif SC";--cjk-sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Noto Sans CJK SC"}
+body:lang(ja),body:lang(zh){font-family:"Cormorant Garamond",var(--cjk-serif),Georgia,serif;font-size:18px;line-height:1.85;line-break:strict;word-break:normal;overflow-wrap:anywhere;font-synthesis:none;font-variant-numeric:lining-nums}
+:lang(ja) h1,:lang(ja) h2,:lang(ja) h3,:lang(ja) .quote,:lang(ja) .post .body blockquote,:lang(ja) .issue b,:lang(zh) h1,:lang(zh) h2,:lang(zh) h3,:lang(zh) .quote,:lang(zh) .post .body blockquote,:lang(zh) .issue b{font-family:"Playfair Display",var(--cjk-serif),serif;line-height:1.35}
+:lang(ja) .sc,:lang(ja) .menu a,:lang(ja) .cta,:lang(ja) .rss,:lang(ja) .social-l,:lang(ja) .pcard .more,:lang(ja) .post .body h2.src,:lang(ja) .kpage figcaption,:lang(ja) .lbtn small,:lang(ja) .spread figcaption::before,:lang(zh) .sc,:lang(zh) .menu a,:lang(zh) .cta,:lang(zh) .rss,:lang(zh) .social-l,:lang(zh) .pcard .more,:lang(zh) .post .body h2.src,:lang(zh) .kpage figcaption,:lang(zh) .lbtn small,:lang(zh) .spread figcaption::before{font-family:Inter,var(--cjk-sans),system-ui,sans-serif;letter-spacing:.12em}
+:lang(ja) .lbtn,:lang(zh) .lbtn,:lang(ja) .aitag,:lang(zh) .aitag{font-family:"Playfair Display",var(--cjk-serif),serif;letter-spacing:.04em}
+:lang(ja) .head h2,:lang(zh) .head h2{font-size:clamp(2.1rem,5vw,3.8rem)}
+:lang(ja) .cover .deck,:lang(zh) .cover .deck{font-size:1.25rem;max-width:26em}
+:lang(ja) .post .body,:lang(zh) .post .body{line-height:1.95}
+:lang(ja) em,:lang(zh) em{font-style:normal;font-weight:600}
