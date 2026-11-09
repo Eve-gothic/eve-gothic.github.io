@@ -20,6 +20,7 @@ SITE = os.environ.get('EVE_SITE', 'https://eve-gothic.github.io').rstrip('/') + 
 SITE_HOST = SITE.split('://', 1)[1].rstrip('/')
 # Stare repo woDzu2207/eve-strona (wodzu2207.github.io/eve-strona/) zawiera już tylko strony-przekierowania na SITE.
 CAFE = 'https://wodzu2207.github.io/eve-cafe/'
+BRAWLER = 'https://wodzu2207.github.io/eve-brawler/'   # „Eve vs The Suits” (satyra, ?lang=pl|en — brawler_lang())
 TAMA = 'https://wodzu2207.github.io/eve-game-public/'   # TYLKO wersja publiczna (dla wszystkich)
 # Profile społecznościowe Eve (dla wszystkich) — NIE dodawać do bramki /18/
 # Analityka GoatCounter (bez cookies, bez banera). Wpisz kod strony, np. 'eve-gothic' -> https://eve-gothic.goatcounter.com
@@ -364,6 +365,7 @@ def home(lang, posts):
     traits = ''.join(f'<li>{x}</li>' for x in t['traits'])
     newtab = lambda u: f'<a class="cta fill" href="{u}" target="_blank" rel="noopener">{t["newtab"]}</a>'
     cafe, tama = f'{CAFE}?lang={game_lang(lang)}', f'{TAMA}?lang={game_lang(lang)}'   # gry obsługują ?lang=pl|en|es|pt (+it; reszta -> en)
+    brawler = esc(f'{BRAWLER}?lang={brawler_lang(lang)}&utm_source=site&utm_medium=games&utm_campaign=brawler')
     gbar = lambda u: f'<p class="small gnote">{t["notshowing"]}</p><div class="gbar">{newtab(u)}<button class="cta" type="button" data-fs>{t["fs"]}</button></div>'
     blog = cards(posts[lang][:3], r, lang)
     out += topbar(lang, path, alts) + f'''
@@ -413,7 +415,12 @@ def home(lang, posts):
   <article class="game" id="eve-tamagotchi"><span class="sc">{t['available']}</span><h3>{t['tama_title']}</h3><p>{t['tama_desc']}</p>
    <div class="embed tall" data-embed="{tama}" data-title="{t['tama_title']}"><img src="{img('gracz')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
    {gbar(tama)}</article>
- </div></section>
+ </div>
+  <article class="game wide" id="eve-brawler"><span class="sc">{t['available']}</span><h3>Eve vs The Suits</h3><p>{t['brawler_desc']} {t['brawler_lang']}</p><p class="small gsat">{t['brawler_note']}</p>
+   <!-- Gra pozioma (960×540, 16:9) -->
+   <div class="embed wide" data-embed="{brawler}" data-title="Eve vs The Suits"><img src="{A}img/eve-brawler.webp" srcset="{A}img/eve-brawler-thumb.webp 480w, {A}img/eve-brawler.webp 960w" sizes="(max-width:900px) 100vw, 1140px" alt="Eve vs The Suits" class="embed-bg sharp" loading="lazy" width="960" height="540"><button class="cta" data-play data-goatcounter-click="game-brawler-play" data-goatcounter-title="Eve vs The Suits — play ({lang})">{t['run']}</button></div>
+   <p class="small gnote">{t['notshowing']}</p><div class="gbar"><a class="cta fill" href="{brawler}" target="_blank" rel="noopener" data-goatcounter-click="game-brawler" data-goatcounter-title="Eve vs The Suits — new tab ({lang})">{t['newtab']}</a><button class="cta" type="button" data-fs>{t['fs']}</button></div></article>
+</section>
 <section id="komiks" class="sec ktease">
  <div class="head"><span class="no">V</span><h2>{t['komiks_h']}</h2></div>
  <a class="kcard" href="{r}{path_komiks(lang)}"><div class="ph"><img loading="lazy" src="{r}assets/komiks/eve-komiks-okladka.webp" alt="{esc(t['komiks_alt'])} 1" width="1120" height="1682"></div>
@@ -611,6 +618,7 @@ def linki_page(lang, posts, path=None):
         ph = f'<img src="{r}assets/img/{cv}.webp" alt="" width="56" height="56" loading="lazy">' if cv else '✦'
         links += btn(utm(r + path_post(lang, p['slug'])), p['title'], L['latest'], ph, cls=' feat', ev='latest-post')
     links += btn(utm(r + path_komiks(lang)), L['comic'], L['comic_sub'], '✎', ev='komiks')
+    links += btn(utm(f'{BRAWLER}?lang={brawler_lang(lang)}'), L['brawler'], L['brawler_sub'], '✊\ufe0e', ev='brawler')
     links += btn(utm(f'{CAFE}?lang={game_lang(lang)}'), L['cafe'], L['cafe_sub'], '☕', ev='cafe')
     links += btn(utm(f'{TAMA}?lang={game_lang(lang)}'), L['tama'], L['tama_sub'], '♡', ev='tamagotchi')
     links += btn(utm(r + path_home(lang) + '#galeria'), L['gallery'], L['gallery_sub'], '◐', ev='galeria')

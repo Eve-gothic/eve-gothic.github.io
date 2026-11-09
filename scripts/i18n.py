@@ -493,3 +493,34 @@ FOLLOW_LINE = {
  'zh': '喜欢吗？再陪我久一点。',
 }
 for _l, _txt in FOLLOW_LINE.items(): T[_l]['follow_line'] = _txt
+
+# ---------------- gra „Eve vs The Suits” (eve-brawler, 9.11.2026) — gra obsługuje tylko ?lang=pl|en ----------------
+def brawler_lang(lang): return 'pl' if lang == 'pl' else 'en'
+BRAWLER_TXT = {
+ 'pl': dict(brawler_desc='Gotycko-punkowa bijatyka uliczna. Eve tłucze bankierów, prezesów i podejrzanie znajomych polityków na 4 planszach. Za darmo, na telefon i klawiaturę.',
+            brawler_note='Satyra — wszystkie postacie są fikcyjne.', brawler_lang='',
+            games_lead='Przy okazji Eve jest też bohaterką gier. Wszystkie trzy są darmowe i działają w przeglądarce i na telefonie.'),
+ 'en': dict(brawler_desc='A goth-punk street brawler. Eve fights bankers, CEOs and suspiciously familiar politicians across 4 stages. Free, on your phone or keyboard.',
+            brawler_note='Satire — all characters are fictional.', brawler_lang='',
+            games_lead='On the side, Eve is also a game heroine. All three games are free and run in your browser and on your phone.'),
+ 'es': dict(brawler_desc='Un beat ’em up callejero gótico-punk. Eve se enfrenta a banqueros, directivos y políticos sospechosamente familiares a lo largo de 4 fases. Gratis, en el móvil o con teclado.',
+            brawler_note='Sátira: todos los personajes son ficticios.', brawler_lang='(juego en inglés)',
+            games_lead='De paso, Eve también protagoniza videojuegos. Los tres son gratuitos y funcionan en el navegador y en el móvil.'),
+ 'pt': dict(brawler_desc='Um beat ’em up de rua gótico-punk. Eve enfrenta banqueiros, CEOs e políticos suspeitamente familiares em 4 fases. Grátis, no celular ou no teclado.',
+            brawler_note='Sátira — todos os personagens são fictícios.', brawler_lang='(jogo em inglês)',
+            games_lead='De quebra, a Eve também é heroína de jogos. Os três são gratuitos e rodam no navegador e no celular.'),
+ 'it': dict(brawler_desc='Un picchiaduro da strada goth-punk. Eve se la vede con banchieri, amministratori delegati e politici stranamente familiari in 4 livelli. Gratis, su telefono o con la tastiera.',
+            brawler_note='Satira: tutti i personaggi sono di fantasia.', brawler_lang='(gioco in inglese)',
+            games_lead='Già che c’è, Eve è anche protagonista di videogiochi. Sono tutti e tre gratuiti e girano nel browser e sul telefono.'),
+ 'ja': dict(brawler_desc='ゴス・パンクなストリート格闘アクション。Eveが銀行家やCEO、そしてどこかで見たような政治家たちを相手に、全4ステージで大暴れ。無料で、スマホでもキーボードでも遊べます。',
+            brawler_note='風刺作品です。登場人物はすべて架空です。', brawler_lang='（英語版です）',
+            games_lead='ついでに、Eveはゲームの主人公でもあります。3本とも無料で、ブラウザでもスマホでも遊べます（現在は英語版のみ）。'),
+ 'zh': dict(brawler_desc='哥特朋克风街头格斗游戏。Eve 在 4 个关卡里痛揍银行家、CEO，还有一些看着莫名眼熟的政客。免费，手机和键盘都能玩。',
+            brawler_note='本作为讽刺作品，所有角色均为虚构。', brawler_lang='（游戏为英文版）',
+            games_lead='顺便一提，Eve 还是游戏主角。三款游戏都免费，可在浏览器和手机上玩（目前仅有英文版）。'),
+}
+for _l, _d in BRAWLER_TXT.items(): T[_l].update(_d)
+_BR_SUB = {'pl': 'bijatyka · nowa gra', 'en': 'street brawler · new game', 'es': 'beat ’em up · juego nuevo (en inglés)',
+           'pt': 'beat ’em up · jogo novo (em inglês)', 'it': 'picchiaduro · nuovo gioco (in inglese)',
+           'ja': '格闘アクション · 新作ゲーム（英語）', 'zh': '街头格斗 · 新游戏（英文）'}
+for _l, _s in _BR_SUB.items(): LINKI[_l].update(brawler='Eve vs The Suits', brawler_sub=_s)

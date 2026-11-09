@@ -248,3 +248,12 @@ body:lang(ja),body:lang(zh){font-family:"Cormorant Garamond",var(--cjk-serif),Ge
 @media(max-width:600px){.fblock{margin-top:40px;padding:34px 18px 28px}.fbtns{flex-direction:column;align-items:stretch}.fbtn{min-width:0;width:100%}}
 :lang(ja) .fblock .fline,:lang(zh) .fblock .fline{font-family:"Playfair Display",var(--cjk-serif),serif;font-size:clamp(1.3rem,3vw,1.8rem);line-height:1.5}
 :lang(ja) .fbtn,:lang(zh) .fbtn{letter-spacing:.14em}
+
+/* ---- Eve vs The Suits (gra pozioma, 16:9) — pełna szerokość pod dwiema grami pionowymi ---- */
+.game.wide{margin-top:clamp(50px,7vw,90px)}
+.game.wide>p{max-width:70ch}
+.game .gsat{margin-top:8px;font-style:italic;color:var(--mut)}
+.embed.wide{aspect-ratio:16/9;width:100%;max-width:1140px;margin:28px auto 16px}
+.embed-bg.sharp{filter:brightness(.6) saturate(1.05);image-rendering:pixelated}
+.embed:hover .embed-bg.sharp{filter:brightness(.75) saturate(1.1)}
+.embed.wide .cta{align-self:end;margin-bottom:5%}
