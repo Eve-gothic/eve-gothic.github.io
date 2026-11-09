@@ -7,7 +7,7 @@ LANG_LABEL = {'pl': 'PL', 'en': 'EN', 'es': 'ES', 'pt': 'PT', 'it': 'IT', 'ja': 
 LANG_NAME = {'pl': 'Polski', 'en': 'English', 'es': 'Español', 'pt': 'Português', 'it': 'Italiano', 'ja': '日本語', 'zh': '简体中文'}
 CJK = ('ja', 'zh')   # języki bez spacji między słowami (inne łamanie wierszy, fonty CJK)
 # Gry (eve-cafe, eve-game-public) obsługują tylko ?lang=pl|en|es|pt — pozostałe języki dostają wersję angielską
-def game_lang(lang): return lang if lang in ('pl', 'en', 'es', 'pt') else 'en'
+def game_lang(lang): return lang if lang in ('pl', 'en', 'es', 'pt', 'it') else 'en'
 
 CATEGORIES = {
     'Filmy':       {'pl': 'Filmy', 'en': 'Film', 'es': 'Cine', 'pt': 'Filmes', 'it': 'Cinema', 'ja': '映画', 'zh': '电影'},
@@ -353,7 +353,7 @@ T['it'] = dict(
   follow='Segui Eve: nuove foto e nuovi articoli ogni settimana. Torna spesso o aggiungi il blog al tuo lettore di feed:',
   gal2_h='Nuovo shooting',
   gal2_lead='Autunno, nero e un pizzico di rock’n’roll: scatti freschi dall’ultimo shooting di Eve.',
-  games_lead='Già che c’è, Eve è anche protagonista di videogiochi. Sono entrambi gratuiti e girano nel browser e sul telefono (per ora in inglese).',
+  games_lead='Già che c’è, Eve è anche protagonista di videogiochi. Sono entrambi gratuiti e girano nel browser e sul telefono.',
   fs='⛶ Schermo intero',
   variants='Varianti di design', sources='Fonti',
 )

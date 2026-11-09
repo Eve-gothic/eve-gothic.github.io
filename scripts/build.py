@@ -351,7 +351,7 @@ def home(lang, posts):
     reel = ''.join(f'<article>{vid(n)}<h3>{vt}</h3><span class="sc">{t["frame"]} {i + 1:02d}</span></article>' for i, (n, vt) in enumerate(zip(VIDEOS, t['video_titles'])))
     traits = ''.join(f'<li>{x}</li>' for x in t['traits'])
     newtab = lambda u: f'<a class="cta fill" href="{u}" target="_blank" rel="noopener">{t["newtab"]}</a>'
-    cafe, tama = f'{CAFE}?lang={game_lang(lang)}', f'{TAMA}?lang={game_lang(lang)}'   # gry obsługują ?lang=pl|en|es|pt (reszta -> en)
+    cafe, tama = f'{CAFE}?lang={game_lang(lang)}', f'{TAMA}?lang={game_lang(lang)}'   # gry obsługują ?lang=pl|en|es|pt (+it; reszta -> en)
     gbar = lambda u: f'<p class="small gnote">{t["notshowing"]}</p><div class="gbar">{newtab(u)}<button class="cta" type="button" data-fs>{t["fs"]}</button></div>'
     blog = cards(posts[lang][:3], r, lang)
     out += topbar(lang, path, alts) + f'''
