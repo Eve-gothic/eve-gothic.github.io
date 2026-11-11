@@ -524,3 +524,41 @@ _BR_SUB = {'pl': 'bijatyka · nowa gra', 'en': 'street brawler · new game', 'es
            'pt': 'beat ’em up · jogo novo (em inglês)', 'it': 'picchiaduro · nuovo gioco (in inglese)',
            'ja': '格闘アクション · 新作ゲーム（英語）', 'zh': '街头格斗 · 新游戏（英文）'}
 for _l, _s in _BR_SUB.items(): LINKI[_l].update(brawler='Eve vs The Suits', brawler_sub=_s)
+
+# ---------------- gra „Eve: Królowa Karnych” (eve-penalty, 11.11.2026) — gra obsługuje ?lang=pl|en|es|pt|it|ja|zh ----------------
+def penalty_lang(lang): return lang if lang in ('pl', 'en', 'es', 'pt', 'it', 'ja', 'zh') else 'en'
+PENALTY_TXT = {
+ 'pl': dict(penalty_title='Eve: Królowa Karnych',
+            penalty_desc='Gra w rzuty karne. Jestem gotycką napastniczką: pięć strzałów, zero litości. Za darmo, w przeglądarce — na telefonie i na klawiaturze.',
+            penalty_note='Kluby to parodie — wszystkie nazwy są fikcyjne.',
+            games_lead='Przy okazji Eve jest też bohaterką gier. Wszystkie cztery są darmowe i działają w przeglądarce i na telefonie.'),
+ 'en': dict(penalty_title='Eve: Penalty Queen',
+            penalty_desc='A penalty shootout. I’m a goth striker: five kicks, no mercy. Free, in your browser — on your phone or keyboard.',
+            penalty_note='Parody clubs — all names are fictional.',
+            games_lead='On the side, Eve is also a game heroine. All four games are free and run in your browser and on your phone.'),
+ 'es': dict(penalty_title='Eve: Reina del penalti',
+            penalty_desc='Una tanda de penaltis. Soy una delantera gótica: cinco tiros, sin piedad. Gratis, en el navegador, en el móvil o con teclado.',
+            penalty_note='Clubes paródicos: todos los nombres son ficticios.',
+            games_lead='De paso, Eve también protagoniza videojuegos. Los cuatro son gratuitos y funcionan en el navegador y en el móvil.'),
+ 'pt': dict(penalty_title='Eve: Rainha dos pênaltis',
+            penalty_desc='Uma disputa de pênaltis. Sou uma atacante gótica: cinco chutes, sem piedade. Grátis, no navegador, no celular ou no teclado.',
+            penalty_note='Clubes paródia — todos os nomes são fictícios.',
+            games_lead='De quebra, a Eve também é heroína de jogos. Os quatro são gratuitos e rodam no navegador e no celular.'),
+ 'it': dict(penalty_title='Eve: Regina dei rigori',
+            penalty_desc='Una sequenza di rigori. Sono un’attaccante gotica: cinque tiri, nessuna pietà. Gratis, nel browser, su telefono o con la tastiera.',
+            penalty_note='Club parodia: tutti i nomi sono di fantasia.',
+            games_lead='Già che c’è, Eve è anche protagonista di videogiochi. Sono tutti e quattro gratuiti e girano nel browser e sul telefono.'),
+ 'ja': dict(penalty_title='Eve: PK クイーン',
+            penalty_desc='PK戦ゲーム。ゴスなストライカーのわたしが、5本勝負、容赦なし。無料で、ブラウザでもスマホでもキーボードでも遊べます。',
+            penalty_note='パロディクラブです。名前はすべて架空です。',
+            games_lead='ついでに、Eveはゲームの主人公でもあります。4本とも無料で、ブラウザでもスマホでも遊べます。'),
+ 'zh': dict(penalty_title='Eve: 点球女王',
+            penalty_desc='点球大战。我是哥特前锋：五轮点球，绝不手软。免费，可在浏览器里玩，手机和键盘都行。',
+            penalty_note='恶搞俱乐部，所有名称均为虚构。',
+            games_lead='顺便一提，Eve 还是游戏主角。四款游戏都免费，可在浏览器和手机上玩。'),
+}
+for _l, _d in PENALTY_TXT.items(): T[_l].update(_d)
+_PN_SUB = {'pl': 'rzuty karne · nowa gra', 'en': 'penalty shootout · new game', 'es': 'tanda de penaltis · juego nuevo',
+           'pt': 'disputa de pênaltis · jogo novo', 'it': 'rigori · nuovo gioco',
+           'ja': 'PK戦 · 新作ゲーム', 'zh': '点球大战 · 新游戏'}
+for _l, _s in _PN_SUB.items(): LINKI[_l].update(penalty=PENALTY_TXT[_l]['penalty_title'], penalty_sub=_s)

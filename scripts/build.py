@@ -21,6 +21,7 @@ SITE_HOST = SITE.split('://', 1)[1].rstrip('/')
 # Stare repo woDzu2207/eve-strona (wodzu2207.github.io/eve-strona/) zawiera już tylko strony-przekierowania na SITE.
 CAFE = 'https://wodzu2207.github.io/eve-cafe/'
 BRAWLER = 'https://wodzu2207.github.io/eve-brawler/'   # „Eve vs The Suits” (satyra, ?lang=pl|en — brawler_lang())
+PENALTY = 'https://wodzu2207.github.io/eve-penalty/'   # „Eve: Królowa Karnych” / Penalty Queen (?lang=pl|en|es|pt|it|ja|zh — penalty_lang())
 TAMA = 'https://wodzu2207.github.io/eve-game-public/'   # TYLKO wersja publiczna (dla wszystkich)
 # Profile społecznościowe Eve (dla wszystkich) — NIE dodawać do bramki /18/
 # Analityka GoatCounter (bez cookies, bez banera). Wpisz kod strony, np. 'eve-gothic' -> https://eve-gothic.goatcounter.com
@@ -366,6 +367,7 @@ def home(lang, posts):
     newtab = lambda u: f'<a class="cta fill" href="{u}" target="_blank" rel="noopener">{t["newtab"]}</a>'
     cafe, tama = f'{CAFE}?lang={game_lang(lang)}', f'{TAMA}?lang={game_lang(lang)}'   # gry obsługują ?lang=pl|en|es|pt (+it; reszta -> en)
     brawler = esc(f'{BRAWLER}?lang={brawler_lang(lang)}&utm_source=site&utm_medium=games&utm_campaign=brawler')
+    penalty = esc(f'{PENALTY}?lang={penalty_lang(lang)}&utm_source=site&utm_medium=games&utm_campaign=penalty')
     gbar = lambda u: f'<p class="small gnote">{t["notshowing"]}</p><div class="gbar">{newtab(u)}<button class="cta" type="button" data-fs>{t["fs"]}</button></div>'
     blog = cards(posts[lang][:3], r, lang)
     out += topbar(lang, path, alts) + f'''
@@ -420,12 +422,16 @@ def home(lang, posts):
    <!-- Gra pozioma (960×540, 16:9) -->
    <div class="embed wide" data-embed="{brawler}" data-title="Eve vs The Suits"><img src="{A}img/eve-brawler.webp" srcset="{A}img/eve-brawler-thumb.webp 480w, {A}img/eve-brawler.webp 960w" sizes="(max-width:900px) 100vw, 1140px" alt="Eve vs The Suits" class="embed-bg sharp" loading="lazy" width="960" height="540"><button class="cta" data-play data-goatcounter-click="game-brawler-play" data-goatcounter-title="Eve vs The Suits — play ({lang})">{t['run']}</button></div>
    <p class="small gnote">{t['notshowing']}</p><div class="gbar"><a class="cta fill" href="{brawler}" target="_blank" rel="noopener" data-goatcounter-click="game-brawler" data-goatcounter-title="Eve vs The Suits — new tab ({lang})">{t['newtab']}</a><button class="cta" type="button" data-fs>{t['fs']}</button></div></article>
+  <article class="game wide" id="eve-penalty"><span class="sc">{t['available']}</span><h3>{t['penalty_title']}</h3><p>{t['penalty_desc']}</p><p class="small gsat">{t['penalty_note']}</p>
+   <!-- Gra pozioma (960×540, 16:9) — kadr: Eve w bramce -->
+   <div class="embed wide" data-embed="{penalty}" data-title="{esc(t['penalty_title'])}"><img src="{A}img/eve-penalty.webp" srcset="{A}img/eve-penalty-thumb.webp 480w, {A}img/eve-penalty.webp 960w" sizes="(max-width:900px) 100vw, 1140px" alt="{esc(t['penalty_title'])}" class="embed-bg" loading="lazy" width="960" height="540"><button class="cta" data-play data-goatcounter-click="game-penalty-play" data-goatcounter-title="{esc(t['penalty_title'])} — play ({lang})">{t['run']}</button></div>
+   <p class="small gnote">{t['notshowing']}</p><div class="gbar"><a class="cta fill" href="{penalty}" target="_blank" rel="noopener" data-goatcounter-click="game-penalty" data-goatcounter-title="{esc(t['penalty_title'])} — new tab ({lang})">{t['newtab']}</a><button class="cta" type="button" data-fs>{t['fs']}</button></div></article>
 </section>
 <section id="komiks" class="sec ktease">
  <div class="head"><span class="no">V</span><h2>{t['komiks_h']}</h2></div>
  <a class="kcard" href="{r}{path_komiks(lang)}"><div class="ph"><img loading="lazy" src="{r}assets/komiks/eve-komiks-okladka.webp" alt="{esc(t['komiks_alt'])} 1" width="1120" height="1682"></div>
  <div><span class="sc">{t['komiks_kicker']} · {KOMIKS_N} {t['komiks_pages']}</span><h3>Main Character</h3><p>{t['komiks_lead']} {t['komiks_note']}</p><span class="cta fill">{t['komiks_read']} →</span></div></a>
- {komiks2_tease(lang, r)}</section>
+ {komiks2_tease(lang, r)}{komiks3_tease(lang, r) if COMIC3_PUBLISHED else ''}</section>
 <section id="blog" class="sec blogsec">
  <div class="head"><span class="no">VI</span><h2>{t['blog_h']}</h2></div>
  <p class="small" style="margin:-10px 0 34px;max-width:60ch">{t['blog_lead']}</p>
@@ -601,6 +607,102 @@ def komiks2_page(lang):
 """ + footer(lang, path)
     return out
 
+
+# ── Komiks 3: Eve vs The Suits (niepublikowany, dopóki COMIC3_PUBLISHED jest False) ──
+# Jedyny przełącznik publikacji. False = build nie zapisuje stron komiksu 3, OG, ani linków
+# na stronie głównej / w sitemapie. True = strony + teaser na #komiks + wpis w sitemapie.
+# Żeby dodać strony 7–11: wrzuć p-07.jpg… do /workspace/eve-komiks3/pages/<lang>/,
+# uruchom `python3 scripts/convert_komiks3.py` i przebuduj. Lista stron jest skanowana
+# z assets/komiks3/<lang>/p-NN.webp (albo .jpg), posortowana, bez twardej liczby.
+COMIC3_PUBLISHED = False
+K3_SLUG = 'eve-vs-the-suits'
+K3_ASSETS = 'assets/komiks3'
+K3_TOTAL = 11   # docelowa długość; podpis „ciąg dalszy” tylko gdy brakuje stron
+K3_PAGE_RE = re.compile(r'^p-(\d+)\.(webp|jpg|jpeg)$', re.I)
+K3 = {
+ 'pl': dict(kicker='Komiks · Odcinek 3', title='Eve vs The Suits — komiks z Eve', desc='Eve vs The Suits — darmowy komiks z Eve. Garnitury zajęły moją dzielnicę, więc biorę sprawy w swoje ręce. Satyra — wszystkie postacie są fikcyjne.', lead='Garnitury zajęły moją gotycką dzielnicę, więc wychodzę na ulicę. Bankierzy, prezes i podejrzanie znajomi politycy — dokładnie taka satyra, w jakiej lubię mieć rację.', note='Satyra — wszystkie postacie są fikcyjne.', read='Czytaj komiks', page='Strona', pages='stron', play='Zagraj w Eve vs The Suits', more='Ciąg dalszy wkrótce.', alt='Eve vs The Suits, komiks z Eve — strona'),
+ 'en': dict(kicker='Comic · Episode 3', title='Eve vs The Suits — an Eve comic', desc='Eve vs The Suits — a free Eve comic. The suits took over my district, so I take matters into my own hands. Satire — all characters are fictional.', lead='The suits took over my goth district, so I take it to the street. Bankers, a CEO and some suspiciously familiar politicians — exactly the kind of satire I like to win.', note='Satire — all characters are fictional.', read='Read the comic', page='Page', pages='pages', play='Play Eve vs The Suits', more='To be continued.', alt='Eve vs The Suits, an Eve comic — page'),
+ 'es': dict(kicker='Cómic · Episodio 3', title='Eve vs The Suits — un cómic de Eve', desc='Eve vs The Suits — un cómic gratuito de Eve. Los trajes se han quedado con mi barrio, así que tomo cartas en el asunto. Sátira: todos los personajes son ficticios.', lead='Los trajes se han quedado con mi barrio gótico, así que salgo a la calle. Banqueros, un director ejecutivo y políticos sospechosamente familiares: justo la sátira en la que me gusta ganar.', note='Sátira: todos los personajes son ficticios.', read='Leer el cómic', page='Página', pages='páginas', play='Juega a Eve vs The Suits', more='Continuará.', alt='Eve vs The Suits, un cómic de Eve — página'),
+ 'pt': dict(kicker='Quadrinho · Episódio 3', title='Eve vs The Suits — um quadrinho da Eve', desc='Eve vs The Suits — um quadrinho grátis da Eve. Os ternos tomaram meu bairro, então eu resolvo isso com as próprias mãos. Sátira — todos os personagens são fictícios.', lead='Os ternos tomaram meu bairro gótico, então eu vou para a rua. Banqueiros, um CEO e políticos suspeitamente familiares — exatamente o tipo de sátira em que eu gosto de levar a melhor.', note='Sátira — todos os personagens são fictícios.', read='Ler o quadrinho', page='Página', pages='páginas', play='Jogue Eve vs The Suits', more='Continua em breve.', alt='Eve vs The Suits, um quadrinho da Eve — página'),
+ 'it': dict(kicker='Fumetto · Episodio 3', title='Eve vs The Suits — un fumetto con Eve', desc='Eve vs The Suits — un fumetto gratuito con Eve. I completi si sono presi il mio quartiere, così risolvo la questione di persona. Satira: tutti i personaggi sono di fantasia.', lead='I completi si sono presi il mio quartiere gotico, così scendo in strada. Banchieri, un amministratore delegato e politici stranamente familiari: proprio il tipo di satira in cui mi piace avere ragione.', note='Satira: tutti i personaggi sono di fantasia.', read='Leggi il fumetto', page='Pagina', pages='pagine', play='Gioca a Eve vs The Suits', more='Continua a breve.', alt='Eve vs The Suits, un fumetto con Eve — pagina'),
+ 'ja': dict(kicker='コミック · 第3話', title='Eve vs The Suits — Eveのコミック', desc='Eve vs The Suits — Eveの無料コミック。スーツたちに街を占領されたので、この手で片づけることにした。風刺作品です。登場人物はすべて架空です。', lead='スーツたちにゴスな街を占領されたから、私は路上に出る。銀行家、CEO、どこかで見たような政治家たち。こういう風刺なら、勝つ役は私がいい。', note='風刺作品です。登場人物はすべて架空です。', read='コミックを読む', page='ページ', pages='ページ', play='Eve vs The Suitsで遊ぶ', more='つづきは近日公開。', alt='Eve vs The Suits（Eveのコミック）— ページ'),
+ 'zh': dict(kicker='漫画 · 第 3 话', title='Eve vs The Suits — Eve 的漫画', desc='Eve vs The Suits — Eve 的免费漫画。那些西装客占领了我的街区，于是我亲自出手。本作为讽刺作品，所有角色均为虚构。', lead='西装客占领了我的哥特区，所以我走上街头。银行家、CEO，还有看着莫名眼熟的政客——这种讽刺故事，我向来喜欢赢。', note='本作为讽刺作品，所有角色均为虚构。', read='阅读漫画', page='页码', pages='页', play='玩 Eve vs The Suits', more='未完待续。', alt='Eve vs The Suits，Eve 的漫画 — 页码'),
+}
+
+def path_komiks3(lang):
+    return prefix(lang) + f'komiks/{K3_SLUG}/'
+
+def komiks3_pages(lang):
+    """Zwraca [(nr, nazwa_pliku), ...] spośród assets/komiks3/<lang>/p-NN.webp|.jpg, posortowane."""
+    d = os.path.join(ROOT, K3_ASSETS, lang)
+    found = {}
+    if os.path.isdir(d):
+        for name in os.listdir(d):
+            m = K3_PAGE_RE.match(name)
+            if not m:
+                continue
+            n = int(m.group(1))
+            ext = m.group(2).lower()
+            if n not in found or ext == 'webp':
+                found[n] = name
+    return [(n, found[n]) for n in sorted(found)]
+
+def komiks3_tease(lang, r):
+    if not COMIC3_PUBLISHED:
+        return ''
+    K = K3[lang]
+    pages = komiks3_pages(lang)
+    if not pages:
+        return ''
+    n, fname = pages[0]
+    N = len(pages)
+    src = f'{r}{K3_ASSETS}/{lang}/{fname}'
+    return (f'<a class="kcard" style="margin-top:50px" href="{r}{path_komiks3(lang)}">'
+            f'<div class="ph"><img loading="lazy" src="{src}" alt="{esc(K["alt"])} 1" width="1190" height="1785"></div>'
+            f'<div><span class="sc">{K["kicker"]} · {N} {K["pages"]}</span><h3>Eve vs The Suits</h3>'
+            f'<p>{K["lead"]} <em>{K["note"]}</em></p><span class="cta fill">{K["read"]} →</span></div></a>')
+
+def komiks3_page(lang):
+    t = T[lang]; K = K3[lang]; path = path_komiks3(lang); r = root_for(path)
+    files = komiks3_pages(lang)
+    N = len(files)
+    alts = {l: path_komiks3(l) for l in LANGS}
+    og = f'og/komiks3-{lang}.jpg'
+    extra = (
+        '<script type="application/ld+json">{"@context":"https://schema.org","@type":"ComicStory",'
+        '"name":"Eve vs The Suits","inLanguage":"' + HTML_LANG[lang] + '","url":"' + SITE + path +
+        '","image":"' + SITE + og + '","description":' + json_str(K['desc']) +
+        ',"author":{"@type":"Person","name":"Eve (AI)","sameAs":["' + FB + '","' + IG + '"]}}</script>'
+    )
+    out = head(lang, path, K['title'], K['desc'], alts, og, 'website', extra)
+    pages = ''
+    for i, (n, fname) in enumerate(files):
+        src = f'{r}{K3_ASSETS}/{lang}/{fname}'
+        cap = f"Eve vs The Suits — {K['page']} {n} / {N}"
+        eager = ' fetchpriority="high"' if i == 0 else ' loading="lazy" decoding="async"'
+        pages += (f'<figure class="kpage" id="s{n}"><button data-full="{src}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}">'
+                  f'<img src="{src}" alt="{esc(K["alt"])} {n}" width="1190" height="1785"{eager}></button>'
+                  f'<figcaption>{K["page"]} {n} / {N}</figcaption></figure>\n')
+    note = f' <em>{K["note"]}</em>' if K['note'] else ''
+    more = f'<p class="small" style="text-align:center;font-style:italic">{K["more"]}</p>\n' if N < K3_TOTAL else ''
+    play = f'<a class="cta fill" href="{r}{path_home(lang)}#gry">{K["play"]} →</a>'
+    first = files[0][0] if files else 1
+    out += topbar(lang, path, alts, solid=True) + f"""
+<main class="wrap">
+<section class="bloghead khead"><span class="sc">{K['kicker']} · {N} {K['pages']}</span>
+<h1>Eve vs The Suits<span>.</span></h1><p>{K['lead']}{note}</p>
+<p style="margin-top:18px"><a class="cta fill" href="#s{first}">{K['read']} ↓</a> {play}</p>
+{social(lang)}</section>
+{SLOT}
+<section class="reader">{pages}</section>
+{more}<p style="text-align:center;margin:28px 0 0">{play}</p>
+{follow_block(lang, 'komiks3')}
+<div class="postnav" style="margin-bottom:60px">{play}<a class="cta" href="{r}{path_komiks(lang)}">Main Character →</a><a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
+<div style="height:50px"></div>
+</main>
+""" + footer(lang, path)
+    return out
+
 def linki_page(lang, posts, path=None):
     L, t = LINKI[lang], T[lang]
     path = path or path_linki(lang); r = root_for(path); canon = path_linki(lang)
@@ -619,6 +721,7 @@ def linki_page(lang, posts, path=None):
         links += btn(utm(r + path_post(lang, p['slug'])), p['title'], L['latest'], ph, cls=' feat', ev='latest-post')
     links += btn(utm(r + path_komiks(lang)), L['comic'], L['comic_sub'], '✎', ev='komiks')
     links += btn(utm(f'{BRAWLER}?lang={brawler_lang(lang)}'), L['brawler'], L['brawler_sub'], '✊\ufe0e', ev='brawler')
+    links += btn(utm(f'{PENALTY}?lang={penalty_lang(lang)}'), L['penalty'], L['penalty_sub'], '⚽', ev='penalty')
     links += btn(utm(f'{CAFE}?lang={game_lang(lang)}'), L['cafe'], L['cafe_sub'], '☕', ev='cafe')
     links += btn(utm(f'{TAMA}?lang={game_lang(lang)}'), L['tama'], L['tama_sub'], '♡', ev='tamagotchi')
     links += btn(utm(r + path_home(lang) + '#galeria'), L['gallery'], L['gallery_sub'], '◐', ev='galeria')
@@ -696,6 +799,18 @@ def main():
         write(path_komiks(l) + 'index.html', komiks_page(l))
         og_image(os.path.join(ROOT, f'og/komiks2-{l}.jpg'), 'assets/komiks2/k2-01.webp', K2[l]['kicker'], 'It Was Always You', lang=l)
         write(path_komiks2(l) + 'index.html', komiks2_page(l))
+        if COMIC3_PUBLISHED:
+            k3files = komiks3_pages(l)
+            if k3files:
+                og_image(os.path.join(ROOT, f'og/komiks3-{l}.jpg'), f'{K3_ASSETS}/{l}/{k3files[0][1]}', K3[l]['kicker'], 'Eve vs The Suits', lang=l)
+                write(path_komiks3(l) + 'index.html', komiks3_page(l))
+        else:
+            d = os.path.join(ROOT, path_komiks3(l))
+            if os.path.isdir(d):
+                shutil.rmtree(d)
+            og = os.path.join(ROOT, f'og/komiks3-{l}.jpg')
+            if os.path.exists(og):
+                os.remove(og)
         og_image(os.path.join(ROOT, f'og/sesja-czern-{l}.jpg'), 'assets/sesje/czern/01.webp', SESJA[l]['kicker'], SESJA[l]['title'], lang=l)
         write(path_sesja(l) + 'index.html', sesja_page(l))
         og_image(os.path.join(ROOT, f'og/linki-{l}.jpg'), 'assets/img/eve-spojrzenie-noir.webp', LINKI[l]['kicker'], LINKI[l]['bio'].split(' · ')[0], lang=l)
@@ -705,7 +820,7 @@ def main():
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
         pass  # bramka 18+ usunięta na prośbę Daniela (5.11.2026)   # bramka 18+ — celowo NIE w sitemap.xml
     write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
-    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + [path_sesja(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
+    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + ([path_komiks3(l) for l in LANGS] if COMIC3_PUBLISHED else []) + [path_sesja(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
 
