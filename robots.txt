@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eve-gothic.github.io/sitemap.xml
