@@ -732,7 +732,7 @@ def linki_page(lang, posts, path=None):
     return f'''<!doctype html>
 <html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{esc(L['title'])}</title><meta name="description" content="{esc(L['desc'])}"><meta name="theme-color" content="#0c0708">
-<meta name="robots" content="index, follow"><link rel="canonical" href="{SITE}{canon}">{hre}
+<meta name="robots" content="index, follow"><meta name="google-site-verification" content="rdw5SqpOsglZZsTHffwvSJovaECEEEonhCedF2X3WEE"><link rel="canonical" href="{SITE}{canon}">{hre}
 <meta property="og:type" content="profile"><meta property="og:site_name" content="Eve"><meta property="og:locale" content="{OG_LOCALE[lang]}">
 <meta property="og:title" content="{esc(L['title'])}"><meta property="og:description" content="{esc(L['desc'])}"><meta property="og:url" content="{SITE}{canon}">
 <meta property="og:image" content="{SITE}{og}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
