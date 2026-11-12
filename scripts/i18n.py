@@ -562,3 +562,15 @@ _PN_SUB = {'pl': 'rzuty karne · nowa gra', 'en': 'penalty shootout · new game'
            'pt': 'disputa de pênaltis · jogo novo', 'it': 'rigori · nuovo gioco',
            'ja': 'PK戦 · 新作ゲーム', 'zh': '点球大战 · 新游戏'}
 for _l, _s in _PN_SUB.items(): LINKI[_l].update(penalty=PENALTY_TXT[_l]['penalty_title'], penalty_sub=_s)
+
+# ---------------- zapis postępu + instalacja PWA w grach (brawler, penalty) — 12.11.2026 ----------------
+_GSAVE = {
+ 'pl': '💾 Zapis postępu · 📲 można zainstalować na telefonie i grać offline',
+ 'en': '💾 Progress saves · 📲 install it on your phone and play offline',
+ 'es': '💾 Guarda tu progreso · 📲 instálalo en el móvil y juega sin conexión',
+ 'pt': '💾 Salva o progresso · 📲 instale no celular e jogue offline',
+ 'it': '💾 Salva i progressi · 📲 installalo sul telefono e gioca offline',
+ 'ja': '💾 進行状況を保存 · 📲 スマホにインストールしてオフラインでも遊べます',
+ 'zh': '💾 自动保存进度 · 📲 可安装到手机，离线也能玩',
+}
+for _l, _s in _GSAVE.items(): T[_l]['gsave'] = _s
