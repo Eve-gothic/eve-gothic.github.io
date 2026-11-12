@@ -410,11 +410,11 @@ def home(lang, posts):
  <div class="head"><span class="no">IV</span><h2>{t['games_h']}</h2></div>
  <p class="small" style="margin:-30px 0 40px;max-width:60ch">{t['games_lead']}</p>
  <div class="games">
-  <article class="game" id="eve-cafe"><span class="sc">{t['available']}</span><h3>Eve's Café</h3><p>{t['cafe_desc']}</p>
+  <article class="game" id="eve-cafe"><span class="sc">{t['available']}</span><h3>Eve's Café</h3><p>{t['cafe_desc']}</p><p class="small gsave">{t['gsave']}</p>
    <!-- Gra pionowa (Phaser, 720 px szer., Scale.FIT): okno 9:16 -->
    <div class="embed tall" data-embed="{cafe}" data-title="Eve's Café"><img src="{img('barista')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
    {gbar(cafe)}</article>
-  <article class="game" id="eve-tamagotchi"><span class="sc">{t['available']}</span><h3>{t['tama_title']}</h3><p>{t['tama_desc']}</p>
+  <article class="game" id="eve-tamagotchi"><span class="sc">{t['available']}</span><h3>{t['tama_title']}</h3><p>{t['tama_desc']}</p><p class="small gsave">{t['gsave']}</p>
    <div class="embed tall" data-embed="{tama}" data-title="{t['tama_title']}"><img src="{img('gracz')}" alt="" class="embed-bg"><button class="cta" data-play>{t['run']}</button></div>
    {gbar(tama)}</article>
  </div>
