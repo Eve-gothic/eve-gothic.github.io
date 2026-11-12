@@ -258,7 +258,7 @@ def head(lang, path, title, desc, alts, og_img, og_type='website', extra='', gat
     links = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{p}">' for l, p in alts.items())
     if 'pl' in alts: links += f'<link rel="alternate" hreflang="x-default" href="{SITE}{alts["pl"]}">'
     return f'''<!doctype html>
-<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="google-site-verification" content="rdw5SqpOsglZZsTHffwvSJovaECEEEonhCedF2X3WEE">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#3a0b16">
 <link rel="canonical" href="{SITE}{path}">{links}
 <link rel="alternate" type="application/rss+xml" title="{esc(T[lang]['blog_h'])}" href="{SITE}{path_blog(lang)}feed.xml">
