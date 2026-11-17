@@ -614,7 +614,7 @@ def komiks2_page(lang):
 # Żeby dodać strony 7–11: wrzuć p-07.jpg… do /workspace/eve-komiks3/pages/<lang>/,
 # uruchom `python3 scripts/convert_komiks3.py` i przebuduj. Lista stron jest skanowana
 # z assets/komiks3/<lang>/p-NN.webp (albo .jpg), posortowana, bez twardej liczby.
-COMIC3_PUBLISHED = False
+COMIC3_PUBLISHED = True
 K3_SLUG = 'eve-vs-the-suits'
 K3_ASSETS = 'assets/komiks3'
 K3_TOTAL = 11   # docelowa długość; podpis „ciąg dalszy” tylko gdy brakuje stron
