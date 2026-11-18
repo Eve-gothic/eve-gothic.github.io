@@ -1,10 +1,10 @@
 /* Service worker strony Eve — GENEROWANY przez scripts/pwa.py (build.py). Nie edytuj ręcznie. */
-const VERSION = 'df7dc6fde2';
+const VERSION = 'f5909faf40';
 const SHELL = 'eve-shell-' + VERSION, PAGES = 'eve-pages-v1', IMGS = 'eve-img-v1', FONTS = 'eve-fonts-v1';
 const KEEP = [SHELL, PAGES, IMGS, FONTS];
 const MAX_PAGES = 60, MAX_IMGS = 150, MAX_FONTS = 40;
 const BASE = new URL('./', self.location).href;               // korzeń strony (scope)
-const REQUIRED = ["./", "en/", "es/", "pt/", "it/", "ja/", "zh/", "offline.html", "en/offline.html", "es/offline.html", "pt/offline.html", "it/offline.html", "ja/offline.html", "zh/offline.html", "css/eve.css", "js/eve.js", "js/pwa.js", "manifest.webmanifest", "assets/img/eve-avatar.webp", "assets/pwa/icon-192.png", "assets/pwa/icon-512.png", "assets/pwa/icon-maskable-512.png", "assets/pwa/apple-touch-icon.png"];                                 // app shell — musi się pobrać
+const REQUIRED = ["./", "en/", "es/", "pt/", "it/", "ja/", "zh/", "offline.html", "en/offline.html", "es/offline.html", "pt/offline.html", "it/offline.html", "ja/offline.html", "zh/offline.html", "css/eve.css", "js/eve.js", "js/pwa.js", "js/ads.js", "manifest.webmanifest", "assets/img/eve-avatar.webp", "assets/pwa/icon-192.png", "assets/pwa/icon-512.png", "assets/pwa/icon-maskable-512.png", "assets/pwa/apple-touch-icon.png"];                                 // app shell — musi się pobrać
 const OPTIONAL = ["dla-tworcow/", "en/for-creators/", "es/for-creators/", "pt/for-creators/", "it/for-creators/", "ja/for-creators/", "zh/for-creators/", "linki/", "komiks/", "blog/"];                                 // mile widziane — 404 nie psuje instalacji
 const LANGS = ['en', 'es', 'pt', 'it', 'ja', 'zh'];
 const u = p => new URL(p, BASE).href;

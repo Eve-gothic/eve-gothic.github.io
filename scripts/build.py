@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from i18n import *
 from creators_i18n import CR   # podstrona „Dla twórców” (usługa)
 from pwa import pwa_head, build_pwa   # warstwa PWA (apka na telefon) — Gry
+from ads import ad_banner, ad_script, build_ads_js   # reklama własna usługi (baner, okienko, pasek po komiksie)
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 # >>> JEDYNE miejsce z adresem strony (kanoniczny adres, hreflang, og:url, RSS, sitemap, przekierowanie z GH Pages).
@@ -333,14 +334,16 @@ document.getElementById('gate-yes').addEventListener('click',()=>{{const box=doc
  box.hidden=false;window.open(U,'_blank','noopener,noreferrer')}});}})();
 </script></body></html>'''
 
-def footer(lang, path, blog=False):
+def footer(lang, path, blog=False, ads=True):
     t, r = T[lang], root_for(path)
     note = f'<br><strong>{t["ai_note"]}</strong>' if blog else ''
     return f'''<footer><div><span class="mast">Eve.</span><br>© <span id="y">2026</span> Daniel Wodziński · Multiwersum Eve</div>
 {social(lang, 'foot')}<div style="max-width:52ch">{t['foot']}{note}<br><a href="{r}{path_blog(lang)}feed.xml">{t['rss']}</a> · <a href="{r}warianty/">{t['variants']}</a><br><a class="forcr" href="{r}{path_creators(lang)}" data-goatcounter-click="creators-footer">{CR[lang]['foot_link']}</a></div></footer>
-<script src="{r}js/eve.js"></script>{analytics()}</body></html>'''
+<script src="{r}js/eve.js"></script>{ad_script(lang, r, r + path_creators(lang)) if ads else ''}{analytics()}</body></html>'''
 
-SLOT = '<div class="slot" aria-hidden="true"></div>'   # miejsce na przyszłe reklamy (bez kodu reklam)
+SLOT = '<div class="slot" aria-hidden="true"></div>'   # puste miejsce (ukryte przez .slot:empty)
+# Baner reklamy własnej — najwyżej JEDEN na stronę (scripts/ads.py): dół strony głównej, koniec wpisu, koniec komiksu.
+def house_ad(lang, r, kind): return ad_banner(lang, r, r + path_creators(lang), kind)
 
 def card(p, r, big=False):
     t = T[p['lang']]; url = r + path_post(p['lang'], p['slug'])
@@ -445,7 +448,7 @@ def home(lang, posts):
  {blog}
  <p style="margin-top:34px"><a class="cta" href="{r}{path_blog(lang)}">{t['all_posts']} →</a></p></section>
 </div>
-{SLOT}
+{house_ad(lang, r, 'home')}
 </main>
 ''' + footer(lang, path)
     return out
@@ -489,7 +492,7 @@ def post_page(p, slugs):
  {follow_block(lang, 'post')}
  <div class="postnav"><a class="cta" href="{r}{path_blog(lang)}">{t['back_blog']}</a><a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
 </article>
-{SLOT}
+{house_ad(lang, r, 'post')}
 </main>
 ''' + footer(lang, path, blog=True)
     return out
@@ -518,6 +521,7 @@ def komiks_page(lang):
 <section class="reader">{pages}</section>
 <p class="small" style="text-align:center;font-style:italic">{t['komiks_next']}</p>
 {follow_block(lang, 'komiks')}
+{house_ad(lang, r, 'komiks')}
 <div class="postnav" style="margin-bottom:60px">{pdf}<a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
 <div style="height:50px"></div>
 </main>
@@ -607,6 +611,7 @@ def komiks2_page(lang):
 {SLOT}
 <section class="reader">{pages}</section>
 {follow_block(lang, 'komiks2')}
+{house_ad(lang, r, 'komiks2')}
 <div class="postnav" style="margin-bottom:60px">{pdf}<a class="cta" href="{r}{path_komiks(lang)}">Main Character →</a><a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
 <div style="height:50px"></div>
 </main>
@@ -703,6 +708,7 @@ def komiks3_page(lang):
 <section class="reader">{pages}</section>
 {more}<p style="text-align:center;margin:28px 0 0">{play}</p>
 {follow_block(lang, 'komiks3')}
+{house_ad(lang, r, 'komiks3')}
 <div class="postnav" style="margin-bottom:60px">{play}<a class="cta" href="{r}{path_komiks(lang)}">Main Character →</a><a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
 <div style="height:50px"></div>
 </main>
@@ -770,7 +776,7 @@ def creators_page(lang):
 <div class="postnav" style="margin-bottom:60px"><a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
 <div style="height:40px"></div>
 </main>
-""" + footer(lang, path)
+""" + footer(lang, path, ads=False)
     return out
 
 def linki_page(lang, posts, path=None):
@@ -894,6 +900,7 @@ def main():
     write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
     urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + ([path_komiks3(l) for l in LANGS] if COMIC3_PUBLISHED else []) + [path_sesja(l) for l in LANGS] + [path_creators(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
+    build_ads_js(write)   # js/ads.js (przed build_pwa — wchodzi do pamięci offline)
     build_pwa(ROOT, write)   # manifest, sw.js, js/pwa.js, offline.html, ikony (po stronach — wersja cache z ich treści)
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
 
