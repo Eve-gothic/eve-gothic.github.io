@@ -12,6 +12,11 @@
     })();
   }
   function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (_) {} }
+  function dismissed(k) {   // stary znacznik '1' wygasł — po odinstalowaniu pasek wraca od razu
+    var v = store(k); if (!v || v === '1') return false;
+    var ts = +v; return !!(ts && Date.now() - ts < 14 * 864e5);
+  }
+  function dismiss(k) { store(k, String(Date.now())); }
 
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     addEventListener('load', function () { navigator.serviceWorker.register(root + 'sw.js', {scope: root}).catch(function () {}); });
@@ -38,7 +43,7 @@
     b.innerHTML = '<img src="' + root + 'assets/pwa/icon-192.png" alt="">' + inner + '<button class="x" type="button" aria-label="' + t.close + '">×</button>';
     document.body.appendChild(b); requestAnimationFrame(function () { requestAnimationFrame(function () { b.classList.add('on'); }); });
     var hide = function () { b.classList.remove('on'); setTimeout(function () { b.remove(); }, 500); };
-    b.querySelector('.x').onclick = function () { if (onClose) onClose(); else { store(KEY, '1'); gc('pwa-prompt-dismissed', 'PWA: zamknięto zachętę'); } hide(); };
+    b.querySelector('.x').onclick = function () { if (onClose) onClose(); else { dismiss(KEY); gc('pwa-prompt-dismissed', 'PWA: zamknięto zachętę'); } hide(); };
     if (onGo) b.querySelector('.go').onclick = function () { onGo(hide); };
     return b;
   }
@@ -63,10 +68,18 @@
   if (pushable) {
     var pv = 0; try { pv = +sessionStorage.getItem('eve-pv') + 1; sessionStorage.setItem('eve-pv', String(pv)); } catch (_) {}
     addEventListener('DOMContentLoaded', function () {   // opcjonalne przyciski na stronie: <button data-eve-push hidden>
-      [].forEach.call(document.querySelectorAll('[data-eve-push]'), function (el) {
-        if (Notification.permission === 'denied') return;
-        el.hidden = false; el.addEventListener('click', function () { pushSubscribe(function (ok) { if (ok) el.hidden = true; }); });
-      });
+      if (Notification.permission === 'denied') return;
+      navigator.serviceWorker.ready.then(function (reg) { return reg.pushManager.getSubscription(); }).then(function (s) {
+        if (s) return;   // już zasubskrybowane — zostaw ukryte
+        [].forEach.call(document.querySelectorAll('[data-eve-push]'), function (el) {
+          el.hidden = false;
+          el.addEventListener('click', function () {
+            pushSubscribe(function (ok) {
+              if (ok) [].forEach.call(document.querySelectorAll('[data-eve-push]'), function (b) { b.hidden = true; });
+            });
+          });
+        });
+      }).catch(function () {});
     });
     var d = +store(PKEY) || 0;
     if (Notification.permission !== 'denied' && !(d && Date.now() - d < 30 * 864e5) && (standalone || pv >= 2)) {   // w przeglądarce dopiero od 2. strony w wizycie
@@ -83,38 +96,80 @@
       }, standalone ? 4000 : 6000);
     }
   }
+  function hookInstall(onClick) {   // <button data-eve-install hidden> — znacznik dodaje Strona (stopka); tu tylko pokazać / obsłużyć
+    function apply() {
+      [].forEach.call(document.querySelectorAll('[data-eve-install]'), function (el) {
+        el.hidden = false;
+        if (el.getAttribute('data-eve-install-on') === '1') return;
+        el.setAttribute('data-eve-install-on', '1');
+        el.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          if (!el.getAttribute('data-goatcounter-click')) gc('pwa-install-button-click', 'PWA: kliknięto przycisk instalacji');
+          onClick();
+        });
+      });
+    }
+    if (document.readyState === 'loading') addEventListener('DOMContentLoaded', apply);
+    else apply();
+  }
+  function hideInstallHooks() {
+    [].forEach.call(document.querySelectorAll('[data-eve-install]'), function (el) { el.hidden = true; });
+  }
+
   if (standalone) return;
 
-  if (store(KEY)) return;
-
-  // Android / Chrome / Edge: natywne okno instalacji
+  // Android / Chrome / Edge: natywne okno instalacji. beforeinstallprompt leci tylko, gdy apka NIE jest zainstalowana —
+  // po odinstalowaniu pasek i przycisk wracają. Zamknięcie / odmowa: 14 dni (nie blokujemy na stałe).
   var deferred = null;
   addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault(); deferred = e;
-    if (document.querySelector('.eve-pwa')) return;
+    hookInstall(function () {
+      if (!deferred || typeof deferred.prompt !== 'function') return;
+      deferred.prompt();
+      if (deferred.userChoice) deferred.userChoice.then(function (c) {
+        if (c.outcome === 'accepted') gc('pwa-prompt-accepted', 'PWA: zaakceptowano instalację');
+        else { dismiss(KEY); gc('pwa-prompt-declined', 'PWA: odrzucono instalację'); }
+        deferred = null;
+      }).catch(function () { deferred = null; });
+    });
+    if (dismissed(KEY) || document.querySelector('.eve-pwa')) return;
     setTimeout(function () {
+      if (!deferred || document.querySelector('.eve-pwa')) return;
       bar('<div class="tx"><div class="tt">Eve.</div>' + t.sub + '</div><button class="go" type="button">' + t.install + '</button>', function (hide) {
         if (!deferred) return hide();
         deferred.prompt();
         deferred.userChoice.then(function (c) {
           if (c.outcome === 'accepted') gc('pwa-prompt-accepted', 'PWA: zaakceptowano instalację');
-          else { store(KEY, '1'); gc('pwa-prompt-declined', 'PWA: odrzucono instalację'); }
+          else { dismiss(KEY); gc('pwa-prompt-declined', 'PWA: odrzucono instalację'); }
           deferred = null; hide();
         });
-      });
+      }, function () { dismiss(KEY); gc('pwa-prompt-dismissed', 'PWA: zamknięto zachętę'); });
       gc('pwa-prompt-shown', 'PWA: pokazano przycisk instalacji');
     }, 2500);
   });
-  addEventListener('appinstalled', function () { store(KEY, '1'); gc('pwa-appinstalled', 'PWA: apka zainstalowana'); var b = document.querySelector('.eve-pwa'); if (b) b.remove(); });
+  addEventListener('appinstalled', function () {
+    deferred = null;
+    hideInstallHooks();
+    gc('pwa-appinstalled', 'PWA: apka zainstalowana');
+    var b = document.querySelector('.eve-pwa'); if (b) b.remove();
+  });
 
-  // iPhone / iPad w Safari: jednorazowa podpowiedź „Udostępnij → Dodaj do ekranu początkowego”
+  // iPhone / iPad w Safari: podpowiedź „Udostępnij → Dodaj do ekranu początkowego”
   var ua = navigator.userAgent, ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   var safari = ios && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS|GSA|Instagram|FBAN|FBAV/.test(ua);
-  if (safari && !store(IOSKEY)) {
-    setTimeout(function () {
-      store(IOSKEY, '1');
+  if (safari) {
+    hookInstall(function () {
+      if (document.querySelector('.eve-pwa')) return;
       bar('<div class="tx"><div class="tt">' + t.ios_t + '</div>' + t.ios.replace('{share}', SHARE) + '</div>');
       gc('pwa-ios-hint-shown', 'PWA: pokazano podpowiedź iOS');
-    }, 3500);
+    });
+    if (!dismissed(IOSKEY) && !dismissed(KEY)) {
+      setTimeout(function () {
+        if (document.querySelector('.eve-pwa')) return;
+        dismiss(IOSKEY);
+        bar('<div class="tx"><div class="tt">' + t.ios_t + '</div>' + t.ios.replace('{share}', SHARE) + '</div>', null, function () { dismiss(KEY); gc('pwa-prompt-dismissed', 'PWA: zamknięto zachętę'); });
+        gc('pwa-ios-hint-shown', 'PWA: pokazano podpowiedź iOS');
+      }, 3500);
+    }
   }
 })();
