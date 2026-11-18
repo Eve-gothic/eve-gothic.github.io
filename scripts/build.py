@@ -12,6 +12,7 @@ import os, re, sys, html, datetime, shutil
 from email.utils import format_datetime
 sys.path.insert(0, os.path.dirname(__file__))
 from i18n import *
+from creators_i18n import CR   # podstrona „Dla twórców” (usługa)
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 # >>> JEDYNE miejsce z adresem strony (kanoniczny adres, hreflang, og:url, RSS, sitemap, przekierowanie z GH Pages).
@@ -76,6 +77,7 @@ LINKI_ORDER = ['en'] + [l for l in LANGS if l != 'en']
 def path_linki(lang): return {'en': 'linki/', 'pl': 'pl/linki/'}.get(lang, lang + '/linki/')
 def path_post(lang, slug): return prefix(lang) + f'blog/{slug}/'
 def root_for(path): return '../' * path.count('/')   # path = katalog strony względem korzenia
+def path_creators(lang): return 'dla-tworcow/' if lang == 'pl' else lang + '/for-creators/'   # usługa: aplikacje dla twórców
 
 # ---------------- wpisy ----------------
 def parse_post(fn, lang):
@@ -334,7 +336,7 @@ def footer(lang, path, blog=False):
     t, r = T[lang], root_for(path)
     note = f'<br><strong>{t["ai_note"]}</strong>' if blog else ''
     return f'''<footer><div><span class="mast">Eve.</span><br>© <span id="y">2026</span> Daniel Wodziński · Multiwersum Eve</div>
-{social(lang, 'foot')}<div style="max-width:52ch">{t['foot']}{note}<br><a href="{r}{path_blog(lang)}feed.xml">{t['rss']}</a> · <a href="{r}warianty/">{t['variants']}</a></div></footer>
+{social(lang, 'foot')}<div style="max-width:52ch">{t['foot']}{note}<br><a href="{r}{path_blog(lang)}feed.xml">{t['rss']}</a> · <a href="{r}warianty/">{t['variants']}</a><br><a class="forcr" href="{r}{path_creators(lang)}" data-goatcounter-click="creators-footer">{CR[lang]['foot_link']}</a></div></footer>
 <script src="{r}js/eve.js"></script>{analytics()}</body></html>'''
 
 SLOT = '<div class="slot" aria-hidden="true"></div>'   # miejsce na przyszłe reklamy (bez kodu reklam)
@@ -354,7 +356,10 @@ def home(lang, posts):
     t = T[lang]; path = path_home(lang); r = root_for(path); A = r + 'assets/'
     alts = {l: path_home(l) for l in LANGS}
     img = lambda n, full=False: f'{A}img/eve-{n}{"" if full else "-thumb"}.webp'
-    out = head(lang, path, t['title'], t['desc'], alts, f'og/home-{lang}.jpg')
+    ld = ('<script type="application/ld+json">{"@context":"https://schema.org","@graph":['
+          '{"@type":"Organization","@id":"' + SITE + '#org","name":"Eve","url":"' + SITE + '","logo":"' + SITE + 'assets/img/eve-avatar.webp","sameAs":["' + FB + '","' + IG + '"]},'
+          '{"@type":"WebSite","@id":"' + SITE + '#website","name":"Eve","url":"' + SITE + '","inLanguage":"' + HTML_LANG[lang] + '","description":' + json_str(t['desc']) + ',"publisher":{"@id":"' + SITE + '#org"}}]}</script>')
+    out = head(lang, path, t['title'], t['desc'], alts, f'og/home-{lang}.jpg', extra=ld)
     figs = ''
     for k, (n, cap) in enumerate(zip(GALLERY, GAL_CAP[lang]), 1):
         figs += f'<figure class="s{k}"><button data-full="{img(n, True)}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img loading="lazy" src="{img(n, True) if k in (1, 4, 11, 12) else img(n)}" alt="Eve — {esc(cap)}"></button><figcaption data-n="{k:02d}">{esc(cap)}</figcaption></figure>\n'
@@ -703,6 +708,70 @@ def komiks3_page(lang):
 """ + footer(lang, path)
     return out
 
+# ── Podstrona „Dla twórców” — oferta usługi (18.11.2026). Bez nazwy usługi i bez cen. ──
+# Kontakt w JEDNYM miejscu (creators_contact). Gdy będzie adres e-mail, wpisz go tutaj -> dojdzie przycisk mailto.
+SERVICE_CONTACT_EMAIL = ''
+def creators_contact(lang):
+    C = CR[lang]
+    ev = lambda n: f'data-goatcounter-click="creators-contact-{n}" data-goatcounter-title="Creators contact — {n} ({lang})"'
+    u = lambda url: esc(url + ('&' if '?' in url else '?') + 'utm_source=site&utm_medium=creators&utm_campaign=service')
+    btns = (f'<a class="fbtn" href="{u(IG)}" target="_blank" rel="noopener" {ev("instagram")}>{SVG_IG}<span>{C["msg_ig"]}</span></a>'
+            f'<a class="fbtn" href="{u(FB)}" target="_blank" rel="noopener" {ev("facebook")}>{SVG_FB}<span>{C["msg_fb"]}</span></a>')
+    if SERVICE_CONTACT_EMAIL:
+        btns += f'<a class="fbtn" href="mailto:{esc(SERVICE_CONTACT_EMAIL)}" {ev("email")}><span>{C["mail"]}</span></a>'
+    return (f'<section id="kontakt" class="fblock crcontact" aria-labelledby="cr-contact-h"><span class="sc">{C["kicker"]}</span>'
+            f'<h2 id="cr-contact-h" class="fline">{C["contact_h"]}</h2><p class="crlead">{C["contact_lead"]}</p><div class="fbtns">{btns}</div></section>')
+
+def creators_page(lang):
+    t = T[lang]; C = CR[lang]; path = path_creators(lang); r = root_for(path); A = r + 'assets/'
+    alts = {l: path_creators(l) for l in LANGS}
+    og = f'og/creators-{lang}.jpg'
+    ld = ('<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":' + json_str(C['h1']) +
+          ',"serviceType":' + json_str(C['title']) + ',"description":' + json_str(C['desc']) + ',"url":"' + SITE + path + '","inLanguage":"' + HTML_LANG[lang] +
+          '","areaServed":"Worldwide","audience":{"@type":"Audience","audienceType":"Influencers and online creators"},'
+          '"provider":{"@type":"Organization","@id":"' + SITE + '#org","name":"Eve","url":"' + SITE + '","sameAs":["' + FB + '","' + IG + '"]},'
+          '"hasOfferCatalog":{"@type":"OfferCatalog","name":' + json_str(C['feat_h']) + ',"itemListElement":[' +
+          ','.join('{"@type":"Offer","itemOffered":{"@type":"Service","name":' + json_str(a) + '}}' for a, _ in C['feats']) + ']}}</script>')
+    out = head(lang, path, C['title'], C['desc'], alts, og, 'website', ld)
+    icons = ['▣', '✊\ufe0e', '✎', '◐', '✦', '⁂', '♪', '◆', '▤']
+    feats = ''.join(f'<li><span class="cri" aria-hidden="true">{i}</span><h3>{a}</h3><p>{b}</p></li>' for i, (a, b) in zip(icons, C['feats']))
+    comic = path_komiks3(lang) if COMIC3_PUBLISHED else path_komiks(lang)
+    comic_img = f'{K3_ASSETS}/{lang}/{komiks3_pages(lang)[0][1]}' if COMIC3_PUBLISHED and komiks3_pages(lang) else 'assets/komiks/eve-komiks-okladka.webp'
+    penalty = esc(f'{PENALTY}?lang={penalty_lang(lang)}&utm_source=site&utm_medium=creators&utm_campaign=penalty')
+    brawler = esc(f'{BRAWLER}?lang={brawler_lang(lang)}&utm_source=site&utm_medium=creators&utm_campaign=brawler')
+    def tcard(href, img, alt, title, sub, ev, ext=False, w=480, h=270):
+        tgt = ' target="_blank" rel="noopener"' if ext else ''
+        return (f'<li><a class="crcard" href="{href}"{tgt} data-goatcounter-click="creators-try-{ev}"><img loading="lazy" src="{img}" alt="{esc(alt)}" width="{w}" height="{h}">'
+                f'<span class="crct"><strong>{title}</strong><small>{sub}</small></span></a></li>')
+    tries = (tcard(f'{r}{path_home(lang)}#galeria', f'{A}img/eve-portret-thumb.webp', f'Eve — {C["try_gal"]}', C['try_gal'], C['try_gal_sub'], 'gallery', w=389, h=520)
+             + tcard(f'{r}{comic}', r + comic_img, C['try_comic'], C['try_comic'], C['try_comic_sub'], 'comic', w=1190, h=1785)
+             + tcard(penalty, f'{A}img/eve-penalty-thumb.webp', t['penalty_title'], f'{C["try_game"]}: {t["penalty_title"]}', C['try_game_sub'], 'penalty', True)
+             + tcard(brawler, f'{A}img/eve-brawler-thumb.webp', 'Eve vs The Suits', f'{C["try_game"]}: Eve vs The Suits', C['try_game_sub'], 'brawler', True))
+    steps = ''.join(f'<li><span class="crn" aria-hidden="true">{ROMAN[k]}</span><h3>{a}</h3><p>{b}</p></li>' for k, (a, b) in enumerate(C['steps']))
+    notes = ''.join(f'<li>{n}</li>' for n in C['notes'])
+    out += topbar(lang, path, alts, solid=True) + f"""
+<main class="wrap creators">
+<section class="bloghead khead crhero"><span class="sc">{C['kicker']}</span>
+<h1>{C['h1']}</h1><p>{C['pitch']}</p>
+<p style="margin-top:6px"><a class="cta fill" href="#kontakt">{C['cta']} →</a> <a class="cta" href="#sprawdz">{C['cta2']} ↓</a></p></section>
+<section class="sec crsec" aria-labelledby="cr-feat-h">
+ <div class="head"><span class="no" aria-hidden="true">I</span><h2 id="cr-feat-h">{C['feat_h']}</h2></div>
+ <ul class="crgrid">{feats}</ul></section>
+<section id="sprawdz" class="sec crsec" aria-labelledby="cr-try-h">
+ <div class="head"><span class="no" aria-hidden="true">II</span><h2 id="cr-try-h">{C['try_h']}</h2></div>
+ <p class="small crintro">{C['try_lead']}</p>
+ <ul class="crtry" aria-label="{esc(C['try_aria'])}">{tries}</ul></section>
+<section class="sec crsec" aria-labelledby="cr-how-h">
+ <div class="head"><span class="no" aria-hidden="true">III</span><h2 id="cr-how-h">{C['how_h']}</h2></div>
+ <ol class="crsteps">{steps}</ol>
+ <div class="crnotes"><h3>{C['notes_h']}</h3><ul>{notes}</ul></div></section>
+{creators_contact(lang)}
+<div class="postnav" style="margin-bottom:60px"><a class="cta" href="{r}{path_home(lang)}">{t['back_home']}</a></div>
+<div style="height:40px"></div>
+</main>
+""" + footer(lang, path)
+    return out
+
 def linki_page(lang, posts, path=None):
     L, t = LINKI[lang], T[lang]
     path = path or path_linki(lang); r = root_for(path); canon = path_linki(lang)
@@ -754,7 +823,7 @@ def linki_page(lang, posts, path=None):
 </header>
 <nav class="llist">
 {links}</nav>
-<footer class="lfoot"><a href="{esc(utm(r + path_home(lang)))}">{esc(L['site'])} · {SITE_HOST}</a><br><small>{esc(t['ai_note'])}</small></footer>
+<footer class="lfoot"><a href="{esc(utm(r + path_home(lang)))}">{esc(L['site'])} · {SITE_HOST}</a><br><small>{esc(t['ai_note'])}</small><br><small><a class="forcr" href="{r}{path_creators(lang)}" data-goatcounter-click="creators-bio">{esc(CR[lang]['foot_link'])}</a></small></footer>
 </main>{analytics()}
 </body></html>'''
 
@@ -813,6 +882,8 @@ def main():
                 os.remove(og)
         og_image(os.path.join(ROOT, f'og/sesja-czern-{l}.jpg'), 'assets/sesje/czern/01.webp', SESJA[l]['kicker'], SESJA[l]['title'], lang=l)
         write(path_sesja(l) + 'index.html', sesja_page(l))
+        og_image(os.path.join(ROOT, f'og/creators-{l}.jpg'), 'eve-londyn', CR[l]['kicker'], CR[l]['h1'], lang=l)
+        write(path_creators(l) + 'index.html', creators_page(l))
         og_image(os.path.join(ROOT, f'og/linki-{l}.jpg'), 'assets/img/eve-spojrzenie-noir.webp', LINKI[l]['kicker'], LINKI[l]['bio'].split(' · ')[0], lang=l)
         write(path_linki(l) + 'index.html', linki_page(l, posts))
         write(path_blog(l) + 'feed.xml', feed(l, posts))
@@ -820,7 +891,7 @@ def main():
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
         pass  # bramka 18+ usunięta na prośbę Daniela (5.11.2026)   # bramka 18+ — celowo NIE w sitemap.xml
     write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
-    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + ([path_komiks3(l) for l in LANGS] if COMIC3_PUBLISHED else []) + [path_sesja(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
+    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + ([path_komiks3(l) for l in LANGS] if COMIC3_PUBLISHED else []) + [path_sesja(l) for l in LANGS] + [path_creators(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
 
