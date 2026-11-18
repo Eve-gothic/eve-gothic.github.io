@@ -94,10 +94,11 @@ self.addEventListener('message', e => { if (e.data === 'skipWaiting') self.skipW
 
 // ---- powiadomienia push (Worker eve-push) ----
 const PUSH = {"api": "https://eve-push.wodzu2207.workers.dev", "key": "BHjWY6NROqFXgTK2f8eUzoBvYPcnpEugI1et9AQMxG2Ga6csvtqX9PI-omwT-d1So85VOFr2hiQazWcyt_aRj1U"};
+const SOCIAL = /^(www\.|m\.|web\.)?(facebook\.com|fb\.com|fb\.watch|instagram\.com)$/i;   // posty Eve na FB/IG (te same hosty co LINK_HOSTS w Workerze)
 self.addEventListener('push', e => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; } catch (_) { d = {body: e.data ? e.data.text() : ''}; }
-  const url = (() => { try { const x = new URL(d.url || BASE, BASE); return x.origin === self.location.origin ? x.href : BASE; } catch (_) { return BASE; } })();
+  const url = (() => { try { const x = new URL(d.url || BASE, BASE); return x.origin === self.location.origin || (x.protocol === 'https:' && SOCIAL.test(x.hostname)) ? x.href : BASE; } catch (_) { return BASE; } })();
   e.waitUntil(self.registration.showNotification(d.title || 'Eve', {
     body: d.body || '', icon: u('assets/pwa/icon-192.png'), badge: u('assets/pwa/badge-96.png'),
     tag: d.tag || undefined, renotify: !!d.tag, data: {url}, lang: d.lang || undefined,
@@ -107,6 +108,7 @@ self.addEventListener('notificationclick', e => {
   e.notification.close();
   const url = (e.notification.data && e.notification.data.url) || BASE;
   e.waitUntil((async () => {
+    if (new URL(url).origin !== self.location.origin) return self.clients.openWindow(url);   // FB/IG: aplikacja/przeglądarka, nie okno apki Eve
     const wins = await self.clients.matchAll({type: 'window', includeUncontrolled: true});
     for (const w of wins) if (w.url.split('#')[0] === url.split('#')[0] && 'focus' in w) return w.focus();
     for (const w of wins) if (w.url.startsWith(BASE) && 'navigate' in w) { try { await w.focus(); return await w.navigate(url); } catch (_) {} }
