@@ -74,6 +74,11 @@ def path_blog(lang): return prefix(lang) + 'blog/'
 KOMIKS_N = 31   # liczba stron komiksu (assets/komiks/eve-komiks-NN.webp)
 KOMIKS_PDF = 'assets/komiks/eve-main-character.pdf'
 def path_komiks(lang): return prefix(lang) + 'komiks/'
+# Strony per język (18.11.2026): assets/komiks/<lang>/eve-komiks-NN.webp (dymki przetłumaczone, /workspace/eve-komiks/i18n/k1-translations.json).
+# Angielski = oryginały. Brak pliku w <lang>/ -> oryginał.
+def k1_src(lang, n):
+    loc = f'assets/komiks/{lang}/eve-komiks-{n:02d}.webp'
+    return loc if lang != 'en' and os.path.exists(os.path.join(ROOT, loc)) else f'assets/komiks/eve-komiks-{n:02d}.webp'
 # link w bio: angielski jest główny pod /linki/ (adres do bio na Instagramie); /en/linki/ to kopia z canonical -> /linki/
 LINKI_ORDER = ['en'] + [l for l in LANGS if l != 'en']
 def path_linki(lang): return {'en': 'linki/', 'pl': 'pl/linki/'}.get(lang, lang + '/linki/')
@@ -501,15 +506,15 @@ def komiks_page(lang):
     t = T[lang]; path = path_komiks(lang); r = root_for(path)
     alts = {l: path_komiks(l) for l in LANGS}
     og = f'og/komiks-{lang}.jpg'
-    extra = f'''<script type="application/ld+json">{{"@context":"https://schema.org","@type":"ComicStory","name":"Main Character","inLanguage":"en","url":"{SITE}{path}","image":"{SITE}{og}","description":{json_str(t['komiks_desc'])},"author":{{"@type":"Person","name":"Eve (AI)","sameAs":["{FB}","{IG}"]}}}}</script>'''
+    extra = f'''<script type="application/ld+json">{{"@context":"https://schema.org","@type":"ComicStory","name":"Main Character","inLanguage":"{HTML_LANG[lang]}","url":"{SITE}{path}","image":"{SITE}{og}","description":{json_str(t['komiks_desc'])},"author":{{"@type":"Person","name":"Eve (AI)","sameAs":["{FB}","{IG}"]}}}}</script>'''
     out = head(lang, path, f"{t['komiks_title']} — Eve", t['komiks_desc'], alts, og, 'website', extra)
     pages = ''
     for n in range(1, KOMIKS_N + 1):
-        src = f'{r}assets/komiks/eve-komiks-{n:02d}.webp'; cap = f"Main Character — {t['komiks_page']} {n} / {KOMIKS_N}"
+        src = f'{r}{k1_src(lang, n)}'; cap = f"Main Character — {t['komiks_page']} {n} / {KOMIKS_N}"
         pages += f'<figure class="kpage" id="s{n}"><button data-full="{src}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img src="{src}" alt="{esc(t["komiks_alt"])} {n}" width="1190" height="1682"' + (' fetchpriority="high"' if n == 1 else ' loading="lazy" decoding="async"') + f'></button><figcaption>{t["komiks_page"]} {n} / {KOMIKS_N}</figcaption></figure>\n'
     pdf_mb = os.path.getsize(os.path.join(ROOT, KOMIKS_PDF)) / 1e6
     size = f'{pdf_mb:.1f} MB' if lang in ('en', 'ja', 'zh') else f'{pdf_mb:.1f} MB'.replace('.', ',')
-    pdf = f'<a class="cta" href="{r}{KOMIKS_PDF}" download>{t["komiks_pdf"]} ({size})</a>'
+    pdf = f'<a class="cta" href="{r}{KOMIKS_PDF}" download>{t["komiks_pdf"]} ({"EN, " if lang != "en" else ""}{size})</a>'
     note = f' <em>{t["komiks_note"]}</em>' if t['komiks_note'] else ''
     out += topbar(lang, path, alts, solid=True) + f'''
 <main class="wrap">
