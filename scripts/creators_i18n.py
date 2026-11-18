@@ -32,7 +32,7 @@ CR = {
   'We only use photos and likenesses you own or have the rights to, and every sponsored item is clearly marked.',
   'Eve is an AI character. Your app is built around you.',
  ],
- contact_h='Want one for yourself?', contact_lead='Send Eve a message on Instagram or Facebook. Tell us a little about your profile and we’ll get back to you with ideas and a quote.',
+ contact_h='Want one for yourself?', contact_lead='Email us or message Eve on Instagram or Facebook. Tell us a little about your profile and we’ll get back to you with ideas and a quote.',
  msg_ig='Message on Instagram', msg_fb='Message on Facebook', mail='Email us',
  foot_link='Want an app like this?', try_aria='Live examples on this site'),
 'pl': dict(
@@ -64,7 +64,7 @@ CR = {
   'Korzystamy tylko ze zdjęć i wizerunku, do których masz prawa, a każda treść sponsorowana jest wyraźnie oznaczona.',
   'Eve jest postacią stworzoną przez AI. Twoja aplikacja powstaje wokół Ciebie.',
  ],
- contact_h='Chcesz taką dla siebie?', contact_lead='Napisz do Eve na Instagramie albo Facebooku. Opowiedz krótko o swoim profilu, a odezwiemy się z pomysłami i wyceną.',
+ contact_h='Chcesz taką dla siebie?', contact_lead='Napisz do nas e-mail albo wiadomość do Eve na Instagramie lub Facebooku. Opowiedz krótko o swoim profilu, a odezwiemy się z pomysłami i wyceną.',
  msg_ig='Napisz na Instagramie', msg_fb='Napisz na Facebooku', mail='Napisz e-mail',
  foot_link='Chcesz taką aplikację dla siebie?', try_aria='Działające przykłady na tej stronie'),
 'es': dict(
@@ -96,7 +96,7 @@ CR = {
   'Solo usamos fotos e imagen sobre las que tienes derechos, y todo el contenido patrocinado va claramente señalado.',
   'Eve es un personaje creado con IA. Tu app se construye a tu alrededor.',
  ],
- contact_h='¿Quieres una para ti?', contact_lead='Escribe a Eve por Instagram o Facebook. Cuéntanos un poco sobre tu perfil y te responderemos con ideas y un presupuesto.',
+ contact_h='¿Quieres una para ti?', contact_lead='Escríbenos un email o un mensaje a Eve por Instagram o Facebook. Cuéntanos un poco sobre tu perfil y te responderemos con ideas y un presupuesto.',
  msg_ig='Escribir por Instagram', msg_fb='Escribir por Facebook', mail='Enviar un email',
  foot_link='¿Quieres una app como esta?', try_aria='Ejemplos reales en esta web'),
 'pt': dict(
@@ -128,7 +128,7 @@ CR = {
   'Usamos apenas fotos e imagem sobre as quais você tem direitos, e todo conteúdo patrocinado é claramente identificado.',
   'Eve é uma personagem criada com IA. O seu app é construído em torno de você.',
  ],
- contact_h='Quer um para você?', contact_lead='Mande uma mensagem para a Eve no Instagram ou no Facebook. Conte um pouco sobre o seu perfil e respondemos com ideias e um orçamento.',
+ contact_h='Quer um para você?', contact_lead='Mande-nos um e-mail ou uma mensagem para a Eve no Instagram ou no Facebook. Conte um pouco sobre o seu perfil e respondemos com ideias e um orçamento.',
  msg_ig='Mensagem no Instagram', msg_fb='Mensagem no Facebook', mail='Enviar e-mail',
  foot_link='Quer um app como este?', try_aria='Exemplos reais neste site'),
 'it': dict(
@@ -160,7 +160,7 @@ CR = {
   'Usiamo solo foto e immagini di cui hai i diritti, e ogni contenuto sponsorizzato è chiaramente segnalato.',
   'Eve è un personaggio creato con l’IA. La tua app nasce intorno a te.',
  ],
- contact_h='Ne vuoi una tutta tua?', contact_lead='Scrivi a Eve su Instagram o Facebook. Raccontaci qualcosa del tuo profilo e ti risponderemo con idee e un preventivo.',
+ contact_h='Ne vuoi una tutta tua?', contact_lead='Scrivici un’email o un messaggio a Eve su Instagram o Facebook. Raccontaci qualcosa del tuo profilo e ti risponderemo con idee e un preventivo.',
  msg_ig='Scrivi su Instagram', msg_fb='Scrivi su Facebook', mail='Scrivici un’email',
  foot_link='Vuoi un’app come questa?', try_aria='Esempi reali su questo sito'),
 'ja': dict(
@@ -192,7 +192,7 @@ CR = {
   '使用するのは、あなたが権利を持つ写真や肖像のみ。スポンサーコンテンツはすべて明確に表示します。',
   'EveはAIで生まれたキャラクターです。あなたのアプリは、あなた自身を中心に作ります。',
  ],
- contact_h='あなたのアプリを作りませんか？', contact_lead='InstagramかFacebookでEveにメッセージを送ってください。プロフィールについて少し教えていただければ、アイデアとお見積もりをお返事します。',
+ contact_h='あなたのアプリを作りませんか？', contact_lead='メール、またはInstagramかFacebookでEveにメッセージを送ってください。プロフィールについて少し教えていただければ、アイデアとお見積もりをお返事します。',
  msg_ig='Instagramでメッセージ', msg_fb='Facebookでメッセージ', mail='メールで問い合わせ',
  foot_link='こんなアプリが欲しい方へ', try_aria='このサイトで動く実例'),
 'zh': dict(
@@ -224,7 +224,7 @@ CR = {
   '我们只使用你拥有权利的照片和肖像，所有赞助内容都会清楚标注。',
   'Eve 是由 AI 创作的虚拟角色；你的 App 将围绕你本人打造。',
  ],
- contact_h='想要一个属于自己的吗？', contact_lead='在 Instagram 或 Facebook 上给 Eve 发消息，简单介绍一下你的账号，我们会回复你想法和报价。',
+ contact_h='想要一个属于自己的吗？', contact_lead='给我们发邮件，或在 Instagram 或 Facebook 上给 Eve 发消息，简单介绍一下你的账号，我们会回复你想法和报价。',
  msg_ig='在 Instagram 上发消息', msg_fb='在 Facebook 上发消息', mail='发送邮件',
  foot_link='想要一个这样的 App 吗？', try_aria='本站上的真实示例'),
 }

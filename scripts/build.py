@@ -717,7 +717,7 @@ def komiks3_page(lang):
 
 # ── Podstrona „Dla twórców” — oferta usługi (18.11.2026). Bez nazwy usługi i bez cen. ──
 # Kontakt w JEDNYM miejscu (creators_contact). Gdy będzie adres e-mail, wpisz go tutaj -> dojdzie przycisk mailto.
-SERVICE_CONTACT_EMAIL = ''
+SERVICE_CONTACT_EMAIL = 'wodzinski.d.fb@gmail.com'
 def creators_contact(lang):
     C = CR[lang]
     ev = lambda n: f'data-goatcounter-click="creators-contact-{n}" data-goatcounter-title="Creators contact — {n} ({lang})"'
@@ -725,7 +725,7 @@ def creators_contact(lang):
     btns = (f'<a class="fbtn" href="{u(IG)}" target="_blank" rel="noopener" {ev("instagram")}>{SVG_IG}<span>{C["msg_ig"]}</span></a>'
             f'<a class="fbtn" href="{u(FB)}" target="_blank" rel="noopener" {ev("facebook")}>{SVG_FB}<span>{C["msg_fb"]}</span></a>')
     if SERVICE_CONTACT_EMAIL:
-        btns += f'<a class="fbtn" href="mailto:{esc(SERVICE_CONTACT_EMAIL)}" {ev("email")}><span>{C["mail"]}</span></a>'
+        btns = f'<a class="fbtn" href="mailto:{esc(SERVICE_CONTACT_EMAIL)}" {ev("email")}><span>{C["mail"]}</span></a>' + btns
     return (f'<section id="kontakt" class="fblock crcontact" aria-labelledby="cr-contact-h"><span class="sc">{C["kicker"]}</span>'
             f'<h2 id="cr-contact-h" class="fline">{C["contact_h"]}</h2><p class="crlead">{C["contact_lead"]}</p><div class="fbtns">{btns}</div></section>')
 
