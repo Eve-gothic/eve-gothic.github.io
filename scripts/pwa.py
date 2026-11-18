@@ -5,6 +5,10 @@ Wywoływane z build.py:
   pwa_head(r, lang)  -> znaczniki do <head> KAŻDEJ strony (manifest, ikony Apple, js/pwa.js). Nie usuwać z head()!
   build_pwa(ROOT, write) -> generuje manifest.webmanifest, sw.js, js/pwa.js, <lang>/offline.html, assets/pwa/*.png
 Właścicielka warstwy PWA: Gry. Treści strony (wpisy, komiksy) są poza tym plikiem.
+Gry w apce: /gry/karne/ i /gry/brawler/ = zbudowane dist gier, aktualizacja jednym poleceniem: scripts/sync_games.sh
+  (każda gra ma własny sw.js ze scope /gry/<gra>/; SW strony nie cache'uje /gry/ i nie kasuje cache gier).
+Powiadomienia push: Worker eve-push (/workspace/eve-push, prywatny). Przycisk „Włącz powiadomienia” pojawia się
+  dopiero, gdy PUSH_API poniżej nie jest puste; wysyłka: node /workspace/eve-push/scripts/notify.mjs (README tam).
 """
 import os, json, hashlib, html
 
@@ -13,25 +17,29 @@ HTML_LANG = {'pl': 'pl', 'en': 'en', 'es': 'es', 'pt': 'pt-BR', 'it': 'it', 'ja'
 INK, GOLD, GOLD2, PAPER, BUR = '#0c0708', '#c9a35b', '#e8cf96', '#f3ece0', '#3a0b16'
 ICON_SRC = 'assets/img/eve-avatar.webp'   # portret SFW (twarz) — źródło ikon apki
 PWA_DIR = 'assets/pwa/'
+# Powiadomienia push (Cloudflare Worker eve-push, /workspace/eve-push). PUSH_API = '' -> przycisk ukryty (flaga).
+PUSH_API = ''   # np. 'https://eve-push.wodzu2207.workers.dev' — wpisz dopiero po wdrożeniu Workera
+VAPID_PUBLIC_KEY = 'BHjWY6NROqFXgTK2f8eUzoBvYPcnpEugI1et9AQMxG2Ga6csvtqX9PI-omwT-d1So85VOFr2hiQazWcyt_aRj1U'   # publiczny, może być w repo
+def push_cfg(): return {'api': PUSH_API.rstrip('/'), 'key': VAPID_PUBLIC_KEY} if PUSH_API else None
 
 def pre(l): return '' if l == 'pl' else l + '/'
 # Podstrona dla twórców (robi ją Strona): pl -> dla-tworcow/, inne -> <lang>/for-creators/
 def path_creators(l): return 'dla-tworcow/' if l == 'pl' else f'{l}/for-creators/'
 
 TXT = {
- 'pl': dict(install='Zainstaluj apkę Eve', sub='Gry, komiksy i nowe wpisy prosto z ekranu telefonu.', ios_t='Eve jako apka', ios='Dotknij <b>Udostępnij</b> {share}, a potem <b>„Dodaj do ekranu początkowego”</b>.', close='Zamknij',
+ 'pl': dict(push_t='Nowości od Eve', push='Daj znać, gdy pojawi się nowy wpis, komiks albo gra.', push_on='Włącz powiadomienia', push_ok='Powiadomienia włączone. Do zobaczenia!', install='Zainstaluj apkę Eve', sub='Gry, komiksy i nowe wpisy prosto z ekranu telefonu.', ios_t='Eve jako apka', ios='Dotknij <b>Udostępnij</b> {share}, a potem <b>„Dodaj do ekranu początkowego”</b>.', close='Zamknij',
             off_t='Jesteś offline', off='Ta strona nie jest jeszcze zapisana w apce. Strony, które już były otwarte, działają bez internetu.', retry='Spróbuj ponownie', home='Strona główna', games='Gry działają bez internetu, jeśli choć raz otworzysz je w apce.'),
- 'en': dict(install='Install the Eve app', sub='Games, comics and new posts right from your home screen.', ios_t='Get the Eve app', ios='Tap <b>Share</b> {share}, then <b>“Add to Home Screen”</b>.', close='Close',
+ 'en': dict(push_t='News from Eve', push='Get a heads-up when a new post, comic or game drops.', push_on='Turn on notifications', push_ok='Notifications are on. See you soon!', install='Install the Eve app', sub='Games, comics and new posts right from your home screen.', ios_t='Get the Eve app', ios='Tap <b>Share</b> {share}, then <b>“Add to Home Screen”</b>.', close='Close',
             off_t='You’re offline', off='This page isn’t saved in the app yet. Pages you have already opened work without internet.', retry='Try again', home='Home', games='Games work without internet once you have opened them in the app.'),
- 'es': dict(install='Instalar la app de Eve', sub='Juegos, cómics y nuevas entradas desde tu pantalla de inicio.', ios_t='Eve como app', ios='Toca <b>Compartir</b> {share} y luego <b>«Añadir a pantalla de inicio»</b>.', close='Cerrar',
+ 'es': dict(push_t='Novedades de Eve', push='Te avisamos cuando haya una entrada, un cómic o un juego nuevo.', push_on='Activar notificaciones', push_ok='Notificaciones activadas. ¡Hasta pronto!', install='Instalar la app de Eve', sub='Juegos, cómics y nuevas entradas desde tu pantalla de inicio.', ios_t='Eve como app', ios='Toca <b>Compartir</b> {share} y luego <b>«Añadir a pantalla de inicio»</b>.', close='Cerrar',
             off_t='Estás sin conexión', off='Esta página aún no está guardada en la app. Las páginas que ya abriste funcionan sin internet.', retry='Reintentar', home='Inicio', games='Los juegos funcionan sin internet si los abriste una vez en la app.'),
- 'pt': dict(install='Instalar o app da Eve', sub='Jogos, quadrinhos e novos posts direto da tela inicial.', ios_t='Eve como app', ios='Toque em <b>Compartilhar</b> {share} e depois em <b>“Adicionar à Tela de Início”</b>.', close='Fechar',
+ 'pt': dict(push_t='Novidades da Eve', push='Receba um aviso quando sair um post, quadrinho ou jogo novo.', push_on='Ativar notificações', push_ok='Notificações ativadas. Até logo!', install='Instalar o app da Eve', sub='Jogos, quadrinhos e novos posts direto da tela inicial.', ios_t='Eve como app', ios='Toque em <b>Compartilhar</b> {share} e depois em <b>“Adicionar à Tela de Início”</b>.', close='Fechar',
             off_t='Você está offline', off='Esta página ainda não foi salva no app. As páginas que você já abriu funcionam sem internet.', retry='Tentar de novo', home='Início', games='Os jogos funcionam sem internet depois de abertos uma vez no app.'),
- 'it': dict(install='Installa l’app di Eve', sub='Giochi, fumetti e nuovi articoli dalla schermata Home.', ios_t='Eve come app', ios='Tocca <b>Condividi</b> {share}, poi <b>«Aggiungi alla schermata Home»</b>.', close='Chiudi',
+ 'it': dict(push_t='Novità da Eve', push='Ti avvisiamo quando esce un nuovo articolo, fumetto o gioco.', push_on='Attiva le notifiche', push_ok='Notifiche attive. A presto!', install='Installa l’app di Eve', sub='Giochi, fumetti e nuovi articoli dalla schermata Home.', ios_t='Eve come app', ios='Tocca <b>Condividi</b> {share}, poi <b>«Aggiungi alla schermata Home»</b>.', close='Chiudi',
             off_t='Sei offline', off='Questa pagina non è ancora salvata nell’app. Le pagine che hai già aperto funzionano senza internet.', retry='Riprova', home='Home', games='I giochi funzionano senza internet dopo averli aperti una volta nell’app.'),
- 'ja': dict(install='Eveアプリをインストール', sub='ゲーム、コミック、新着記事をホーム画面から。', ios_t='Eveをアプリで', ios='<b>共有</b> {share} をタップして<b>「ホーム画面に追加」</b>を選んでください。', close='閉じる',
+ 'ja': dict(push_t='Eveからのお知らせ', push='新しい記事・コミック・ゲームが公開されたらお知らせします。', push_on='通知をオンにする', push_ok='通知をオンにしました。またね！', install='Eveアプリをインストール', sub='ゲーム、コミック、新着記事をホーム画面から。', ios_t='Eveをアプリで', ios='<b>共有</b> {share} をタップして<b>「ホーム画面に追加」</b>を選んでください。', close='閉じる',
             off_t='オフラインです', off='このページはまだアプリに保存されていません。一度開いたページはオフラインでも見られます。', retry='再読み込み', home='ホーム', games='ゲームはアプリで一度開くと、インターネットなしで遊べます。'),
- 'zh': dict(install='安装 Eve 应用', sub='游戏、漫画和最新文章，从主屏幕直达。', ios_t='把 Eve 装成应用', ios='点击<b>分享</b> {share}，然后选择<b>“添加到主屏幕”</b>。', close='关闭',
+ 'zh': dict(push_t='Eve 的新消息', push='有新文章、漫画或游戏时第一时间通知你。', push_on='开启通知', push_ok='通知已开启。回头见！', install='安装 Eve 应用', sub='游戏、漫画和最新文章，从主屏幕直达。', ios_t='把 Eve 装成应用', ios='点击<b>分享</b> {share}，然后选择<b>“添加到主屏幕”</b>。', close='关闭',
             off_t='你已离线', off='此页面尚未保存到应用中。打开过的页面可以离线浏览。', retry='重试', home='首页', games='游戏在应用中打开过一次后，即可离线游玩。'),
 }
 
@@ -205,6 +213,38 @@ self.addEventListener('fetch', e => {
 });
 
 self.addEventListener('message', e => { if (e.data === 'skipWaiting') self.skipWaiting(); });
+
+// ---- powiadomienia push (Worker eve-push) ----
+const PUSH = __PUSH__;
+self.addEventListener('push', e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (_) { d = {body: e.data ? e.data.text() : ''}; }
+  const url = (() => { try { const x = new URL(d.url || BASE, BASE); return x.origin === self.location.origin ? x.href : BASE; } catch (_) { return BASE; } })();
+  e.waitUntil(self.registration.showNotification(d.title || 'Eve', {
+    body: d.body || '', icon: u('assets/pwa/icon-192.png'), badge: u('assets/pwa/icon-192.png'),
+    tag: d.tag || undefined, renotify: !!d.tag, data: {url}, lang: d.lang || undefined,
+  }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = (e.notification.data && e.notification.data.url) || BASE;
+  e.waitUntil((async () => {
+    const wins = await self.clients.matchAll({type: 'window', includeUncontrolled: true});
+    for (const w of wins) if (w.url.split('#')[0] === url.split('#')[0] && 'focus' in w) return w.focus();
+    for (const w of wins) if (w.url.startsWith(BASE) && 'navigate' in w) { try { await w.focus(); return await w.navigate(url); } catch (_) {} }
+    return self.clients.openWindow(url);
+  })());
+});
+self.addEventListener('pushsubscriptionchange', e => {
+  if (!PUSH || !PUSH.api) return;
+  const old = e.oldSubscription;
+  e.waitUntil((async () => {
+    const opts = (old && old.options) || {userVisibleOnly: true, applicationServerKey: Uint8Array.from(atob(PUSH.key.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0))};
+    const sub = e.newSubscription || await self.registration.pushManager.subscribe(opts);
+    await fetch(PUSH.api + '/subscribe', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({subscription: sub.toJSON(), old_endpoint: old && old.endpoint})});
+  })().catch(() => {}));
+});
 '''
 
 PWA_JS = r'''/* Apka Eve (PWA): rejestracja service workera + przycisk instalacji. GENEROWANY przez scripts/pwa.py. */
@@ -234,7 +274,6 @@ PWA_JS = r'''/* Apka Eve (PWA): rejestracja service workera + przycisk instalacj
       });
     });
     try { if (!sessionStorage.getItem('eve-pwa-launch')) { sessionStorage.setItem('eve-pwa-launch', '1'); gc('pwa-launch', 'PWA: start z ekranu telefonu'); } } catch (_) {}
-    return;
   }
 
   var SHARE = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" style="vertical-align:-2px"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 15V3m0 0L8 7m4-4 4 4M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
@@ -242,16 +281,59 @@ PWA_JS = r'''/* Apka Eve (PWA): rejestracja service workera + przycisk instalacj
     + '.eve-pwa.on{transform:translate(-50%,0)}.eve-pwa img{width:44px;height:44px;border-radius:50%;flex:none}.eve-pwa .tx{flex:1;min-width:0;font-size:12.5px}.eve-pwa .tx b{color:#e8cf96;font-weight:500}.eve-pwa .tt{font:italic 400 17px/1.2 "Playfair Display",Georgia,serif;color:#e8cf96;margin-bottom:2px}'
     + '.eve-pwa .go{flex:none;background:#c9a35b;color:#0c0708;border:0;order:3;flex:1 1 100%;padding:12px;font:600 11px/1.2 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}.eve-pwa .x{flex:none;align-self:flex-start;background:none;border:0;color:#b9a89a;font-size:20px;line-height:1;padding:0 2px;cursor:pointer}'
     + '@media (prefers-reduced-motion:reduce){.eve-pwa{transition:none}}';
-  function bar(inner, onGo) {
+  function bar(inner, onGo, onClose) {
     var s = document.createElement('style'); s.textContent = CSS; document.head.appendChild(s);
     var b = document.createElement('div'); b.className = 'eve-pwa'; b.setAttribute('role', 'dialog'); b.setAttribute('aria-label', t.install);
     b.innerHTML = '<img src="' + root + 'assets/pwa/icon-192.png" alt="">' + inner + '<button class="x" type="button" aria-label="' + t.close + '">×</button>';
     document.body.appendChild(b); requestAnimationFrame(function () { requestAnimationFrame(function () { b.classList.add('on'); }); });
     var hide = function () { b.classList.remove('on'); setTimeout(function () { b.remove(); }, 500); };
-    b.querySelector('.x').onclick = function () { store(KEY, '1'); gc('pwa-prompt-dismissed', 'PWA: zamknięto zachętę'); hide(); };
+    b.querySelector('.x').onclick = function () { if (onClose) onClose(); else { store(KEY, '1'); gc('pwa-prompt-dismissed', 'PWA: zamknięto zachętę'); } hide(); };
     if (onGo) b.querySelector('.go').onclick = function () { onGo(hide); };
     return b;
   }
+  // ---- powiadomienia push: przycisk „Włącz powiadomienia” (tylko gdy PUSH_API ustawione w scripts/pwa.py) ----
+  var P = __PUSH__, PKEY = 'eve-push-dismissed', iosDev = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var pushable = !!(P && P.api && P.key && 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window && location.protocol !== 'file:') && (!iosDev || standalone);   // iOS: tylko apka z ekranu (iOS 16.4+)
+  function keyBytes(k) { var s = atob(k.replace(/-/g, '+').replace(/_/g, '/')), a = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return a; }
+  function pushSubscribe(done) {   // wołać prosto z kliknięcia (Safari wymaga gestu)
+    var perm = Notification.permission === 'granted' ? Promise.resolve('granted') : Promise.resolve(Notification.requestPermission());
+    perm.then(function (p) {
+      if (p !== 'granted') { store(PKEY, String(Date.now())); gc('push-denied', 'Push: odmowa'); return done && done(false); }
+      return navigator.serviceWorker.ready.then(function (reg) {
+        return reg.pushManager.getSubscription().then(function (s) { return s || reg.pushManager.subscribe({userVisibleOnly: true, applicationServerKey: keyBytes(P.key)}); });
+      }).then(function (s) {
+        return fetch(P.api + '/subscribe', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({subscription: s.toJSON(), lang: lang})});
+      }).then(function (r) {
+        if (!r.ok) throw new Error('subscribe ' + r.status);
+        store('eve-push-on', '1'); gc('push-subscribed', 'Push: włączone'); done && done(true);
+      });
+    }).catch(function () { done && done(false); });
+  }
+  if (pushable) {
+    var pv = 0; try { pv = +sessionStorage.getItem('eve-pv') + 1; sessionStorage.setItem('eve-pv', String(pv)); } catch (_) {}
+    addEventListener('DOMContentLoaded', function () {   // opcjonalne przyciski na stronie: <button data-eve-push hidden>
+      [].forEach.call(document.querySelectorAll('[data-eve-push]'), function (el) {
+        if (Notification.permission === 'denied') return;
+        el.hidden = false; el.addEventListener('click', function () { pushSubscribe(function (ok) { if (ok) el.hidden = true; }); });
+      });
+    });
+    var d = +store(PKEY) || 0;
+    if (Notification.permission !== 'denied' && !(d && Date.now() - d < 30 * 864e5) && (standalone || pv >= 2)) {   // w przeglądarce dopiero od 2. strony w wizycie
+      setTimeout(function () {
+        navigator.serviceWorker.ready.then(function (reg) { return reg.pushManager.getSubscription(); }).then(function (s) {
+          if (s || document.querySelector('.eve-pwa')) return;
+          bar('<div class="tx"><div class="tt">' + t.push_t + '</div>' + t.push + '</div><button class="go" type="button">' + t.push_on + '</button>', function (hide) {
+            pushSubscribe(function (ok) {
+              var b = document.querySelector('.eve-pwa .tx'); if (ok && b) { b.innerHTML = '<div class="tt">' + t.push_ok + '</div>'; var g = document.querySelector('.eve-pwa .go'); if (g) g.remove(); setTimeout(hide, 2500); } else hide();
+            });
+          }, function () { store(PKEY, String(Date.now())); gc('push-optin-closed', 'Push: zamknięto'); });
+          gc('push-optin-shown', 'Push: pokazano przycisk');
+        }).catch(function () {});
+      }, standalone ? 4000 : 6000);
+    }
+  }
+  if (standalone) return;
+
   if (store(KEY)) return;
 
   // Android / Chrome / Edge: natywne okno instalacji
@@ -291,12 +373,12 @@ def build_pwa(ROOT, write):
     """Generuje pliki PWA. write(rel, content) — funkcja zapisu z build.py."""
     make_icons(ROOT)
     for l in LANGS: write(pre(l) + 'offline.html', offline_page(l))
-    js_txt = {l: {k: TXT[l][k] for k in ('install', 'sub', 'ios_t', 'ios', 'close')} for l in LANGS}
-    write('js/pwa.js', PWA_JS.replace('__TXT__', json.dumps(js_txt, ensure_ascii=False)))
+    js_txt = {l: {k: TXT[l][k] for k in ('install', 'sub', 'ios_t', 'ios', 'close', 'push_t', 'push', 'push_on', 'push_ok')} for l in LANGS}
+    write('js/pwa.js', PWA_JS.replace('__TXT__', json.dumps(js_txt, ensure_ascii=False)).replace('__PUSH__', json.dumps(push_cfg())))
     write('manifest.webmanifest', manifest(ROOT))
     icons = [PWA_DIR + f for f in ('icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png')]
     required = ['./'] + [pre(l) for l in LANGS if l != 'pl'] + [pre(l) + 'offline.html' for l in LANGS] \
                + ['css/eve.css', 'js/eve.js', 'js/pwa.js', 'js/ads.js', 'manifest.webmanifest', ICON_SRC] + icons
     optional = [path_creators(l) for l in LANGS] + ['linki/', 'komiks/', 'blog/']
     ver = _h(ROOT, [r for r in required if not r.endswith('/')] + [pre(l) + 'index.html' for l in LANGS])
-    write('sw.js', SW_TEMPLATE.replace('__VERSION__', ver).replace('__REQUIRED__', json.dumps(required)).replace('__OPTIONAL__', json.dumps(optional)))
+    write('sw.js', SW_TEMPLATE.replace('__VERSION__', ver).replace('__REQUIRED__', json.dumps(required)).replace('__OPTIONAL__', json.dumps(optional)).replace('__PUSH__', json.dumps(push_cfg())))

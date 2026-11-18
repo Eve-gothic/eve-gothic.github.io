@@ -1,5 +1,5 @@
 /* Service worker strony Eve — GENEROWANY przez scripts/pwa.py (build.py). Nie edytuj ręcznie. */
-const VERSION = '81b1522737';
+const VERSION = 'd24d1d3540';
 const SHELL = 'eve-shell-' + VERSION, PAGES = 'eve-pages-v1', IMGS = 'eve-img-v1', FONTS = 'eve-fonts-v1';
 const KEEP = [SHELL, PAGES, IMGS, FONTS];
 const MAX_PAGES = 60, MAX_IMGS = 150, MAX_FONTS = 40;
@@ -91,3 +91,35 @@ self.addEventListener('fetch', e => {
 });
 
 self.addEventListener('message', e => { if (e.data === 'skipWaiting') self.skipWaiting(); });
+
+// ---- powiadomienia push (Worker eve-push) ----
+const PUSH = null;
+self.addEventListener('push', e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (_) { d = {body: e.data ? e.data.text() : ''}; }
+  const url = (() => { try { const x = new URL(d.url || BASE, BASE); return x.origin === self.location.origin ? x.href : BASE; } catch (_) { return BASE; } })();
+  e.waitUntil(self.registration.showNotification(d.title || 'Eve', {
+    body: d.body || '', icon: u('assets/pwa/icon-192.png'), badge: u('assets/pwa/icon-192.png'),
+    tag: d.tag || undefined, renotify: !!d.tag, data: {url}, lang: d.lang || undefined,
+  }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = (e.notification.data && e.notification.data.url) || BASE;
+  e.waitUntil((async () => {
+    const wins = await self.clients.matchAll({type: 'window', includeUncontrolled: true});
+    for (const w of wins) if (w.url.split('#')[0] === url.split('#')[0] && 'focus' in w) return w.focus();
+    for (const w of wins) if (w.url.startsWith(BASE) && 'navigate' in w) { try { await w.focus(); return await w.navigate(url); } catch (_) {} }
+    return self.clients.openWindow(url);
+  })());
+});
+self.addEventListener('pushsubscriptionchange', e => {
+  if (!PUSH || !PUSH.api) return;
+  const old = e.oldSubscription;
+  e.waitUntil((async () => {
+    const opts = (old && old.options) || {userVisibleOnly: true, applicationServerKey: Uint8Array.from(atob(PUSH.key.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0))};
+    const sub = e.newSubscription || await self.registration.pushManager.subscribe(opts);
+    await fetch(PUSH.api + '/subscribe', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({subscription: sub.toJSON(), old_endpoint: old && old.endpoint})});
+  })().catch(() => {}));
+});
