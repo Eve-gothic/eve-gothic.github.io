@@ -1,0 +1,61 @@
+{
+ "far_bank": {
+  "path": "assets/hf/far_bank.webp",
+  "worldH": 196,
+  "tile": true
+ },
+ "far_westminster": {
+  "path": "assets/hf/far_westminster.webp",
+  "worldH": 212,
+  "tile": true
+ },
+ "far_golden": {
+  "path": "assets/hf/far_golden.webp",
+  "worldH": 214,
+  "tile": true
+ },
+ "far_fortress": {
+  "path": "assets/hf/far_fortress.webp",
+  "worldH": 236,
+  "tile": true
+ },
+ "title_bg": {
+  "path": "assets/hf/title_bg.webp"
+ },
+ "portrait_eve": {
+  "path": "assets/hf/portrait_eve.webp"
+ },
+ "portrait_eve_s": {
+  "path": "assets/hf/portrait_eve_s.webp"
+ },
+ "portrait_chairman": {
+  "path": "assets/hf/portrait_chairman.webp"
+ },
+ "portrait_chairman_s": {
+  "path": "assets/hf/portrait_chairman_s.webp"
+ },
+ "portrait_bumbleton": {
+  "path": "assets/hf/portrait_bumbleton.webp"
+ },
+ "portrait_bumbleton_s": {
+  "path": "assets/hf/portrait_bumbleton_s.webp"
+ },
+ "portrait_tremp": {
+  "path": "assets/hf/portrait_tremp.webp"
+ },
+ "portrait_tremp_s": {
+  "path": "assets/hf/portrait_tremp_s.webp"
+ },
+ "portrait_vlad": {
+  "path": "assets/hf/portrait_vlad.webp"
+ },
+ "portrait_vlad_s": {
+  "path": "assets/hf/portrait_vlad_s.webp"
+ },
+ "portrait_bear": {
+  "path": "assets/hf/portrait_bear.webp"
+ },
+ "portrait_bear_s": {
+  "path": "assets/hf/portrait_bear_s.webp"
+ }
+}

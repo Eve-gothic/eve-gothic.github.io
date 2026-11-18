@@ -1,0 +1,352 @@
+{
+ "eve": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "idle2",
+   "idle3",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "walk6",
+   "walk7",
+   "jab0",
+   "jab1",
+   "jab2",
+   "cross0",
+   "cross1",
+   "upper0",
+   "upper1",
+   "upper2",
+   "kick0",
+   "kick1",
+   "kick2",
+   "jump0",
+   "jump1",
+   "jkick",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "getup",
+   "spin0",
+   "spin1",
+   "spin2",
+   "win0",
+   "win1",
+   "throw0",
+   "throw1"
+  ],
+  "size": [
+   128,
+   144
+  ],
+  "cols": 16,
+  "scale": 0.5,
+  "res": 2,
+  "originY": 0.9583
+ },
+ "banker": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "windup",
+   "punch0",
+   "punch1",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "throw0",
+   "throw1",
+   "grab"
+  ],
+  "size": [
+   128,
+   144
+  ],
+  "cols": 16,
+  "scale": 0.5,
+  "res": 2,
+  "originY": 0.9583
+ },
+ "politician": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "windup",
+   "punch0",
+   "punch1",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "throw0",
+   "throw1",
+   "grab"
+  ],
+  "size": [
+   128,
+   144
+  ],
+  "cols": 16,
+  "scale": 0.5,
+  "res": 2,
+  "originY": 0.9583
+ },
+ "ceo": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "windup",
+   "punch0",
+   "punch1",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "throw0",
+   "throw1",
+   "grab"
+  ],
+  "size": [
+   128,
+   144
+  ],
+  "cols": 16,
+  "scale": 0.5,
+  "res": 2,
+  "originY": 0.9583
+ },
+ "lobbyist": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "windup",
+   "punch0",
+   "punch1",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "throw0",
+   "throw1",
+   "grab"
+  ],
+  "size": [
+   128,
+   144
+  ],
+  "cols": 16,
+  "scale": 0.5,
+  "res": 2,
+  "originY": 0.9583
+ },
+ "aide": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "windup",
+   "punch0",
+   "punch1",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "throw0",
+   "throw1",
+   "grab"
+  ],
+  "size": [
+   128,
+   144
+  ],
+  "cols": 16,
+  "scale": 0.5,
+  "res": 2,
+  "originY": 0.9583
+ },
+ "chairman": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "windup",
+   "punch0",
+   "punch1",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "throw0",
+   "throw1",
+   "grab"
+  ],
+  "size": [
+   166,
+   187
+  ],
+  "cols": 16,
+  "scale": 0.5,
+  "res": 2.6,
+  "originY": 0.9583
+ },
+ "bumbleton": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "windup",
+   "punch0",
+   "punch1",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "throw0",
+   "throw1",
+   "grab"
+  ],
+  "size": [
+   166,
+   187
+  ],
+  "cols": 16,
+  "scale": 0.5,
+  "res": 2.6,
+  "originY": 0.9583
+ },
+ "tremp": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "windup",
+   "punch0",
+   "punch1",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "throw0",
+   "throw1",
+   "grab"
+  ],
+  "size": [
+   166,
+   187
+  ],
+  "cols": 16,
+  "scale": 0.5,
+  "res": 2.6,
+  "originY": 0.9583
+ },
+ "vlad": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "windup",
+   "punch0",
+   "punch1",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "throw0",
+   "throw1",
+   "grab"
+  ],
+  "size": [
+   166,
+   187
+  ],
+  "cols": 16,
+  "scale": 0.5,
+  "res": 2.6,
+  "originY": 0.9583
+ },
+ "bear": {
+  "frames": [
+   "idle0",
+   "idle1",
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "windup",
+   "punch0",
+   "punch1",
+   "hurt0",
+   "hurt1",
+   "fall",
+   "down",
+   "throw0",
+   "throw1",
+   "grab"
+  ],
+  "size": [
+   160,
+   112
+  ],
+  "cols": 16,
+  "res": 2,
+  "scale": 0.5,
+  "originY": 0.9464
+ }
+}

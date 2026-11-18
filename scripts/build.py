@@ -23,8 +23,8 @@ SITE = os.environ.get('EVE_SITE', 'https://eve-gothic.github.io').rstrip('/') + 
 SITE_HOST = SITE.split('://', 1)[1].rstrip('/')
 # Stare repo woDzu2207/eve-strona (wodzu2207.github.io/eve-strona/) zawiera już tylko strony-przekierowania na SITE.
 CAFE = 'https://wodzu2207.github.io/eve-cafe/'
-BRAWLER = 'https://wodzu2207.github.io/eve-brawler/'   # „Eve vs The Suits” (satyra, ?lang=pl|en — brawler_lang())
-PENALTY = 'https://wodzu2207.github.io/eve-penalty/'   # „Eve: Królowa Karnych” / Penalty Queen (?lang=pl|en|es|pt|it|ja|zh — penalty_lang())
+BRAWLER = '/gry/brawler/'   # „Eve vs The Suits” (satyra, ?lang=pl|en — brawler_lang())
+PENALTY = '/gry/karne/'   # „Eve: Królowa Karnych” / Penalty Queen (?lang=pl|en|es|pt|it|ja|zh — penalty_lang())
 TAMA = 'https://wodzu2207.github.io/eve-game-public/'   # TYLKO wersja publiczna (dla wszystkich)
 # Profile społecznościowe Eve (dla wszystkich) — NIE dodawać do bramki /18/
 # Analityka GoatCounter (bez cookies, bez banera). Wpisz kod strony, np. 'eve-gothic' -> https://eve-gothic.goatcounter.com

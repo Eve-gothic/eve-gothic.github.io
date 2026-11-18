@@ -1,5 +1,5 @@
 /* Service worker strony Eve — GENEROWANY przez scripts/pwa.py (build.py). Nie edytuj ręcznie. */
-const VERSION = 'f5909faf40';
+const VERSION = '81b1522737';
 const SHELL = 'eve-shell-' + VERSION, PAGES = 'eve-pages-v1', IMGS = 'eve-img-v1', FONTS = 'eve-fonts-v1';
 const KEEP = [SHELL, PAGES, IMGS, FONTS];
 const MAX_PAGES = 60, MAX_IMGS = 150, MAX_FONTS = 40;
@@ -8,6 +8,7 @@ const REQUIRED = ["./", "en/", "es/", "pt/", "it/", "ja/", "zh/", "offline.html"
 const OPTIONAL = ["dla-tworcow/", "en/for-creators/", "es/for-creators/", "pt/for-creators/", "it/for-creators/", "ja/for-creators/", "zh/for-creators/", "linki/", "komiks/", "blog/"];                                 // mile widziane — 404 nie psuje instalacji
 const LANGS = ['en', 'es', 'pt', 'it', 'ja', 'zh'];
 const u = p => new URL(p, BASE).href;
+const GAMES = new URL('gry/', BASE).pathname;                  // /gry/ — gry w apce (scripts/sync_games.sh)
 
 self.addEventListener('install', e => e.waitUntil((async () => {
   const c = await caches.open(SHELL);
@@ -17,7 +18,8 @@ self.addEventListener('install', e => e.waitUntil((async () => {
 })()));
 
 self.addEventListener('activate', e => e.waitUntil((async () => {
-  for (const k of await caches.keys()) if (k.startsWith('eve-') && !KEEP.includes(k)) await caches.delete(k);
+  // tylko własne cache strony — gry w /gry/ (eve-penalty-*, eve-brawler-*) mają swoje i swój SW
+  for (const k of await caches.keys()) if (/^eve-(shell|pages|img|fonts)-/.test(k) && !KEEP.includes(k)) await caches.delete(k);
   if (self.registration.navigationPreload) await self.registration.navigationPreload.enable().catch(() => {});
   await self.clients.claim();
 })()));
@@ -74,7 +76,11 @@ self.addEventListener('fetch', e => {
   if (/goatcounter\.com$|(^|\.)zgo\.at$/.test(url.hostname)) return;           // analityka — zawsze sieć, nigdy cache
   if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com')
     return e.respondWith(cacheFirst(e, FONTS, MAX_FONTS));
-  if (url.origin !== self.location.origin) return;                              // gry i inne domeny — bez zmian
+  if (url.origin !== self.location.origin) return;                              // inne domeny — bez zmian
+  if (url.pathname.startsWith(GAMES)) {                                         // gry mają własne SW (scope /gry/<gra>/)
+    if (req.mode === 'navigate') e.respondWith(fetch(req).catch(async () => (await caches.match(offlineFor(url))) || Response.error()));
+    return;                                                                     // pliki gier: bez duplikatów w cache strony
+  }
   if (req.headers.has('range') || /\.(mp4|webm|mov|pdf)$/i.test(url.pathname)) return;   // filmy/PDF — sieć
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html'))
     return e.respondWith(htmlNetworkFirst(e));

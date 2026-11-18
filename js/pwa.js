@@ -18,6 +18,12 @@
   }
   if (standalone) {
     document.documentElement.classList.add('pwa');
+    // gry (/gry/) w tym samym oknie apki — na iPhonie „nowa karta” = Safari, z osobną pamięcią offline
+    addEventListener('DOMContentLoaded', function () {
+      [].forEach.call(document.querySelectorAll('a[target="_blank"][href*="/gry/"]'), function (a) {
+        try { if (new URL(a.href).origin === location.origin) a.removeAttribute('target'); } catch (_) {}
+      });
+    });
     try { if (!sessionStorage.getItem('eve-pwa-launch')) { sessionStorage.setItem('eve-pwa-launch', '1'); gc('pwa-launch', 'PWA: start z ekranu telefonu'); } } catch (_) {}
     return;
   }

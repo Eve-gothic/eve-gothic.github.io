@@ -20,19 +20,19 @@ def path_creators(l): return 'dla-tworcow/' if l == 'pl' else f'{l}/for-creators
 
 TXT = {
  'pl': dict(install='Zainstaluj apkę Eve', sub='Gry, komiksy i nowe wpisy prosto z ekranu telefonu.', ios_t='Eve jako apka', ios='Dotknij <b>Udostępnij</b> {share}, a potem <b>„Dodaj do ekranu początkowego”</b>.', close='Zamknij',
-            off_t='Jesteś offline', off='Ta strona nie jest jeszcze zapisana w apce. Strony, które już były otwarte, działają bez internetu.', retry='Spróbuj ponownie', home='Strona główna', games='Gry działają w swoich apkach offline po pierwszym uruchomieniu.'),
+            off_t='Jesteś offline', off='Ta strona nie jest jeszcze zapisana w apce. Strony, które już były otwarte, działają bez internetu.', retry='Spróbuj ponownie', home='Strona główna', games='Gry działają bez internetu, jeśli choć raz otworzysz je w apce.'),
  'en': dict(install='Install the Eve app', sub='Games, comics and new posts right from your home screen.', ios_t='Get the Eve app', ios='Tap <b>Share</b> {share}, then <b>“Add to Home Screen”</b>.', close='Close',
-            off_t='You’re offline', off='This page isn’t saved in the app yet. Pages you have already opened work without internet.', retry='Try again', home='Home', games='Games work offline in their own apps after the first launch.'),
+            off_t='You’re offline', off='This page isn’t saved in the app yet. Pages you have already opened work without internet.', retry='Try again', home='Home', games='Games work without internet once you have opened them in the app.'),
  'es': dict(install='Instalar la app de Eve', sub='Juegos, cómics y nuevas entradas desde tu pantalla de inicio.', ios_t='Eve como app', ios='Toca <b>Compartir</b> {share} y luego <b>«Añadir a pantalla de inicio»</b>.', close='Cerrar',
-            off_t='Estás sin conexión', off='Esta página aún no está guardada en la app. Las páginas que ya abriste funcionan sin internet.', retry='Reintentar', home='Inicio', games='Los juegos funcionan sin conexión en sus propias apps tras abrirlos una vez.'),
+            off_t='Estás sin conexión', off='Esta página aún no está guardada en la app. Las páginas que ya abriste funcionan sin internet.', retry='Reintentar', home='Inicio', games='Los juegos funcionan sin internet si los abriste una vez en la app.'),
  'pt': dict(install='Instalar o app da Eve', sub='Jogos, quadrinhos e novos posts direto da tela inicial.', ios_t='Eve como app', ios='Toque em <b>Compartilhar</b> {share} e depois em <b>“Adicionar à Tela de Início”</b>.', close='Fechar',
-            off_t='Você está offline', off='Esta página ainda não foi salva no app. As páginas que você já abriu funcionam sem internet.', retry='Tentar de novo', home='Início', games='Os jogos funcionam offline nos próprios apps depois da primeira vez.'),
+            off_t='Você está offline', off='Esta página ainda não foi salva no app. As páginas que você já abriu funcionam sem internet.', retry='Tentar de novo', home='Início', games='Os jogos funcionam sem internet depois de abertos uma vez no app.'),
  'it': dict(install='Installa l’app di Eve', sub='Giochi, fumetti e nuovi articoli dalla schermata Home.', ios_t='Eve come app', ios='Tocca <b>Condividi</b> {share}, poi <b>«Aggiungi alla schermata Home»</b>.', close='Chiudi',
-            off_t='Sei offline', off='Questa pagina non è ancora salvata nell’app. Le pagine che hai già aperto funzionano senza internet.', retry='Riprova', home='Home', games='I giochi funzionano offline nelle loro app dopo il primo avvio.'),
+            off_t='Sei offline', off='Questa pagina non è ancora salvata nell’app. Le pagine che hai già aperto funzionano senza internet.', retry='Riprova', home='Home', games='I giochi funzionano senza internet dopo averli aperti una volta nell’app.'),
  'ja': dict(install='Eveアプリをインストール', sub='ゲーム、コミック、新着記事をホーム画面から。', ios_t='Eveをアプリで', ios='<b>共有</b> {share} をタップして<b>「ホーム画面に追加」</b>を選んでください。', close='閉じる',
-            off_t='オフラインです', off='このページはまだアプリに保存されていません。一度開いたページはオフラインでも見られます。', retry='再読み込み', home='ホーム', games='ゲームは一度起動すると各アプリでオフラインでも遊べます。'),
+            off_t='オフラインです', off='このページはまだアプリに保存されていません。一度開いたページはオフラインでも見られます。', retry='再読み込み', home='ホーム', games='ゲームはアプリで一度開くと、インターネットなしで遊べます。'),
  'zh': dict(install='安装 Eve 应用', sub='游戏、漫画和最新文章，从主屏幕直达。', ios_t='把 Eve 装成应用', ios='点击<b>分享</b> {share}，然后选择<b>“添加到主屏幕”</b>。', close='关闭',
-            off_t='你已离线', off='此页面尚未保存到应用中。打开过的页面可以离线浏览。', retry='重试', home='首页', games='游戏首次打开后，可在各自的应用中离线游玩。'),
+            off_t='你已离线', off='此页面尚未保存到应用中。打开过的页面可以离线浏览。', retry='重试', home='首页', games='游戏在应用中打开过一次后，即可离线游玩。'),
 }
 
 def pwa_head(r, lang):
@@ -122,6 +122,7 @@ const REQUIRED = __REQUIRED__;                                 // app shell — 
 const OPTIONAL = __OPTIONAL__;                                 // mile widziane — 404 nie psuje instalacji
 const LANGS = ['en', 'es', 'pt', 'it', 'ja', 'zh'];
 const u = p => new URL(p, BASE).href;
+const GAMES = new URL('gry/', BASE).pathname;                  // /gry/ — gry w apce (scripts/sync_games.sh)
 
 self.addEventListener('install', e => e.waitUntil((async () => {
   const c = await caches.open(SHELL);
@@ -131,7 +132,8 @@ self.addEventListener('install', e => e.waitUntil((async () => {
 })()));
 
 self.addEventListener('activate', e => e.waitUntil((async () => {
-  for (const k of await caches.keys()) if (k.startsWith('eve-') && !KEEP.includes(k)) await caches.delete(k);
+  // tylko własne cache strony — gry w /gry/ (eve-penalty-*, eve-brawler-*) mają swoje i swój SW
+  for (const k of await caches.keys()) if (/^eve-(shell|pages|img|fonts)-/.test(k) && !KEEP.includes(k)) await caches.delete(k);
   if (self.registration.navigationPreload) await self.registration.navigationPreload.enable().catch(() => {});
   await self.clients.claim();
 })()));
@@ -188,7 +190,11 @@ self.addEventListener('fetch', e => {
   if (/goatcounter\.com$|(^|\.)zgo\.at$/.test(url.hostname)) return;           // analityka — zawsze sieć, nigdy cache
   if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com')
     return e.respondWith(cacheFirst(e, FONTS, MAX_FONTS));
-  if (url.origin !== self.location.origin) return;                              // gry i inne domeny — bez zmian
+  if (url.origin !== self.location.origin) return;                              // inne domeny — bez zmian
+  if (url.pathname.startsWith(GAMES)) {                                         // gry mają własne SW (scope /gry/<gra>/)
+    if (req.mode === 'navigate') e.respondWith(fetch(req).catch(async () => (await caches.match(offlineFor(url))) || Response.error()));
+    return;                                                                     // pliki gier: bez duplikatów w cache strony
+  }
   if (req.headers.has('range') || /\.(mp4|webm|mov|pdf)$/i.test(url.pathname)) return;   // filmy/PDF — sieć
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html'))
     return e.respondWith(htmlNetworkFirst(e));
@@ -221,6 +227,12 @@ PWA_JS = r'''/* Apka Eve (PWA): rejestracja service workera + przycisk instalacj
   }
   if (standalone) {
     document.documentElement.classList.add('pwa');
+    // gry (/gry/) w tym samym oknie apki — na iPhonie „nowa karta” = Safari, z osobną pamięcią offline
+    addEventListener('DOMContentLoaded', function () {
+      [].forEach.call(document.querySelectorAll('a[target="_blank"][href*="/gry/"]'), function (a) {
+        try { if (new URL(a.href).origin === location.origin) a.removeAttribute('target'); } catch (_) {}
+      });
+    });
     try { if (!sessionStorage.getItem('eve-pwa-launch')) { sessionStorage.setItem('eve-pwa-launch', '1'); gc('pwa-launch', 'PWA: start z ekranu telefonu'); } } catch (_) {}
     return;
   }
