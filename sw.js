@@ -1,5 +1,5 @@
 /* Service worker strony Eve — GENEROWANY przez scripts/pwa.py (build.py). Nie edytuj ręcznie. */
-const VERSION = 'd24d1d3540';
+const VERSION = '3e037b3f18';
 const SHELL = 'eve-shell-' + VERSION, PAGES = 'eve-pages-v1', IMGS = 'eve-img-v1', FONTS = 'eve-fonts-v1';
 const KEEP = [SHELL, PAGES, IMGS, FONTS];
 const MAX_PAGES = 60, MAX_IMGS = 150, MAX_FONTS = 40;
@@ -93,7 +93,7 @@ self.addEventListener('fetch', e => {
 self.addEventListener('message', e => { if (e.data === 'skipWaiting') self.skipWaiting(); });
 
 // ---- powiadomienia push (Worker eve-push) ----
-const PUSH = null;
+const PUSH = {"api": "https://eve-push.wodzu2207.workers.dev", "key": "BHjWY6NROqFXgTK2f8eUzoBvYPcnpEugI1et9AQMxG2Ga6csvtqX9PI-omwT-d1So85VOFr2hiQazWcyt_aRj1U"};
 self.addEventListener('push', e => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; } catch (_) { d = {body: e.data ? e.data.text() : ''}; }

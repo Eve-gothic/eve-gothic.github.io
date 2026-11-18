@@ -43,7 +43,7 @@
     return b;
   }
   // ---- powiadomienia push: przycisk „Włącz powiadomienia” (tylko gdy PUSH_API ustawione w scripts/pwa.py) ----
-  var P = null, PKEY = 'eve-push-dismissed', iosDev = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var P = {"api": "https://eve-push.wodzu2207.workers.dev", "key": "BHjWY6NROqFXgTK2f8eUzoBvYPcnpEugI1et9AQMxG2Ga6csvtqX9PI-omwT-d1So85VOFr2hiQazWcyt_aRj1U"}, PKEY = 'eve-push-dismissed', iosDev = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   var pushable = !!(P && P.api && P.key && 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window && location.protocol !== 'file:') && (!iosDev || standalone);   // iOS: tylko apka z ekranu (iOS 16.4+)
   function keyBytes(k) { var s = atob(k.replace(/-/g, '+').replace(/_/g, '/')), a = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return a; }
   function pushSubscribe(done) {   // wołać prosto z kliknięcia (Safari wymaga gestu)

@@ -18,7 +18,7 @@ INK, GOLD, GOLD2, PAPER, BUR = '#0c0708', '#c9a35b', '#e8cf96', '#f3ece0', '#3a0
 ICON_SRC = 'assets/img/eve-avatar.webp'   # portret SFW (twarz) — źródło ikon apki
 PWA_DIR = 'assets/pwa/'
 # Powiadomienia push (Cloudflare Worker eve-push, /workspace/eve-push). PUSH_API = '' -> przycisk ukryty (flaga).
-PUSH_API = ''   # np. 'https://eve-push.wodzu2207.workers.dev' — wpisz dopiero po wdrożeniu Workera
+PUSH_API = 'https://eve-push.wodzu2207.workers.dev'   # Worker eve-push, wdrożony 18.11.2026
 VAPID_PUBLIC_KEY = 'BHjWY6NROqFXgTK2f8eUzoBvYPcnpEugI1et9AQMxG2Ga6csvtqX9PI-omwT-d1So85VOFr2hiQazWcyt_aRj1U'   # publiczny, może być w repo
 def push_cfg(): return {'api': PUSH_API.rstrip('/'), 'key': VAPID_PUBLIC_KEY} if PUSH_API else None
 
