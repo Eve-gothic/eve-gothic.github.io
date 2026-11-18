@@ -13,7 +13,7 @@ from email.utils import format_datetime
 sys.path.insert(0, os.path.dirname(__file__))
 from i18n import *
 from creators_i18n import CR   # podstrona „Dla twórców” (usługa)
-from pwa import pwa_head, build_pwa   # warstwa PWA (apka na telefon) — Gry
+from pwa import pwa_head, build_pwa, TXT as PWA_TXT   # warstwa PWA (apka na telefon) — Gry
 from ads import ad_banner, ad_script, build_ads_js   # reklama własna usługi (baner, okienko, pasek po komiksie)
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -338,7 +338,7 @@ def footer(lang, path, blog=False, ads=True):
     t, r = T[lang], root_for(path)
     note = f'<br><strong>{t["ai_note"]}</strong>' if blog else ''
     return f'''<footer><div><span class="mast">Eve.</span><br>© <span id="y">2026</span> Daniel Wodziński · Multiwersum Eve</div>
-{social(lang, 'foot')}<div style="max-width:52ch">{t['foot']}{note}<br><a href="{r}{path_blog(lang)}feed.xml">{t['rss']}</a> · <a href="{r}warianty/">{t['variants']}</a><br><a class="forcr" href="{r}{path_creators(lang)}" data-goatcounter-click="creators-footer">{CR[lang]['foot_link']}</a></div></footer>
+{social(lang, 'foot')}<div style="max-width:52ch">{t['foot']}{note}<br><a href="{r}{path_blog(lang)}feed.xml">{t['rss']}</a> · <a href="{r}warianty/">{t['variants']}</a><br><a class="forcr" href="{r}{path_creators(lang)}" data-goatcounter-click="creators-footer">{CR[lang]['foot_link']}</a><span class="appbtns"><button type="button" class="fbtn" data-eve-install hidden data-goatcounter-click="pwa-footer-install">{PWA_TXT[lang]['install']}</button><button type="button" class="fbtn" data-eve-push hidden data-goatcounter-click="push-footer-on">{PWA_TXT[lang]['push_on']}</button></span></div></footer>
 <script src="{r}js/eve.js"></script>{ad_script(lang, r, r + path_creators(lang)) if ads else ''}{analytics()}</body></html>'''
 
 SLOT = '<div class="slot" aria-hidden="true"></div>'   # puste miejsce (ukryte przez .slot:empty)

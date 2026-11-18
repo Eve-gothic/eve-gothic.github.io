@@ -321,3 +321,6 @@ dialog.hadm[open]{animation:hadm-in .25s ease-out}
 .hadbar .go{font-family:Inter,system-ui,sans-serif;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);white-space:nowrap;text-underline-offset:3px}
 .hadbar .x{position:absolute;top:4px;right:6px;background:none;border:0;color:var(--mut);font-size:22px;line-height:1;padding:6px 8px;cursor:pointer}
 @media(prefers-reduced-motion:reduce){.hads-in,.hadbar{transition:none}dialog.hadm[open]{animation:none}}
+
+/* Stopka: przyciski apki (pokazuje je js/pwa.js, gdy są możliwe) */
+.appbtns{display:flex;flex-wrap:wrap;gap:.5em;margin-top:.7em}.appbtns:not(:has(button:not([hidden]))){display:none}.appbtns [hidden]{display:none!important}
