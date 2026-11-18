@@ -13,6 +13,7 @@ from email.utils import format_datetime
 sys.path.insert(0, os.path.dirname(__file__))
 from i18n import *
 from creators_i18n import CR   # podstrona „Dla twórców” (usługa)
+from pwa import pwa_head, build_pwa   # warstwa PWA (apka na telefon) — Gry
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 # >>> JEDYNE miejsce z adresem strony (kanoniczny adres, hreflang, og:url, RSS, sitemap, przekierowanie z GH Pages).
@@ -268,7 +269,7 @@ def head(lang, path, title, desc, alts, og_img, og_type='website', extra='', gat
 <meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}"><meta property="og:url" content="{SITE}{path}">
 <meta property="og:image" content="{SITE}{og_img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">{extra}
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">{pwa_head(r, lang)}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{fonts(lang)}&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{r}css/eve.css"></head>
@@ -298,7 +299,7 @@ def head_gate(lang, path, title, desc, alts):
 <html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#3a0b16">
 <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">{links}
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">{pwa_head(r, lang)}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{fonts(lang)}&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{r}css/eve.css"></head>
@@ -807,7 +808,7 @@ def linki_page(lang, posts, path=None):
 <meta property="og:image" content="{SITE}{og}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(L['title'])}"><meta name="twitter:description" content="{esc(L['desc'])}"><meta name="twitter:image" content="{SITE}{og}">
 <script type="application/ld+json">{{"@context":"https://schema.org","@type":"ProfilePage","url":"{SITE}{canon}","inLanguage":"{HTML_LANG[lang]}","mainEntity":{{"@type":"Person","name":"Eve (AI)","description":{json_str(L['bio'])},"image":"{SITE}assets/img/eve-avatar.webp","sameAs":["{FB}","{IG}"]}}}}</script>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">{pwa_head(r, lang)}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{fonts(lang)}&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{r}css/eve.css"></head>
@@ -893,6 +894,7 @@ def main():
     write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
     urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + ([path_komiks3(l) for l in LANGS] if COMIC3_PUBLISHED else []) + [path_sesja(l) for l in LANGS] + [path_creators(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
+    build_pwa(ROOT, write)   # manifest, sw.js, js/pwa.js, offline.html, ikony (po stronach — wersja cache z ich treści)
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
 
 if __name__ == '__main__':
