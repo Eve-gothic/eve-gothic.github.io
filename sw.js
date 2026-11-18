@@ -1,5 +1,5 @@
 /* Service worker strony Eve — GENEROWANY przez scripts/pwa.py (build.py). Nie edytuj ręcznie. */
-const VERSION = 'cb18fa7ce0';
+const VERSION = 'b589a8ae45';
 const SHELL = 'eve-shell-' + VERSION, PAGES = 'eve-pages-v1', IMGS = 'eve-img-v1', FONTS = 'eve-fonts-v1';
 const KEEP = [SHELL, PAGES, IMGS, FONTS];
 const MAX_PAGES = 60, MAX_IMGS = 150, MAX_FONTS = 40;

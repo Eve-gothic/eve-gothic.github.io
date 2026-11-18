@@ -262,7 +262,7 @@ def head(lang, path, title, desc, alts, og_img, og_type='website', extra='', gat
     links = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{p}">' for l, p in alts.items())
     if 'pl' in alts: links += f'<link rel="alternate" hreflang="x-default" href="{SITE}{alts["pl"]}">'
     return f'''<!doctype html>
-<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="google-site-verification" content="rdw5SqpOsglZZsTHffwvSJovaECEEEonhCedF2X3WEE">
+<html lang="{HTML_LANG[lang]}" translate="no"><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="google-site-verification" content="rdw5SqpOsglZZsTHffwvSJovaECEEEonhCedF2X3WEE">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#3a0b16">
 <link rel="canonical" href="{SITE}{path}">{links}
 <link rel="alternate" type="application/rss+xml" title="{esc(T[lang]['blog_h'])}" href="{SITE}{path_blog(lang)}feed.xml">
@@ -297,7 +297,7 @@ def head_gate(lang, path, title, desc, alts):
     r = root_for(path)
     links = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{p}">' for l, p in alts.items())
     return f'''<!doctype html>
-<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="{HTML_LANG[lang]}" translate="no"><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#3a0b16">
 <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">{links}
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">{pwa_head(r, lang)}
@@ -806,7 +806,7 @@ def linki_page(lang, posts, path=None):
     links += btn(IG, L['ig'], '@eve.ai.digital.legacy', SVG_IG, True, ' soc', 'instagram')
     langs = ''.join(f'<a href="{r}{path_linki(l)}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}"' + (' aria-current="true"' if l == lang else '') + f'>{LANG_LABEL[l]}</a>' for l in LINKI_ORDER)
     return f'''<!doctype html>
-<html lang="{HTML_LANG[lang]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<html lang="{HTML_LANG[lang]}" translate="no"><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{esc(L['title'])}</title><meta name="description" content="{esc(L['desc'])}"><meta name="theme-color" content="#0c0708">
 <meta name="robots" content="index, follow"><meta name="google-site-verification" content="rdw5SqpOsglZZsTHffwvSJovaECEEEonhCedF2X3WEE"><link rel="canonical" href="{SITE}{canon}">{hre}
 <meta property="og:type" content="profile"><meta property="og:site_name" content="Eve"><meta property="og:locale" content="{OG_LOCALE[lang]}">

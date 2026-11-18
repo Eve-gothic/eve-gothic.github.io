@@ -148,7 +148,7 @@ def manifest(ROOT):
 def offline_page(l):
     t, r = TXT[l], '/'   # strona offline podstawiana pod dowolny adres -> ścieżki od korzenia domeny
     return f'''<!doctype html>
-<html lang="{HTML_LANG[l]}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<html lang="{HTML_LANG[l]}" translate="no"><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{html.escape(t['off_t'])} · Eve</title><meta name="robots" content="noindex"><meta name="theme-color" content="{INK}">
 <link rel="manifest" href="{r}manifest.webmanifest"><link rel="icon" type="image/png" href="{r}{PWA_DIR}icon-192.png">
 <style>body{{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:{INK};color:{PAPER};font:18px/1.6 "Cormorant Garamond",Georgia,serif;text-align:center;padding:24px;box-sizing:border-box}}
