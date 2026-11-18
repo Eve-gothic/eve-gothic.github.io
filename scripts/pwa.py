@@ -10,7 +10,7 @@ Gry w apce: /gry/karne/ i /gry/brawler/ = zbudowane dist gier, aktualizacja jedn
 Powiadomienia push: Worker eve-push (/workspace/eve-push, prywatny). Przycisk „Włącz powiadomienia” pojawia się
   dopiero, gdy PUSH_API poniżej nie jest puste; wysyłka: node /workspace/eve-push/scripts/notify.mjs (README tam).
 """
-import os, json, hashlib, html
+import os, json, hashlib, html, shutil, subprocess
 
 LANGS = ['pl', 'en', 'es', 'pt', 'it', 'ja', 'zh']
 HTML_LANG = {'pl': 'pl', 'en': 'en', 'es': 'es', 'pt': 'pt-BR', 'it': 'it', 'ja': 'ja', 'zh': 'zh-Hans'}
@@ -53,6 +53,48 @@ def pwa_head(r, lang):
             f'<script src="{r}js/pwa.js" data-lang="{lang}" defer></script>')
 
 # ---------- ikony ----------
+def _badge_font_path():
+    """Playfair Display (nagłówki strony), potem inny szeryf. Odznaka powstaje przy budowie — czcionka nie trafia do repo."""
+    queries = (
+        'Playfair Display:weight=700',
+        'Playfair Display',
+        'Cormorant Garamond:weight=700',
+        'Liberation Serif:weight=700',
+        'DejaVu Serif:weight=bold',
+        'serif:weight=700',
+    )
+    if shutil.which('fc-match'):
+        for q in queries:
+            r = subprocess.run(['fc-match', q, '--format', '%{file}'], capture_output=True, text=True)
+            path = (r.stdout or '').strip()
+            if r.returncode == 0 and path and os.path.isfile(path):
+                return path
+    for path in (
+        '/usr/share/fonts/truetype/sand-box/google/Playfair Display/PlayfairDisplay-VariableFont_wght.ttf',
+        '/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf',
+    ):
+        if os.path.isfile(path):
+            return path
+    raise FileNotFoundError('brak czcionki szeryfowej do odznaki powiadomień (Playfair Display / serif)')
+
+def make_badge(size, font_path):
+    """Biała litera E na całkowicie przezroczystym tle. Android w badge bierze tylko kanał alfa."""
+    from PIL import Image, ImageDraw, ImageFont
+    S = size * 8   # supersampling — gładka alfa, RGB zawsze czysta biel
+    mask = Image.new('L', (S, S), 0)
+    font = ImageFont.truetype(font_path, int(S * 0.76))
+    if hasattr(font, 'set_variation_by_axes'):
+        try:
+            font.set_variation_by_axes([700])   # Bold, czytelne w 24 dp
+        except (ValueError, OSError):
+            pass
+    draw = ImageDraw.Draw(mask)
+    bbox = draw.textbbox((0, 0), 'E', font=font)
+    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
+    draw.text(((S - tw) // 2 - bbox[0], (S - th) // 2 - bbox[1]), 'E', font=font, fill=255)
+    mask = mask.resize((size, size), Image.LANCZOS)
+    return Image.merge('RGBA', (Image.new('L', (size, size), 255),) * 3 + (mask,))
+
 def make_icons(ROOT):
     from PIL import Image, ImageDraw
     out = os.path.join(ROOT, PWA_DIR); os.makedirs(out, exist_ok=True)
@@ -72,6 +114,10 @@ def make_icons(ROOT):
     circle_icon(512, .86).save(out + 'icon-512.png', optimize=True)
     circle_icon(512, .72).save(out + 'icon-maskable-512.png', optimize=True)   # bezpieczna strefa: koło 80%
     src.resize((180, 180), Image.LANCZOS).save(out + 'apple-touch-icon.png', optimize=True)   # iOS sam zaokrągla rogi
+    # Odznaka powiadomień Androida (status bar): monochromatyczne E, nie portret
+    font_path = _badge_font_path()
+    make_badge(96, font_path).save(out + 'badge-96.png', optimize=True)
+    make_badge(72, font_path).save(out + 'badge-72.png', optimize=True)
 
 def manifest(ROOT):
     shots = []
@@ -221,7 +267,7 @@ self.addEventListener('push', e => {
   try { d = e.data ? e.data.json() : {}; } catch (_) { d = {body: e.data ? e.data.text() : ''}; }
   const url = (() => { try { const x = new URL(d.url || BASE, BASE); return x.origin === self.location.origin ? x.href : BASE; } catch (_) { return BASE; } })();
   e.waitUntil(self.registration.showNotification(d.title || 'Eve', {
-    body: d.body || '', icon: u('assets/pwa/icon-192.png'), badge: u('assets/pwa/icon-192.png'),
+    body: d.body || '', icon: u('assets/pwa/icon-192.png'), badge: u('assets/pwa/badge-96.png'),
     tag: d.tag || undefined, renotify: !!d.tag, data: {url}, lang: d.lang || undefined,
   }));
 });
@@ -376,7 +422,7 @@ def build_pwa(ROOT, write):
     js_txt = {l: {k: TXT[l][k] for k in ('install', 'sub', 'ios_t', 'ios', 'close', 'push_t', 'push', 'push_on', 'push_ok')} for l in LANGS}
     write('js/pwa.js', PWA_JS.replace('__TXT__', json.dumps(js_txt, ensure_ascii=False)).replace('__PUSH__', json.dumps(push_cfg())))
     write('manifest.webmanifest', manifest(ROOT))
-    icons = [PWA_DIR + f for f in ('icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png')]
+    icons = [PWA_DIR + f for f in ('icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png', 'badge-96.png', 'badge-72.png')]
     required = ['./'] + [pre(l) for l in LANGS if l != 'pl'] + [pre(l) + 'offline.html' for l in LANGS] \
                + ['css/eve.css', 'js/eve.js', 'js/pwa.js', 'js/ads.js', 'manifest.webmanifest', ICON_SRC] + icons
     optional = [path_creators(l) for l in LANGS] + ['linki/', 'komiks/', 'blog/']
