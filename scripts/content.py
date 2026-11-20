@@ -3,6 +3,9 @@
  • content/gallery.json   — galeria (rozkładówka 'spread' + siatka 'grid'; panel dopisuje do 'grid')
  • content/posts/<slug>.json — wpisy z panelu (obok wpisów botów blog/posts/<lang>/*.md)
  • content/ads.json       — baner sponsora (gdy aktywny, zastępuje baner reklamy własnej w tych samych miejscach)
+ • content/videos.json    — filmiki z panelu (przed filmikami z i18n.py VIDEOS) + assets/video/uploads/
+ • content/home.json      — teksty strony głównej (kicker, deck, about, quote) nadpisujące i18n.py
+ • content/theme.json     — wygląd strony: magazyn (domyślny) | neon | luksus | minimal | creator (css/themes/<nazwa>.css)
 Zasada: błędny plik/wpis z panelu NIE wywraca builda — jest pomijany z ostrzeżeniem „UWAGA (content)”.
 Sprawdzenie bez budowania:  python3 scripts/content.py   (kod wyjścia 1 = są błędy)"""
 import os, re, sys, json, html, datetime
@@ -115,10 +118,119 @@ def sponsor_banner(s, lang, r, kind):
             f'<img src="{r}{esc(s["image"])}" alt="{esc(alt)}" width="{w}" height="{h}" loading="lazy" decoding="async"'
             f' style="display:block;width:100%;height:auto"></a></aside>')
 
+# ---------------- filmiki z panelu ----------------
+VIDEO_RE = re.compile(r'^assets/video/uploads/[a-z0-9-]+\.(mp4|webp)$')
+VIDEO_MAX_BYTES, POSTER_MAX_BYTES, VIDEO_MAX_SEC = 4 * 1024 * 1024, 120 * 1024, 20
+
+def _video_file_ok(path, ext, what, max_bytes):
+    """Ścieżka (tylko assets/video/uploads/…), istnienie, limit rozmiaru i sygnatura pliku."""
+    if not isinstance(path, str) or not VIDEO_RE.match(path) or not path.endswith('.' + ext):
+        warn(f'{what}: zła ścieżka {path!r} (oczekiwano assets/video/uploads/<a-z0-9->.{ext})'); return None
+    full = os.path.join(ROOT, path)
+    if not os.path.isfile(full): warn(f'{what}: brak pliku {path}'); return None
+    n = os.path.getsize(full)
+    if n > max_bytes: warn(f'{what}: {path} ma {n // 1024} KB — limit {max_bytes // 1024} KB'); return None
+    with open(full, 'rb') as f: data = f.read()
+    if ext == 'webp':
+        if not (data[:4] == b'RIFF' and data[8:12] == b'WEBP'): warn(f'{what}: {path} to nie WebP'); return None
+    else:
+        if data[4:8] != b'ftyp': warn(f'{what}: {path} to nie MP4'); return None
+        if b'avc1' not in data and b'avc3' not in data: warn(f'{what}: {path} nie jest H.264'); return None
+        if b'soun' in data: warn(f'{what}: {path} ma ścieżkę dźwięku (dozwolone tylko filmy bez dźwięku)'); return None
+    return True
+
+def load_videos():
+    """-> lista pozycji z content/videos.json (kolejność jak w pliku; bez hidden i bez błędnych)."""
+    v = _load('videos.json')
+    if v is None: return []
+    if not isinstance(v, dict): warn('videos.json: oczekiwano obiektu {"items": [...]}'); return []
+    items, seen = [], set()
+    if not isinstance(v.get('items', []), list): warn('videos.json: "items" musi być listą'); return []
+    for i, it in enumerate(v.get('items', [])):
+        if not isinstance(it, dict): warn(f'videos.json items[{i}]: pozycja musi być obiektem'); continue
+        what = f'videos.json items[{i}] ({it.get("id", "?")})'
+        if it.get('hidden'): continue
+        vid = it.get('id')
+        if not isinstance(vid, str) or not SLUG_RE.match(vid): warn(f'{what}: id musi pasować do a-z0-9-'); continue
+        if vid in seen: warn(f'{what}: powtórzone id'); continue
+        title = it.get('title')
+        if not isinstance(title, dict) or not any(isinstance(x, str) and x.strip() for x in title.values()): warn(f'{what}: brak title'); continue
+        if not _video_file_ok(it.get('mp4'), 'mp4', what, VIDEO_MAX_BYTES): continue
+        if it.get('poster') is not None and not _video_file_ok(it.get('poster'), 'webp', what, POSTER_MAX_BYTES): continue
+        try: w, h = int(it.get('w', 720)), int(it.get('h', 1280))
+        except (TypeError, ValueError): warn(f'{what}: w/h muszą być liczbami'); continue
+        if not (16 <= w <= 4096 and 16 <= h <= 4096): warn(f'{what}: w/h poza zakresem 16–4096'); continue
+        dur = it.get('duration')
+        if dur is not None and not (isinstance(dur, (int, float)) and 0 < dur <= VIDEO_MAX_SEC): warn(f'{what}: duration musi być 1–{VIDEO_MAX_SEC} s'); continue
+        seen.add(vid); items.append(dict(it, w=w, h=h))
+    return items
+
+def video_article(it, lang, r, novideo, n_label):
+    """<article> filmiku z panelu (bez <source webm>); n_label = „Kadr 03”."""
+    poster = f' poster="{r}{esc(it["poster"])}"' if it.get('poster') else ''
+    title = esc(pick(it['title'], lang))
+    return (f'<article><video muted playsinline controls loop preload="none" data-hover{poster} width="{it["w"]}" height="{it["h"]}">'
+            f'<source src="{r}{esc(it["mp4"])}" type="video/mp4">{novideo}</video><h3>{title}</h3><span class="sc">{n_label}</span></article>')
+
+# ---------------- opis strony głównej ----------------
+HOME_KEYS = {'kicker': 160, 'deck': 600, 'about': 3000, 'quote': 400}   # pole -> maks. długość
+
+def load_home():
+    """-> {lang: {pole: tekst}} z content/home.json (i18n). Teksty zwykłe (bez HTML); ostrzeżenie i pominięcie błędnych pól."""
+    h = _load('home.json')
+    out = {}
+    if h is None: return out
+    if not isinstance(h, dict): warn('home.json: oczekiwano obiektu {"i18n": {...}}'); return out
+    if not isinstance(h.get('i18n', {}), dict): warn('home.json: "i18n" musi być obiektem'); return out
+    for lang, d in (h.get('i18n') or {}).items():
+        if lang not in LANGS: warn(f'home.json: nieznany język {lang}'); continue
+        if not isinstance(d, dict): warn(f'home.json [{lang}]: musi być obiektem'); continue
+        for k, v in d.items():
+            if k.startswith('_'): continue
+            if k not in HOME_KEYS: warn(f'home.json [{lang}]: nieznane pole {k!r} (dozwolone: {", ".join(HOME_KEYS)})'); continue
+            if not isinstance(v, str) or not v.strip(): warn(f'home.json [{lang}] {k}: pusty lub nie-tekst'); continue
+            if len(v) > HOME_KEYS[k]: warn(f'home.json [{lang}] {k}: {len(v)} znaków — limit {HOME_KEYS[k]}'); continue
+            out.setdefault(lang, {})[k] = v.strip()
+    return out
+
+def _plain(s):
+    return html.escape(s, quote=True).replace('&#x27;', "'")
+
+def apply_home(T, home):
+    """Nadpisuje T[lang][kicker|deck|about|quote] tekstami z panelu. Escape HTML, potem **x** -> <strong>x</strong> (tylko w about)."""
+    for lang, d in home.items():
+        if lang not in T: continue
+        for k, v in d.items():
+            t = _plain(v)
+            if k == 'about': t = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', t, flags=re.S)
+            T[lang][k] = t
+    return T
+
+def og_plain(s):
+    """Tekst do obrazka OG (kicker) — bez encji HTML."""
+    return html.unescape(s)
+
+# ---------------- wygląd strony ----------------
+THEMES = ('magazyn', 'neon', 'luksus', 'minimal', 'creator')
+DEFAULT_THEME = 'magazyn'
+
+def load_theme():
+    t = _load('theme.json')
+    if t is None: return DEFAULT_THEME
+    name = t.get('theme') if isinstance(t, dict) else None
+    if name not in THEMES:
+        warn(f'theme.json: nieznany motyw {name!r}; dozwolone: {", ".join(THEMES)} — używam „{DEFAULT_THEME}”'); return DEFAULT_THEME
+    if not os.path.isfile(os.path.join(ROOT, 'css', 'themes', name + '.css')) and name != DEFAULT_THEME:
+        warn(f'theme.json: brak css/themes/{name}.css — używam „{DEFAULT_THEME}”'); return DEFAULT_THEME
+    return name
+
+
 if __name__ == '__main__':
     sys.path.insert(0, os.path.dirname(__file__))
     from i18n import CATEGORIES
     g = load_gallery(); ps = load_json_posts(CATEGORIES); s = load_sponsor()
+    vs = load_videos(); hm = load_home(); th = load_theme()
     print(f'galeria: spread {len(g["spread"])}, grid {len(g["grid"])}; wpisy z panelu: '
-          + ', '.join(f'{l}:{len(v)}' for l, v in ps.items() if v) + f' ; sponsor: {"aktywny" if s else "brak"}')
+          + ', '.join(f'{l}:{len(v)}' for l, v in ps.items() if v) + f' ; sponsor: {"aktywny" if s else "brak"}'
+          + f' ; filmiki z panelu: {len(vs)} ; opis głównej: {",".join(hm) or "domyślny"} ; wygląd: {th}')
     sys.exit(1 if PROBLEMS else 0)

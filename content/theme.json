@@ -1,0 +1,7 @@
+{
+ "version": 1,
+ "_info": "Wygląd strony wybrany w panelu Eve Admin: magazyn (domyślny) | neon | luksus | minimal | creator. Format: docs/admin-data-format.md, punkt 6.",
+ "theme": "magazyn",
+ "updated": "2026-11-20",
+ "source": "bot"
+}

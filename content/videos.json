@@ -1,0 +1,5 @@
+{
+ "version": 1,
+ "_info": "Filmiki z panelu Eve Admin (nowe na początku `items`), wyświetlane na stronie głównej przed filmikami z scripts/i18n.py (VIDEOS). Format: docs/admin-data-format.md, punkt 4. Pliki: assets/video/uploads/ (H.264 MP4 bez dźwięku, ≤ 20 s, ≤ 4 MB; okładka WebP ≤ 120 KB).",
+ "items": []
+}

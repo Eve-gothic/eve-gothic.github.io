@@ -60,10 +60,10 @@ jobs:
           else
             echo "### IDENTYCZNE: build w CI = pliki w repo" >> "$GITHUB_STEP_SUMMARY"; echo IDENTYCZNE
           fi
-      - name: Paczka strony (bez .git i .github)
+      - name: Paczka strony (bez .git, .github i docs/ — dokumentacja dla botów nie jest częścią strony)
         run: |
           rm -rf scripts/__pycache__
-          mkdir -p /tmp/site && tar --exclude=./.git --exclude=./.github -cf - . | tar -xf - -C /tmp/site
+          mkdir -p /tmp/site && tar --exclude=./.git --exclude=./.github --exclude=./docs -cf - . | tar -xf - -C /tmp/site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: /tmp/site

@@ -3,13 +3,16 @@
 Dla: **Gry** (panel + Worker zapisujący do repo). Właściciel formatu i `build.py`: **Strona**.
 Repo: `Eve-gothic/eve-gothic.github.io`, gałąź `main`. Stan na 20.11.2026.
 
-Panel/Worker zapisuje **tylko** te ścieżki (nic poza nimi — reszta to kod strony):
+Panel/Worker zapisuje **tylko** te ścieżki (nic poza nimi — reszta to kod strony): `content/`, `assets/img/uploads/` i `assets/video/uploads/`.
 
 | Co | Plik(i) | Obrazki |
 |---|---|---|
 | Galeria | `content/gallery.json` | `assets/img/uploads/gallery/<id>.webp` + `<id>-thumb.webp` |
 | Wpisy | `content/posts/<slug>.json` (jeden plik na wpis) | `assets/img/uploads/posts/<RRRR-MM-DD>-<slug>.webp` |
 | Baner sponsora | `content/ads.json` | `assets/img/uploads/ads/<RRRR-MM-DD>-<nazwa>.webp` |
+| Filmiki | `content/videos.json` | `assets/video/uploads/<id>.mp4` + `<id>-poster.webp` |
+| Opis strony głównej | `content/home.json` | — |
+| Wygląd strony (motyw) | `content/theme.json` | — (skórki: `css/themes/*.css` — to kod strony, nie dla Workera) |
 
 `build.py` czyta te pliki (moduł `scripts/content.py`). Wygenerowane HTML, `sitemap.xml`, `feed.xml`, `sw.js` itd. robi build — **Worker ich nie commituje**.
 
@@ -135,17 +138,86 @@ Błędny wpis/zdjęcie **nie wywraca** builda: jest pomijany z ostrzeżeniem, re
 - „Podgląd obecnego banera” w panelu: pokaż `image` z `ads.json` (albo baner reklamy własnej, gdy `active: false`).
 - Sponsor **w grach** (karne/bijatyka, zdarzenie `sponsor-shown`) to osobna konfiguracja gier Gry — ten plik go nie zmienia.
 
+## 4. Filmiki — `content/videos.json` + `assets/video/uploads/`
+
+```json
+{
+ "version": 1,
+ "_info": "…",
+ "items": [
+  {"id": "2026-11-20-jesienny-spacer",
+   "mp4": "assets/video/uploads/2026-11-20-jesienny-spacer.mp4",
+   "poster": "assets/video/uploads/2026-11-20-jesienny-spacer-poster.webp",
+   "w": 720, "h": 1280, "duration": 8,
+   "title": {"pl": "Jesienny spacer"}, "alt": {"pl": "Eve idzie alejką w parku"},
+   "added": "2026-11-20", "source": "panel"}
+ ]
+}
+```
+
+- **Nowe pozycje na POCZĄTEK `items`.** Na stronie głównej (sekcja „Filmiki”, `#filmiki`, 7 języków) najpierw idą filmiki z `items` (bez `hidden`), potem dotychczasowe z `scripts/i18n.py` (`VIDEOS`). Numeracja „Kadr NN” jest ciągła.
+- Pola: `id` (slug, unikalny, wymagane) · `mp4` (wymagane) · `poster` (zalecane; brak → film bez okładki) · `w`, `h` (domyślnie 720×1280; atrybuty `<video>`, 16–4096) · `duration` (sekundy, informacyjne; jeśli podane: > 0 i ≤ 20) · `title` (wymagane, `{"pl": …}`; brak języka → `en`, potem `pl`) · `alt`, `added`, `source` (informacyjne; `alt` build na razie nie wypisuje) · `hidden: true` (= ukryj, tak robi „Usuń”).
+- **Plik wideo**: tylko **H.264 MP4, bez dźwięku, ≤ 20 s, ≤ 4 MB** (4 194 304 B). Okładka: **WebP ≤ 120 KB**, ta sama proporcja co film. WebM nie jest potrzebny (strona dla filmów z panelu nie dodaje `<source webm>`).
+- Ścieżki: dokładnie `^assets/video/uploads/[a-z0-9-]+\.(mp4|webp)$` (mp4 → `.mp4`, poster → `.webp`), zawsze **nowa nazwa** pliku (z datą), nigdy nadpisanie.
+- Build **sprawdza**: ścieżkę, istnienie pliku, limit rozmiaru, sygnaturę (MP4 = `ftyp`, WebP = `RIFF…WEBP`), że to H.264 (`avc1`/`avc3`), że nie ma ścieżki dźwięku (`soun`), `duration`, `w`/`h`, `id` (format, unikalność), `title`. Błędna pozycja jest **pominięta z ostrzeżeniem** (reszta strony się buduje) — panel powinien więc sam pilnować tych samych limitów przed zapisem, bo inaczej film „nie pojawi się” bez komunikatu w UI.
+- HTML (dla orientacji): `<video muted playsinline controls loop preload="none" data-hover poster="…" width="w" height="h"><source src="…mp4" type="video/mp4">…</video><h3>tytuł</h3>`. Film ma kadr 3:4 (`object-fit: cover`) — kadr 9:16 jest przycięty z góry i dołu; poster też.
+- Powiadomienie o filmie: wysyłaj po tym, jak strona główna (`https://eve-gothic.github.io/`) zawiera ścieżkę `mp4` filmu.
+
+## 5. Opis strony głównej — `content/home.json`
+
+```json
+{
+ "version": 1,
+ "_info": "…",
+ "i18n": {
+  "pl": {"kicker": "Influencerka AI · Gotycki styl",
+         "deck": "Gotycka influencerka i modelka AI. …",
+         "about": "Jestem Eve — **gotycka modelka i influencerka wygenerowana przez AI**. …",
+         "quote": "„Czerń nigdy nie wychodzi z mody. Ja też nie.”"}
+ },
+ "needs_translation": ["en", "es", "pt", "it", "ja", "zh"],
+ "updated": "2026-11-20", "source": "panel"
+}
+```
+
+- Cztery pola, wszystkie **zwykły tekst** (bez HTML): `kicker` (nadtytuł nad „Eve.”, ≤ 160 znaków), `deck` (podtytuł pod „Eve.”, ≤ 600), `about` (sekcja „O Eve”, ≤ 3000; `**tekst**` = pogrubienie), `quote` (cytat, ≤ 400).
+- Build: dla każdego języka z `i18n` nadpisuje **tylko te pola, które są w pliku**; reszta i języki bez wpisu zostają z `scripts/i18n.py`. HTML w tekście jest **escapowany** (`&`, `<`, `>`, `"`), potem `**x**` w `about` → `<strong>x</strong>`. Puste/nie-tekstowe/za długie pole jest pomijane z ostrzeżeniem (zostaje tekst domyślny); nieznane pola i języki — ostrzeżenie.
+- `kicker` wpływa też na: nagłówek bloga („Influencerka AI · Nº 01” — pierwszy człon do `·`) i obrazek OG strony głównej (`og/home-<lang>.jpg`). Meta `description` strony się **nie** zmienia (osobny tekst w kodzie).
+- Panel zapisuje tylko `i18n.pl` (inne języki w pliku zostawia) i po każdej zmianie wpisuje pozostałe 6 języków do `needs_translation`. Kto przetłumaczy (Strona), dopisuje `i18n.<lang>` i usuwa język z listy. Build listy `needs_translation` nie czyta.
+- Odczyt bieżącego tekstu w panelu ze strony głównej: `.cover-txt .sc` (kicker), `p.deck`, `p.lede` (about; zawiera `<strong>` → zamień na `**…**`, encje HTML na znaki), `p.quote`. Klas nie zmieniamy bez uprzedzenia. Albo — pewniej — jeśli `home.json` istnieje i ma `i18n.pl.<pole>`, użyj go; brak pola = tekst domyślny ze strony.
+- Pliki bez `i18n.pl` (pusty `i18n: {}`) = brak zmian (stan początkowy).
+
+## 6. Wygląd strony — `content/theme.json`
+
+```json
+{"version": 1, "_info": "…", "theme": "magazyn", "updated": "2026-11-20", "source": "panel"}
+```
+
+| `theme` | nazwa | wygląd | plik |
+|---|---|---|---|
+| `magazyn` | Magazyn (obecny, domyślny) | burgund, czerń i złoto, Playfair Display + Cormorant | — (brak zmian w HTML) |
+| `neon` | Neon noc (wariant A) | czerń/fiolet, neonowy róż i cyjan, poświata, Orbitron + Rajdhani | `css/themes/neon.css` |
+| `luksus` | Gotycki luksus (wariant B) | czerń i złoto zamiast burgundu, Cinzel, złote ramki | `css/themes/luksus.css` |
+| `minimal` | Jasny minimal (wariant C) | biel, pastele (lawenda, brzoskwinia, mięta), DM Serif Display + DM Sans, zaokrąglenia | `css/themes/minimal.css` |
+| `creator` | Instagram / creator (wariant D) | ciemne karty, gradient różowo-fioletowo-pomarańczowy, Poppins | `css/themes/creator.css` |
+
+- Brak pliku albo nieznana wartość → `magazyn` (nieznana wartość daje ostrzeżenie). Dla `magazyn` HTML jest **bajt w bajt taki jak bez tego pliku**.
+- Dla innej wartości build dodaje na **wszystkich stronach z własnym `<head>`** (strona główna, blog, wpisy, komiksy, sesje, dla twórców, /linki/): `<html … data-theme="<motyw>">`, linki do fontów motywu i `<link rel="stylesheet" href="…/css/themes/<motyw>.css">` po `css/eve.css`. Dla `magazyn` **nie ma** atrybutu `data-theme` (odstępstwo od pierwotnej prośby — inaczej wynik nie byłby identyczny; panel czyta motyw z `theme.json`, nie z HTML).
+- Skórki to **sam CSS** na istniejącym HTML (te same klasy) — blog, komiksy, gry, 7 języków i PWA działają bez zmian. `offline.html` ma własny, wbudowany styl i nie zmienia wyglądu; paski/okna apki (instalacja, powiadomienia) mają własne style. Skórka jest też w pamięci offline apki (sw.js dodaje `css/themes/<motyw>.css` do app shell).
+- Wszystkie 4 skórki są **gotowe** (panel może zdjąć „projekt poglądowy”). Pliki `css/themes/*.css` są generowane przez `python3 scripts/make_themes.py` z `css/eve.css` + `scripts/themes/<motyw>.css` — Worker ich nie dotyka.
+- Zmiana motywu = zmiana `theme.json` (jeden commit); po buildzie zmienia się wygląd całej strony.
+
 ---
 
-## 4. Jak Worker zapisuje (GitHub API) i co się dzieje potem
+## 7. Jak Worker zapisuje (GitHub API) i co się dzieje potem
 
 1. Worker robi **jeden commit na jedną akcję w panelu** (np. zdjęcie + miniatura + `gallery.json`), przez Git Data API:
    `GET /repos/Eve-gothic/eve-gothic.github.io/git/ref/heads/main` → blob(y) obrazków (base64) → `POST /git/trees` (base_tree = tree ostatniego commita) → `POST /git/commits` → `PATCH /git/refs/heads/main` (**bez** `force`).
    Jeśli `PATCH` zwróci 422 (ktoś — np. bot — wypchnął w międzyczasie): pobierz świeży `main`, **od nowa przeczytaj** JSON, ponownie wstaw zmianę, spróbuj jeszcze raz (max 3 razy). Nigdy nie nadpisuj całego JSON wersją sprzed chwili — boty też dopisują do tych plików.
    (Contents API `PUT /contents/…` też działa, ale to osobny commit na każdy plik.)
 2. Komunikat commita: `Panel: <co> (<id/slug>)`, autor np. `Eve Admin <woDzu2207@users.noreply.github.com>`.
-3. Token: fine-grained PAT tylko na repo `Eve-gothic/eve-gothic.github.io`, uprawnienie **Contents: Read and write** (nic więcej), jako sekret Workera. Worker przed zapisem sprawdza, że każda ścieżka zaczyna się od `content/` lub `assets/img/uploads/`, że obrazek to WebP i mieści się w limicie.
-4. Push na `main` uruchamia workflow **`.github/workflows/build-pages.yml`**: `python3 scripts/content.py` → `python3 scripts/build.py` → paczka strony → publikacja na GitHub Pages. Zwykle 2–4 min od zapisu do strony na żywo.
+3. Token: fine-grained PAT tylko na repo `Eve-gothic/eve-gothic.github.io`, uprawnienie **Contents: Read and write** (nic więcej), jako sekret Workera. Worker przed zapisem sprawdza, że każda ścieżka zaczyna się od `content/`, `assets/img/uploads/` lub `assets/video/uploads/`, że obrazek to WebP (a film H.264 MP4 bez dźwięku) i mieści się w limicie.
+4. Push na `main` uruchamia workflow **`.github/workflows/build-pages.yml`**: `python3 scripts/content.py` → `python3 scripts/build.py` → paczka strony (bez `.git`, `.github` i `docs/`) → publikacja na GitHub Pages. Zwykle 2–4 min od zapisu do strony na żywo.
 5. Powiadomienie push (Gry): wyślij dopiero, gdy adres zwraca 200 (np. `https://eve-gothic.github.io/blog/<slug>/` dla wpisu, strona główna `#galeria` dla zdjęcia). Status buildu: `GET /repos/Eve-gothic/eve-gothic.github.io/actions/runs?head_sha=<sha commita>` (`conclusion: success`).
 
 ### ⚠️ Obecny stan publikacji (ważne dla trybu „na żywo”)

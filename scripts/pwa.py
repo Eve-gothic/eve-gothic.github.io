@@ -472,7 +472,7 @@ PWA_JS = r'''/* Apka Eve (PWA): rejestracja service workera + przycisk instalacj
 })();
 '''
 
-def build_pwa(ROOT, write):
+def build_pwa(ROOT, write, theme=None):
     """Generuje pliki PWA. write(rel, content) — funkcja zapisu z build.py."""
     make_icons(ROOT)
     for l in LANGS: write(pre(l) + 'offline.html', offline_page(l))
@@ -481,7 +481,7 @@ def build_pwa(ROOT, write):
     write('manifest.webmanifest', manifest(ROOT))
     icons = [PWA_DIR + f for f in ('icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png', 'badge-96.png', 'badge-72.png')]
     required = ['./'] + [pre(l) for l in LANGS if l != 'pl'] + [pre(l) + 'offline.html' for l in LANGS] \
-               + ['css/eve.css', 'js/eve.js', 'js/pwa.js', 'js/ads.js', 'manifest.webmanifest', ICON_SRC] + icons
+               + ['css/eve.css'] + ([f'css/themes/{theme}.css'] if theme else []) + ['js/eve.js', 'js/pwa.js', 'js/ads.js', 'manifest.webmanifest', ICON_SRC] + icons
     optional = [path_creators(l) for l in LANGS] + ['linki/', 'komiks/', 'blog/']
     ver = _h(ROOT, [r for r in required if not r.endswith('/')] + [pre(l) + 'index.html' for l in LANGS])
     write('sw.js', SW_TEMPLATE.replace('__VERSION__', ver).replace('__REQUIRED__', json.dumps(required)).replace('__OPTIONAL__', json.dumps(optional)).replace('__PUSH__', json.dumps(push_cfg())))

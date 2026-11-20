@@ -1,0 +1,8 @@
+{
+ "version": 1,
+ "_info": "Teksty strony głównej z panelu Eve Admin (kicker, deck, about, quote). Pusty i18n = teksty z scripts/i18n.py. Panel zapisuje i18n.pl i wpisuje pozostałe języki do needs_translation; tłumaczenie = dopisanie i18n.<lang> i usunięcie języka z listy. Format: docs/admin-data-format.md, punkt 5.",
+ "i18n": {},
+ "needs_translation": [],
+ "updated": "2026-11-20",
+ "source": "bot"
+}

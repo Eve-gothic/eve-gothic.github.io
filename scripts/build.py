@@ -17,6 +17,19 @@ from pwa import pwa_head, build_pwa, TXT as PWA_TXT   # warstwa PWA (apka na tel
 from ads import ad_banner, ad_script, build_ads_js   # reklama własna usługi (baner, okienko, pasek po komiksie)
 import content   # dane z panelu „Eve Admin”: content/gallery.json, content/posts/*.json, content/ads.json (docs/admin-data-format.md)
 GAL = content.load_gallery(); SPONSOR = content.load_sponsor()
+VIDEOS_PANEL = content.load_videos()          # content/videos.json — filmiki z panelu (przed VIDEOS z i18n.py)
+content.apply_home(T, content.load_home())    # content/home.json — teksty strony głównej z panelu (kicker, deck, about, quote)
+THEME = content.load_theme()                  # content/theme.json — wygląd: magazyn (domyślny, bez zmian w HTML) | neon | luksus | minimal | creator
+THEME_FONTS = {'neon': 'family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700',
+               'luksus': 'family=Cinzel:wght@400;600&family=Playfair+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@500',
+               'minimal': 'family=DM+Sans:wght@400;500;700&family=DM+Serif+Display:ital@0;1',
+               'creator': 'family=Poppins:wght@400;500;600;700'}
+def theme_attr(): return '' if THEME == content.DEFAULT_THEME else f' data-theme="{THEME}"'   # „magazyn” = brak atrybutu (HTML bajt w bajt jak dawniej)
+def theme_links(r):
+    """Po głównym CSS: fonty motywu + css/themes/<motyw>.css (dla „magazyn” nic)."""
+    if THEME == content.DEFAULT_THEME: return ''
+    return (f'<link href="https://fonts.googleapis.com/css2?{THEME_FONTS[THEME]}&display=swap" rel="stylesheet">'
+            f'<link rel="stylesheet" href="{r}css/themes/{THEME}.css">')
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 # >>> JEDYNE miejsce z adresem strony (kanoniczny adres, hreflang, og:url, RSS, sitemap, przekierowanie z GH Pages).
@@ -275,7 +288,7 @@ def head(lang, path, title, desc, alts, og_img, og_type='website', extra='', gat
     links = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{p}">' for l, p in alts.items())
     if 'pl' in alts: links += f'<link rel="alternate" hreflang="x-default" href="{SITE}{alts["pl"]}">'
     return f'''<!doctype html>
-<html lang="{HTML_LANG[lang]}" translate="no"><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="google-site-verification" content="rdw5SqpOsglZZsTHffwvSJovaECEEEonhCedF2X3WEE">
+<html lang="{HTML_LANG[lang]}" translate="no"{theme_attr()}><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="google-site-verification" content="rdw5SqpOsglZZsTHffwvSJovaECEEEonhCedF2X3WEE">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#3a0b16">
 <link rel="canonical" href="{SITE}{path}">{links}
 <link rel="alternate" type="application/rss+xml" title="{esc(T[lang]['blog_h'])}" href="{SITE}{path_blog(lang)}feed.xml">
@@ -286,7 +299,7 @@ def head(lang, path, title, desc, alts, og_img, og_type='website', extra='', gat
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">{pwa_head(r, lang)}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{fonts(lang)}&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}css/eve.css"></head>
+<link rel="stylesheet" href="{r}css/eve.css">{theme_links(r)}</head>
 <body>'''
 
 def topbar(lang, path, alts, solid=False):
@@ -310,13 +323,13 @@ def head_gate(lang, path, title, desc, alts):
     r = root_for(path)
     links = ''.join(f'<link rel="alternate" hreflang="{HTML_LANG[l]}" href="{SITE}{p}">' for l, p in alts.items())
     return f'''<!doctype html>
-<html lang="{HTML_LANG[lang]}" translate="no"><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="{HTML_LANG[lang]}" translate="no"{theme_attr()}><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title><meta name="description" content="{esc(desc)}"><meta name="theme-color" content="#3a0b16">
 <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">{links}
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">{pwa_head(r, lang)}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{fonts(lang)}&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}css/eve.css"></head>
+<link rel="stylesheet" href="{r}css/eve.css">{theme_links(r)}</head>
 <body>'''
 
 # Zewnętrzny link 18+ — TYLKO na stronach bramki, wstawiany przez JS po potwierdzeniu.
@@ -387,7 +400,9 @@ def home(lang, posts):
     for it in GAL['grid']:   # content/gallery.json -> grid („Nowa sesja”; panel dopisuje na początek)
         cap = content.pick(it['caption'], lang); alt = content.pick(it.get('alt') or {}, lang) or f'Eve — {cap}'
         figs2 += f'<figure><button data-full="{r}{it["full"]}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img loading="lazy" src="{r}{it["thumb"]}" alt="{esc(alt)}" width="{it.get("w", 450)}" height="{it.get("h", 600)}"></button><figcaption>{esc(cap)}</figcaption></figure>\n'
-    reel = ''.join(f'<article>{vid(n)}<h3>{vt}</h3><span class="sc">{t["frame"]} {i + 1:02d}</span></article>' for i, (n, vt) in enumerate(zip(VIDEOS, t['video_titles'])))
+    npanel = len(VIDEOS_PANEL)   # filmiki z panelu (content/videos.json) idą przed filmikami z i18n.py; numeracja „Kadr NN” ciągła
+    reel = ''.join(content.video_article(it, lang, r, t['novideo'], f'{t["frame"]} {i + 1:02d}') for i, it in enumerate(VIDEOS_PANEL))
+    reel += ''.join(f'<article>{vid(n)}<h3>{vt}</h3><span class="sc">{t["frame"]} {npanel + i + 1:02d}</span></article>' for i, (n, vt) in enumerate(zip(VIDEOS, t['video_titles'])))
     traits = ''.join(f'<li>{x}</li>' for x in t['traits'])
     newtab = lambda u: f'<a class="cta fill" href="{u}" target="_blank" rel="noopener">{t["newtab"]}</a>'
     cafe, tama = f'{CAFE}?lang={game_lang(lang)}', f'{TAMA}?lang={game_lang(lang)}'   # gry obsługują ?lang=pl|en|es|pt (+it; reszta -> en)
@@ -827,7 +842,7 @@ def linki_page(lang, posts, path=None):
     links += btn(IG, L['ig'], '@eve.ai.digital.legacy', SVG_IG, True, ' soc', 'instagram')
     langs = ''.join(f'<a href="{r}{path_linki(l)}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}"' + (' aria-current="true"' if l == lang else '') + f'>{LANG_LABEL[l]}</a>' for l in LINKI_ORDER)
     return f'''<!doctype html>
-<html lang="{HTML_LANG[lang]}" translate="no"><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<html lang="{HTML_LANG[lang]}" translate="no"{theme_attr()}><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{esc(L['title'])}</title><meta name="description" content="{esc(L['desc'])}"><meta name="theme-color" content="#0c0708">
 <meta name="robots" content="index, follow"><meta name="google-site-verification" content="rdw5SqpOsglZZsTHffwvSJovaECEEEonhCedF2X3WEE"><link rel="canonical" href="{SITE}{canon}">{hre}
 <meta property="og:type" content="profile"><meta property="og:site_name" content="Eve"><meta property="og:locale" content="{OG_LOCALE[lang]}">
@@ -838,7 +853,7 @@ def linki_page(lang, posts, path=None):
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">{pwa_head(r, lang)}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?{fonts(lang)}&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{r}css/eve.css"></head>
+<link rel="stylesheet" href="{r}css/eve.css">{theme_links(r)}</head>
 <body class="linki">
 <main class="lbio">
 <nav class="llangs" aria-label="{esc(L['langs'])}">{langs}</nav>
@@ -886,7 +901,7 @@ def main():
                 if os.path.isdir(full) and e not in ('posts', 'og') and e not in slugs[l] and os.path.exists(os.path.join(full, 'index.html')):
                     shutil.rmtree(full); print('usunięto', full)
     for l in LANGS:
-        og_image(os.path.join(ROOT, f'og/home-{l}.jpg'), 'eve-londyn', T[l]['kicker'], T[l]['title'], lang=l)
+        og_image(os.path.join(ROOT, f'og/home-{l}.jpg'), 'eve-londyn', content.og_plain(T[l]['kicker']), T[l]['title'], lang=l)
         for p in posts[l]:
             og_image(os.path.join(ROOT, og_name(p['slug'], l)), p['og_photo'],
                      f"{T[l]['blog_h']} · {CATEGORIES[p['category']][l]}", p['title'], lang=l)
@@ -922,7 +937,7 @@ def main():
     urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + ([path_komiks3(l) for l in LANGS] if COMIC3_PUBLISHED else []) + [path_sesja(l) for l in LANGS] + [path_creators(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     build_ads_js(write)   # js/ads.js (przed build_pwa — wchodzi do pamięci offline)
-    build_pwa(ROOT, write)   # manifest, sw.js, js/pwa.js, offline.html, ikony (po stronach — wersja cache z ich treści)
+    build_pwa(ROOT, write, None if THEME == content.DEFAULT_THEME else THEME)   # manifest, sw.js, js/pwa.js, offline.html, ikony (po stronach — wersja cache z ich treści)
     print(f'OK: {sum(len(v) for v in posts.values())} wpisów ({", ".join(f"{l}:{len(posts[l])}" for l in LANGS)}), {len(urls)} stron.')
 
 if __name__ == '__main__':
