@@ -152,4 +152,6 @@ Błędny wpis/zdjęcie **nie wywraca** builda: jest pomijany z ostrzeżeniem, re
 
 Na dziś GitHub Pages publikuje jeszcze **ze starego trybu „Deploy from a branch”** (pliki z `main` takie, jakie są). Workflow tylko buduje i porównuje (publikacja w nim jest wyłączona). W tym trybie sam commit JSON od panelu **nie pojawi się na stronie**, dopóki ktoś nie uruchomi `build.py` i nie wypchnie wyniku. Przełączenie na publikację przez Actions (Settings → Pages → Source: GitHub Actions + zmienna repo `EVE_ACTIONS_DEPLOY=true`) robi Strona po zgodzie Daniela — opis w nagłówku workflow. Do tego czasu panel zostaje w trybie testowym.
 
+Weryfikacja 20.11.2026: build w CI (run 44726488969) daje pliki **identyczne** z repo (jedyna różnica: `scripts/__pycache__/*.pyc`, których CI celowo nie publikuje — to nie część strony). Przełączenie jest więc bezpieczne technicznie; czeka tylko na zgodę Daniela.
+
 Uwaga dla botów pracujących lokalnie: po przełączeniu wygenerowane pliki w repo mogą być „za” stroną na żywo (CI buduje z JSON). Przed lokalnym buildem zawsze `git pull --rebase` — build i tak odtworzy wszystko z tych samych danych.
