@@ -1,0 +1,500 @@
+{
+ "version": 1,
+ "_info": "Galeria strony Eve. Format: docs/admin-data-format.md. 'spread' = stała rozkładówka 12 zdjęć (nie edytuje panel). 'grid' = siatka 'Nowa sesja' — panel dopisuje NA POCZĄTEK listy.",
+ "spread": [
+  {
+   "id": "portret",
+   "full": "assets/img/eve-portret.webp",
+   "thumb": "assets/img/eve-portret-thumb.webp",
+   "caption": {
+    "pl": "Portret",
+    "en": "Portrait",
+    "es": "Retrato",
+    "pt": "Retrato",
+    "it": "Ritratto",
+    "ja": "ポートレート",
+    "zh": "肖像"
+   }
+  },
+  {
+   "id": "barista",
+   "full": "assets/img/eve-barista.webp",
+   "thumb": "assets/img/eve-barista-thumb.webp",
+   "caption": {
+    "pl": "Baristka z Eve's Café",
+    "en": "Barista at Eve's Café",
+    "es": "Barista en Eve's Café",
+    "pt": "Barista no Eve's Café",
+    "it": "Barista all'Eve's Café",
+    "ja": "Eve's Caféのバリスタ",
+    "zh": "Eve's Café 的咖啡师"
+   }
+  },
+  {
+   "id": "londyn",
+   "full": "assets/img/eve-londyn.webp",
+   "thumb": "assets/img/eve-londyn-thumb.webp",
+   "caption": {
+    "pl": "Deszczowy Londyn",
+    "en": "Rainy London",
+    "es": "Londres bajo la lluvia",
+    "pt": "Londres chuvosa",
+    "it": "Londra sotto la pioggia",
+    "ja": "雨のロンドン",
+    "zh": "雨中伦敦"
+   }
+  },
+  {
+   "id": "biblioteka",
+   "full": "assets/img/eve-biblioteka.webp",
+   "thumb": "assets/img/eve-biblioteka-thumb.webp",
+   "caption": {
+    "pl": "W bibliotece",
+    "en": "In the library",
+    "es": "En la biblioteca",
+    "pt": "Na biblioteca",
+    "it": "In biblioteca",
+    "ja": "図書館で",
+    "zh": "在图书馆"
+   }
+  },
+  {
+   "id": "park",
+   "full": "assets/img/eve-park.webp",
+   "thumb": "assets/img/eve-park-thumb.webp",
+   "caption": {
+    "pl": "Jesień w parku",
+    "en": "Autumn in the park",
+    "es": "Otoño en el parque",
+    "pt": "Outono no parque",
+    "it": "Autunno al parco",
+    "ja": "秋の公園",
+    "zh": "秋日公园"
+   }
+  },
+  {
+   "id": "gracz",
+   "full": "assets/img/eve-gracz.webp",
+   "thumb": "assets/img/eve-gracz-thumb.webp",
+   "caption": {
+    "pl": "Wieczór z grami",
+    "en": "Game night",
+    "es": "Noche de juegos",
+    "pt": "Noite de games",
+    "it": "Serata di giochi",
+    "ja": "ゲームの夜",
+    "zh": "游戏之夜"
+   }
+  },
+  {
+   "id": "usmiech",
+   "full": "assets/img/eve-usmiech.webp",
+   "thumb": "assets/img/eve-usmiech-thumb.webp",
+   "caption": {
+    "pl": "Uśmiech",
+    "en": "Smile",
+    "es": "Sonrisa",
+    "pt": "Sorriso",
+    "it": "Sorriso",
+    "ja": "笑顔",
+    "zh": "微笑"
+   }
+  },
+  {
+   "id": "okulary",
+   "full": "assets/img/eve-okulary.webp",
+   "thumb": "assets/img/eve-okulary-thumb.webp",
+   "caption": {
+    "pl": "Znad okularów",
+    "en": "Over the sunglasses",
+    "es": "Por encima de las gafas",
+    "pt": "Por cima dos óculos",
+    "it": "Da sopra gli occhiali",
+    "ja": "サングラス越しに",
+    "zh": "从墨镜上方"
+   }
+  },
+  {
+   "id": "calus",
+   "full": "assets/img/eve-calus.webp",
+   "thumb": "assets/img/eve-calus-thumb.webp",
+   "caption": {
+    "pl": "Spojrzenie",
+    "en": "The look",
+    "es": "La mirada",
+    "pt": "O olhar",
+    "it": "Lo sguardo",
+    "ja": "まなざし",
+    "zh": "凝视"
+   }
+  },
+  {
+   "id": "spojrzenie",
+   "full": "assets/img/eve-spojrzenie.webp",
+   "thumb": "assets/img/eve-spojrzenie-thumb.webp",
+   "caption": {
+    "pl": "Szelmowski uśmiech",
+    "en": "Mischievous smile",
+    "es": "Sonrisa pícara",
+    "pt": "Sorriso travesso",
+    "it": "Sorriso birichino",
+    "ja": "いたずらな笑み",
+    "zh": "坏笑"
+   }
+  },
+  {
+   "id": "nie-nie",
+   "full": "assets/img/eve-nie-nie.webp",
+   "thumb": "assets/img/eve-nie-nie-thumb.webp",
+   "caption": {
+    "pl": "Gotycki styl",
+    "en": "Gothic style",
+    "es": "Estilo gótico",
+    "pt": "Estilo gótico",
+    "it": "Stile gotico",
+    "ja": "ゴシックスタイル",
+    "zh": "哥特风格"
+   }
+  },
+  {
+   "id": "gest",
+   "full": "assets/img/eve-gest.webp",
+   "thumb": "assets/img/eve-gest-thumb.webp",
+   "caption": {
+    "pl": "Nie, nie, nie",
+    "en": "No, no, no",
+    "es": "No, no, no",
+    "pt": "Não, não, não",
+    "it": "No, no, no",
+    "ja": "ダメ、ダメ、ダメ",
+    "zh": "不、不、不"
+   }
+  }
+ ],
+ "grid": [
+  {
+   "id": "gitara",
+   "full": "assets/img/eve-gitara.webp",
+   "thumb": "assets/img/eve-gitara-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Garażowy rock",
+    "en": "Garage rock",
+    "es": "Rock de garaje",
+    "pt": "Rock de garagem",
+    "it": "Rock da garage",
+    "ja": "ガレージロック",
+    "zh": "车库摇滚"
+   },
+   "alt": {
+    "pl": "Eve w kurtce z naszywkami gra na gitarze elektrycznej przy wzmacniaczu",
+    "en": "Eve in a patched jacket playing an electric guitar by an amp",
+    "es": "Eve con chaqueta de parches tocando una guitarra eléctrica junto a un amplificador",
+    "pt": "Eve de jaqueta com patches tocando guitarra elétrica ao lado de um amplificador",
+    "it": "Eve con una giacca piena di toppe suona la chitarra elettrica accanto a un amplificatore",
+    "ja": "ワッペン付きジャケットのEveが、アンプの横でエレキギターを弾いている",
+    "zh": "穿着贴布夹克的 Eve 在音箱旁弹电吉他"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "kozuch",
+   "full": "assets/img/eve-kozuch.webp",
+   "thumb": "assets/img/eve-kozuch-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Pluszowy płaszcz",
+    "en": "Teddy coat",
+    "es": "Abrigo de borreguito",
+    "pt": "Casaco de pelúcia",
+    "it": "Cappotto teddy",
+    "ja": "テディコート",
+    "zh": "泰迪大衣"
+   },
+   "alt": {
+    "pl": "Eve w kremowym pluszowym płaszczu przy stole w jesiennym parku",
+    "en": "Eve in a cream teddy coat at a table in an autumn park",
+    "es": "Eve con abrigo de borreguito color crema en una mesa de un parque otoñal",
+    "pt": "Eve de casaco de pelúcia creme numa mesa de um parque no outono",
+    "it": "Eve con un cappotto teddy color crema a un tavolo in un parco autunnale",
+    "ja": "クリーム色のテディコートを着たEveが、秋の公園のテーブルにいる",
+    "zh": "穿奶油色泰迪大衣的 Eve 坐在秋日公园的桌边"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "szal",
+   "full": "assets/img/eve-szal.webp",
+   "thumb": "assets/img/eve-szal-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Otulona szalem",
+    "en": "Wrapped in a scarf",
+    "es": "Envuelta en una bufanda",
+    "pt": "Enrolada no cachecol",
+    "it": "Avvolta nella sciarpa",
+    "ja": "マフラーにくるまって",
+    "zh": "裹着围巾"
+   },
+   "alt": {
+    "pl": "Eve otulona rudym szalem wśród jesiennych liści",
+    "en": "Eve wrapped in a rust-coloured scarf among autumn leaves",
+    "es": "Eve envuelta en una bufanda cobriza entre hojas de otoño",
+    "pt": "Eve enrolada num cachecol cor de ferrugem entre folhas de outono",
+    "it": "Eve avvolta in una sciarpa color ruggine tra le foglie d’autunno",
+    "ja": "秋の落ち葉の中、錆色のマフラーにくるまるEve",
+    "zh": "Eve 裹着铁锈色围巾，置身秋天的落叶中"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "lisc",
+   "full": "assets/img/eve-lisc.webp",
+   "thumb": "assets/img/eve-lisc-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Klonowy liść",
+    "en": "Maple leaf",
+    "es": "Hoja de arce",
+    "pt": "Folha de bordo",
+    "it": "Foglia d’acero",
+    "ja": "カエデの葉",
+    "zh": "枫叶"
+   },
+   "alt": {
+    "pl": "Eve w czapce i swetrze zasłania jedno oko klonowym liściem",
+    "en": "Eve in a beanie and sweater covering one eye with a maple leaf",
+    "es": "Eve con gorro y jersey tapándose un ojo con una hoja de arce",
+    "pt": "Eve de gorro e suéter cobrindo um olho com uma folha de bordo",
+    "it": "Eve con berretto e maglione si copre un occhio con una foglia d’acero",
+    "ja": "ニット帽とセーター姿のEveが、カエデの葉で片目を隠している",
+    "zh": "戴毛线帽、穿毛衣的 Eve 用一片枫叶遮住一只眼睛"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "paski",
+   "full": "assets/img/eve-paski.webp",
+   "thumb": "assets/img/eve-paski-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Paski i graffiti",
+    "en": "Stripes and graffiti",
+    "es": "Rayas y grafiti",
+    "pt": "Listras e grafite",
+    "it": "Righe e graffiti",
+    "ja": "ボーダーとグラフィティ",
+    "zh": "条纹与涂鸦"
+   },
+   "alt": {
+    "pl": "Eve w koszulce i bluzce w paski przed kolorowym graffiti",
+    "en": "Eve in a T-shirt over a striped top in front of colourful graffiti",
+    "es": "Eve con camiseta sobre una prenda de rayas delante de un grafiti de colores",
+    "pt": "Eve de camiseta sobre blusa listrada diante de um grafite colorido",
+    "it": "Eve con una T-shirt sopra una maglia a righe davanti a graffiti colorati",
+    "ja": "ボーダーのトップスにTシャツを重ねたEveが、カラフルなグラフィティの前に立つ",
+    "zh": "T 恤叠穿条纹上衣的 Eve 站在彩色涂鸦前"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "mikrofon",
+   "full": "assets/img/eve-mikrofon.webp",
+   "thumb": "assets/img/eve-mikrofon-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Przy mikrofonie",
+    "en": "At the mic",
+    "es": "Frente al micro",
+    "pt": "No microfone",
+    "it": "Al microfono",
+    "ja": "マイクの前で",
+    "zh": "麦克风前"
+   },
+   "alt": {
+    "pl": "Eve w skórzanej kurtce mówi do mikrofonu na statywie",
+    "en": "Eve in a leather jacket speaking into a microphone on a stand",
+    "es": "Eve con chaqueta de cuero hablando a un micrófono con pie",
+    "pt": "Eve de jaqueta de couro falando num microfone com pedestal",
+    "it": "Eve con una giacca di pelle parla a un microfono con l’asta",
+    "ja": "レザージャケットのEveが、スタンドマイクに向かって話している",
+    "zh": "穿皮夹克的 Eve 对着立式麦克风说话"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "stadion",
+   "full": "assets/img/eve-stadion.webp",
+   "thumb": "assets/img/eve-stadion-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Na trybunach",
+    "en": "In the stands",
+    "es": "En la grada",
+    "pt": "Na arquibancada",
+    "it": "In tribuna",
+    "ja": "スタンドにて",
+    "zh": "看台上"
+   },
+   "alt": {
+    "pl": "Eve w czarnej kurtce na stadionie wśród kibiców i rac",
+    "en": "Eve in a black jacket at a stadium among fans and flares",
+    "es": "Eve con chaqueta negra en un estadio entre aficionados y bengalas",
+    "pt": "Eve de jaqueta preta num estádio entre torcedores e sinalizadores",
+    "it": "Eve con una giacca nera in uno stadio tra tifosi e fumogeni",
+    "ja": "黒いジャケットのEveが、サポーターと発煙筒に囲まれたスタジアムにいる",
+    "zh": "穿黑夹克的 Eve 在体育场里，周围是球迷和烟火"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "golf",
+   "full": "assets/img/eve-golf.webp",
+   "thumb": "assets/img/eve-golf-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Golf w czerni i bieli",
+    "en": "Black-and-white turtleneck",
+    "es": "Cuello alto en blanco y negro",
+    "pt": "Gola alta em preto e branco",
+    "it": "Dolcevita in bianco e nero",
+    "ja": "モノクロのタートルネック",
+    "zh": "黑白高领"
+   },
+   "alt": {
+    "pl": "Czarno-biały portret Eve w czarnym golfie",
+    "en": "Black-and-white portrait of Eve in a black turtleneck",
+    "es": "Retrato en blanco y negro de Eve con jersey negro de cuello alto",
+    "pt": "Retrato em preto e branco da Eve de gola alta preta",
+    "it": "Ritratto in bianco e nero di Eve con un dolcevita nero",
+    "ja": "黒のタートルネックを着たEveのモノクロポートレート",
+    "zh": "穿黑色高领毛衣的 Eve 黑白肖像"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "czapka",
+   "full": "assets/img/eve-czapka.webp",
+   "thumb": "assets/img/eve-czapka-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Czapka i szalik",
+    "en": "Beanie and scarf",
+    "es": "Gorro y bufanda",
+    "pt": "Gorro e cachecol",
+    "it": "Berretto e sciarpa",
+    "ja": "ニット帽とマフラー",
+    "zh": "毛线帽和围巾"
+   },
+   "alt": {
+    "pl": "Eve w kremowej czapce, szaliku i płaszczu jesienią",
+    "en": "Eve in a cream beanie, scarf and coat in autumn",
+    "es": "Eve con gorro color crema, bufanda y abrigo en otoño",
+    "pt": "Eve de gorro creme, cachecol e casaco no outono",
+    "it": "Eve con berretto color crema, sciarpa e cappotto in autunno",
+    "ja": "クリーム色のニット帽にマフラー、コート姿の秋のEve",
+    "zh": "秋天里戴奶油色毛线帽、围巾、穿大衣的 Eve"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "monochrom",
+   "full": "assets/img/eve-monochrom.webp",
+   "thumb": "assets/img/eve-monochrom-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Monochrom",
+    "en": "Monochrome",
+    "es": "Monocromo",
+    "pt": "Monocromático",
+    "it": "Monocromo",
+    "ja": "モノクローム",
+    "zh": "单色"
+   },
+   "alt": {
+    "pl": "Czarno-biały portret Eve z bliska z kolczykami",
+    "en": "Black-and-white close-up portrait of Eve with her piercings",
+    "es": "Primer plano en blanco y negro de Eve con sus piercings",
+    "pt": "Close em preto e branco da Eve com seus piercings",
+    "it": "Primo piano in bianco e nero di Eve con i suoi piercing",
+    "ja": "ピアスが映えるEveのモノクロのクローズアップ",
+    "zh": "Eve 的黑白特写，能看到她的穿孔"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "spojrzenie-noir",
+   "full": "assets/img/eve-spojrzenie-noir.webp",
+   "thumb": "assets/img/eve-spojrzenie-noir-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Noir",
+    "en": "Noir",
+    "es": "Noir",
+    "pt": "Noir",
+    "it": "Noir",
+    "ja": "ノワール",
+    "zh": "黑色电影"
+   },
+   "alt": {
+    "pl": "Eve w czarnym golfie na ciemnoniebieskim tle",
+    "en": "Eve in a black turtleneck against a dark blue background",
+    "es": "Eve con jersey negro de cuello alto sobre fondo azul oscuro",
+    "pt": "Eve de gola alta preta sobre fundo azul-escuro",
+    "it": "Eve con un dolcevita nero su sfondo blu scuro",
+    "ja": "濃紺の背景に黒のタートルネック姿のEve",
+    "zh": "深蓝背景前穿黑色高领毛衣的 Eve"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  },
+  {
+   "id": "kapelusz",
+   "full": "assets/img/eve-kapelusz.webp",
+   "thumb": "assets/img/eve-kapelusz-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Kapelusz",
+    "en": "The hat",
+    "es": "El sombrero",
+    "pt": "O chapéu",
+    "it": "Il cappello",
+    "ja": "帽子",
+    "zh": "帽子"
+   },
+   "alt": {
+    "pl": "Czarno-biały profil Eve w kapeluszu z szerokim rondem",
+    "en": "Black-and-white profile of Eve in a wide-brimmed hat",
+    "es": "Perfil en blanco y negro de Eve con sombrero de ala ancha",
+    "pt": "Perfil em preto e branco da Eve com chapéu de aba larga",
+    "it": "Profilo in bianco e nero di Eve con un cappello a tesa larga",
+    "ja": "つば広帽をかぶったEveのモノクロの横顔",
+    "zh": "戴宽檐帽的 Eve 黑白侧脸"
+   },
+   "added": "2026-11-05",
+   "source": "bot"
+  }
+ ]
+}

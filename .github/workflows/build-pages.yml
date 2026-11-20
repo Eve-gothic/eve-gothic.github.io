@@ -1,0 +1,77 @@
+# Budowanie i publikacja strony Eve przez GitHub Actions (dla panelu „Eve Admin”: Worker commituje tylko content/ + assets/img/uploads/).
+# Format danych: docs/admin-data-format.md
+#
+# STAN: przygotowane, publikacja WYŁĄCZONA. Dopóki repo nie ma zmiennej EVE_ACTIONS_DEPLOY=true, workflow tylko buduje
+# i sprawdza, czy build w CI daje dokładnie te same pliki co w repo (job „build”). Strona nadal idzie ze starego
+# trybu GitHub Pages „Deploy from a branch” (main, /).
+#
+# Włączenie (dopiero gdy job „build” jest zielony i pokazuje „IDENTYCZNE”):
+#   1) Settings → Pages → Build and deployment → Source: „GitHub Actions”
+#      (albo: gh api -X PUT repos/Eve-gothic/eve-gothic.github.io/pages -f build_type=workflow)
+#   2) Settings → Secrets and variables → Actions → Variables: EVE_ACTIONS_DEPLOY = true
+#      (albo: gh variable set EVE_ACTIONS_DEPLOY --body true -R Eve-gothic/eve-gothic.github.io)
+# Wycofanie: build_type=legacy (source main, /) i usunąć zmienną — strona wraca do publikacji z gałęzi.
+name: Build & deploy Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: eve-pages-build
+  cancel-in-progress: false   # każdy zapis z panelu ma się opublikować; kolejne czekają w kolejce
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # To samo środowisko co skrzynka botów (Debian 13 trixie, Python 3.13, Pillow 13.0.0, fonts-noto-cjk 20240730)
+    # — dzięki temu obrazki OG (JPG) wychodzą bajt w bajt takie same.
+    container: python:3.13-slim-trixie
+    steps:
+      - name: Narzędzia i fonty CJK
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends git fonts-noto-cjk zstd >/dev/null
+          pip install -q pillow==13.0.0
+      - uses: actions/checkout@v4
+      - name: Sprawdzenie danych z panelu (content/*.json)
+        run: python3 scripts/content.py || echo "::warning::Błędne wpisy w content/ zostały pominięte — szczegóły powyżej"
+      - name: Build (scripts/build.py)
+        run: python3 scripts/build.py
+      - name: Porównanie z repo
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git status --porcelain -- . ':!scripts/__pycache__' > /tmp/diff.txt
+          if [ -s /tmp/diff.txt ]; then
+            echo "### Build w CI różni się od plików w repo ($(wc -l < /tmp/diff.txt) plików)" >> "$GITHUB_STEP_SUMMARY"
+            echo "To normalne po zapisie z panelu (nowe strony). Lista:" >> "$GITHUB_STEP_SUMMARY"
+            sed 's/^/    /' /tmp/diff.txt | head -200 >> "$GITHUB_STEP_SUMMARY"
+            cat /tmp/diff.txt
+          else
+            echo "### IDENTYCZNE: build w CI = pliki w repo" >> "$GITHUB_STEP_SUMMARY"; echo IDENTYCZNE
+          fi
+      - name: Paczka strony (bez .git i .github)
+        run: |
+          rm -rf scripts/__pycache__
+          mkdir -p /tmp/site && tar --exclude=./.git --exclude=./.github -cf - . | tar -xf - -C /tmp/site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: /tmp/site
+
+  deploy:
+    needs: build
+    if: ${{ vars.EVE_ACTIONS_DEPLOY == 'true' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

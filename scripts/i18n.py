@@ -32,28 +32,8 @@ def fmt_date(d, lang):
     if lang == 'en': return f'{m} {d.day}, {d.year}'
     return f'{d.day} de {m} de {d.year}'
 
-# Galeria: (plik, podpis) — kolejność = układ rozkładówki
-GALLERY = ['portret','barista','londyn','biblioteka','park','gracz','usmiech','okulary','calus','spojrzenie','nie-nie','gest']
-GAL_CAP = {
- 'pl': ['Portret',"Baristka z Eve's Café",'Deszczowy Londyn','W bibliotece','Jesień w parku','Wieczór z grami','Uśmiech','Znad okularów','Spojrzenie','Szelmowski uśmiech','Gotycki styl','Nie, nie, nie'],
- 'en': ['Portrait',"Barista at Eve's Café",'Rainy London','In the library','Autumn in the park','Game night','Smile','Over the sunglasses','The look','Mischievous smile','Gothic style','No, no, no'],
- 'es': ['Retrato',"Barista en Eve's Café",'Londres bajo la lluvia','En la biblioteca','Otoño en el parque','Noche de juegos','Sonrisa','Por encima de las gafas','La mirada','Sonrisa pícara','Estilo gótico','No, no, no'],
- 'pt': ['Retrato',"Barista no Eve's Café",'Londres chuvosa','Na biblioteca','Outono no parque','Noite de games','Sorriso','Por cima dos óculos','O olhar','Sorriso travesso','Estilo gótico','Não, não, não'],
-}
-# Galeria II „Nowa sesja” (zdjęcia z Higgsfield, ręcznie zweryfikowane jako bezpieczne dla wszystkich)
-GALLERY2 = ['gitara','kozuch','szal','lisc','paski','mikrofon','stadion','golf','czapka','monochrom','spojrzenie-noir','kapelusz']
-GAL2_CAP = {
- 'pl': ['Garażowy rock','Pluszowy płaszcz','Otulona szalem','Klonowy liść','Paski i graffiti','Przy mikrofonie','Na trybunach','Golf w czerni i bieli','Czapka i szalik','Monochrom','Noir','Kapelusz'],
- 'en': ['Garage rock','Teddy coat','Wrapped in a scarf','Maple leaf','Stripes and graffiti','At the mic','In the stands','Black-and-white turtleneck','Beanie and scarf','Monochrome','Noir','The hat'],
- 'es': ['Rock de garaje','Abrigo de borreguito','Envuelta en una bufanda','Hoja de arce','Rayas y grafiti','Frente al micro','En la grada','Cuello alto en blanco y negro','Gorro y bufanda','Monocromo','Noir','El sombrero'],
- 'pt': ['Rock de garagem','Casaco de pelúcia','Enrolada no cachecol','Folha de bordo','Listras e grafite','No microfone','Na arquibancada','Gola alta em preto e branco','Gorro e cachecol','Monocromático','Noir','O chapéu'],
-}
-GAL2_ALT = {
- 'pl': ['Eve w kurtce z naszywkami gra na gitarze elektrycznej przy wzmacniaczu','Eve w kremowym pluszowym płaszczu przy stole w jesiennym parku','Eve otulona rudym szalem wśród jesiennych liści','Eve w czapce i swetrze zasłania jedno oko klonowym liściem','Eve w koszulce i bluzce w paski przed kolorowym graffiti','Eve w skórzanej kurtce mówi do mikrofonu na statywie','Eve w czarnej kurtce na stadionie wśród kibiców i rac','Czarno-biały portret Eve w czarnym golfie','Eve w kremowej czapce, szaliku i płaszczu jesienią','Czarno-biały portret Eve z bliska z kolczykami','Eve w czarnym golfie na ciemnoniebieskim tle','Czarno-biały profil Eve w kapeluszu z szerokim rondem'],
- 'en': ['Eve in a patched jacket playing an electric guitar by an amp','Eve in a cream teddy coat at a table in an autumn park','Eve wrapped in a rust-coloured scarf among autumn leaves','Eve in a beanie and sweater covering one eye with a maple leaf','Eve in a T-shirt over a striped top in front of colourful graffiti','Eve in a leather jacket speaking into a microphone on a stand','Eve in a black jacket at a stadium among fans and flares','Black-and-white portrait of Eve in a black turtleneck','Eve in a cream beanie, scarf and coat in autumn','Black-and-white close-up portrait of Eve with her piercings','Eve in a black turtleneck against a dark blue background','Black-and-white profile of Eve in a wide-brimmed hat'],
- 'es': ['Eve con chaqueta de parches tocando una guitarra eléctrica junto a un amplificador','Eve con abrigo de borreguito color crema en una mesa de un parque otoñal','Eve envuelta en una bufanda cobriza entre hojas de otoño','Eve con gorro y jersey tapándose un ojo con una hoja de arce','Eve con camiseta sobre una prenda de rayas delante de un grafiti de colores','Eve con chaqueta de cuero hablando a un micrófono con pie','Eve con chaqueta negra en un estadio entre aficionados y bengalas','Retrato en blanco y negro de Eve con jersey negro de cuello alto','Eve con gorro color crema, bufanda y abrigo en otoño','Primer plano en blanco y negro de Eve con sus piercings','Eve con jersey negro de cuello alto sobre fondo azul oscuro','Perfil en blanco y negro de Eve con sombrero de ala ancha'],
- 'pt': ['Eve de jaqueta com patches tocando guitarra elétrica ao lado de um amplificador','Eve de casaco de pelúcia creme numa mesa de um parque no outono','Eve enrolada num cachecol cor de ferrugem entre folhas de outono','Eve de gorro e suéter cobrindo um olho com uma folha de bordo','Eve de camiseta sobre blusa listrada diante de um grafite colorido','Eve de jaqueta de couro falando num microfone com pedestal','Eve de jaqueta preta num estádio entre torcedores e sinalizadores','Retrato em preto e branco da Eve de gola alta preta','Eve de gorro creme, cachecol e casaco no outono','Close em preto e branco da Eve com seus piercings','Eve de gola alta preta sobre fundo azul-escuro','Perfil em preto e branco da Eve com chapéu de aba larga'],
-}
+# Galeria (rozkładówka + „Nowa sesja”: zdjęcia, podpisy, alt we wszystkich językach) jest w content/gallery.json
+# — edytuje ją panel „Eve Admin”; format: docs/admin-data-format.md
 VIDEOS = ['kiss', 'flirt', 'leave', 'suknie', 'selfie', 'plaza', 'koronka', 'buziaki']
 
 T = {
@@ -294,21 +274,6 @@ LINKI = {
 # =====================================================================
 # Włoski, japoński, chiński uproszczony (dodane 9.11.2026)
 # =====================================================================
-GAL_CAP.update({
- 'it': ['Ritratto',"Barista all'Eve's Café",'Londra sotto la pioggia','In biblioteca','Autunno al parco','Serata di giochi','Sorriso','Da sopra gli occhiali','Lo sguardo','Sorriso birichino','Stile gotico','No, no, no'],
- 'ja': ['ポートレート',"Eve's Caféのバリスタ",'雨のロンドン','図書館で','秋の公園','ゲームの夜','笑顔','サングラス越しに','まなざし','いたずらな笑み','ゴシックスタイル','ダメ、ダメ、ダメ'],
- 'zh': ['肖像',"Eve's Café 的咖啡师",'雨中伦敦','在图书馆','秋日公园','游戏之夜','微笑','从墨镜上方','凝视','坏笑','哥特风格','不、不、不'],
-})
-GAL2_CAP.update({
- 'it': ['Rock da garage','Cappotto teddy','Avvolta nella sciarpa','Foglia d’acero','Righe e graffiti','Al microfono','In tribuna','Dolcevita in bianco e nero','Berretto e sciarpa','Monocromo','Noir','Il cappello'],
- 'ja': ['ガレージロック','テディコート','マフラーにくるまって','カエデの葉','ボーダーとグラフィティ','マイクの前で','スタンドにて','モノクロのタートルネック','ニット帽とマフラー','モノクローム','ノワール','帽子'],
- 'zh': ['车库摇滚','泰迪大衣','裹着围巾','枫叶','条纹与涂鸦','麦克风前','看台上','黑白高领','毛线帽和围巾','单色','黑色电影','帽子'],
-})
-GAL2_ALT.update({
- 'it': ['Eve con una giacca piena di toppe suona la chitarra elettrica accanto a un amplificatore','Eve con un cappotto teddy color crema a un tavolo in un parco autunnale','Eve avvolta in una sciarpa color ruggine tra le foglie d’autunno','Eve con berretto e maglione si copre un occhio con una foglia d’acero','Eve con una T-shirt sopra una maglia a righe davanti a graffiti colorati','Eve con una giacca di pelle parla a un microfono con l’asta','Eve con una giacca nera in uno stadio tra tifosi e fumogeni','Ritratto in bianco e nero di Eve con un dolcevita nero','Eve con berretto color crema, sciarpa e cappotto in autunno','Primo piano in bianco e nero di Eve con i suoi piercing','Eve con un dolcevita nero su sfondo blu scuro','Profilo in bianco e nero di Eve con un cappello a tesa larga'],
- 'ja': ['ワッペン付きジャケットのEveが、アンプの横でエレキギターを弾いている','クリーム色のテディコートを着たEveが、秋の公園のテーブルにいる','秋の落ち葉の中、錆色のマフラーにくるまるEve','ニット帽とセーター姿のEveが、カエデの葉で片目を隠している','ボーダーのトップスにTシャツを重ねたEveが、カラフルなグラフィティの前に立つ','レザージャケットのEveが、スタンドマイクに向かって話している','黒いジャケットのEveが、サポーターと発煙筒に囲まれたスタジアムにいる','黒のタートルネックを着たEveのモノクロポートレート','クリーム色のニット帽にマフラー、コート姿の秋のEve','ピアスが映えるEveのモノクロのクローズアップ','濃紺の背景に黒のタートルネック姿のEve','つば広帽をかぶったEveのモノクロの横顔'],
- 'zh': ['穿着贴布夹克的 Eve 在音箱旁弹电吉他','穿奶油色泰迪大衣的 Eve 坐在秋日公园的桌边','Eve 裹着铁锈色围巾，置身秋天的落叶中','戴毛线帽、穿毛衣的 Eve 用一片枫叶遮住一只眼睛','T 恤叠穿条纹上衣的 Eve 站在彩色涂鸦前','穿皮夹克的 Eve 对着立式麦克风说话','穿黑夹克的 Eve 在体育场里，周围是球迷和烟火','穿黑色高领毛衣的 Eve 黑白肖像','秋天里戴奶油色毛线帽、围巾、穿大衣的 Eve','Eve 的黑白特写，能看到她的穿孔','深蓝背景前穿黑色高领毛衣的 Eve','戴宽檐帽的 Eve 黑白侧脸'],
-})
 
 T['it'] = dict(
   nav_komiks='Fumetto',

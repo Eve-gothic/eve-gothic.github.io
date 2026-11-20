@@ -15,6 +15,8 @@ from i18n import *
 from creators_i18n import CR   # podstrona „Dla twórców” (usługa)
 from pwa import pwa_head, build_pwa, TXT as PWA_TXT   # warstwa PWA (apka na telefon) — Gry
 from ads import ad_banner, ad_script, build_ads_js   # reklama własna usługi (baner, okienko, pasek po komiksie)
+import content   # dane z panelu „Eve Admin”: content/gallery.json, content/posts/*.json, content/ads.json (docs/admin-data-format.md)
+GAL = content.load_gallery(); SPONSOR = content.load_sponsor()
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 # >>> JEDYNE miejsce z adresem strony (kanoniczny adres, hreflang, og:url, RSS, sitemap, przekierowanie z GH Pages).
@@ -163,6 +165,12 @@ def load_posts():
             if f.endswith('.md'):
                 p = parse_post(os.path.join(d, f), l)
                 if not p['draft']: posts[l].append(p)
+    have = {l: {p['slug'] for p in posts[l]} for l in LANGS}
+    for l, ps in content.load_json_posts(CATEGORIES).items():   # wpisy z panelu: content/posts/<slug>.json
+        for p in ps:
+            if p['slug'] in have[l]: content.warn(f'wpis z panelu "{p["slug"]}" [{l}] pominięty — taki slug już jest w blog/posts/{l}/')
+            else: posts[l].append(p)
+    for l in LANGS:
         posts[l].sort(key=lambda p: (p['date'], p['slug']), reverse=True)
     slugs = {l: {p['slug'] for p in posts[l]} for l in LANGS}
     for s in slugs['pl']:
@@ -348,7 +356,8 @@ def footer(lang, path, blog=False, ads=True):
 
 SLOT = '<div class="slot" aria-hidden="true"></div>'   # puste miejsce (ukryte przez .slot:empty)
 # Baner reklamy własnej — najwyżej JEDEN na stronę (scripts/ads.py): dół strony głównej, koniec wpisu, koniec komiksu.
-def house_ad(lang, r, kind): return ad_banner(lang, r, r + path_creators(lang), kind)
+# Gdy w content/ads.json jest aktywny sponsor — w tych samych miejscach pokazuje się baner sponsora.
+def house_ad(lang, r, kind): return content.sponsor_banner(SPONSOR, lang, r, kind) if SPONSOR else ad_banner(lang, r, r + path_creators(lang), kind)
 
 def card(p, r, big=False):
     t = T[p['lang']]; url = r + path_post(p['lang'], p['slug'])
@@ -370,12 +379,14 @@ def home(lang, posts):
           '{"@type":"WebSite","@id":"' + SITE + '#website","name":"Eve","url":"' + SITE + '","inLanguage":"' + HTML_LANG[lang] + '","description":' + json_str(t['desc']) + ',"publisher":{"@id":"' + SITE + '#org"}}]}</script>')
     out = head(lang, path, t['title'], t['desc'], alts, f'og/home-{lang}.jpg', extra=ld)
     figs = ''
-    for k, (n, cap) in enumerate(zip(GALLERY, GAL_CAP[lang]), 1):
-        figs += f'<figure class="s{k}"><button data-full="{img(n, True)}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img loading="lazy" src="{img(n, True) if k in (1, 4, 11, 12) else img(n)}" alt="Eve — {esc(cap)}"></button><figcaption data-n="{k:02d}">{esc(cap)}</figcaption></figure>\n'
+    for k, it in enumerate(GAL['spread'], 1):   # content/gallery.json -> spread (stały układ s1..s12; 1, 4, 11, 12 = pełne zdjęcie)
+        cap = content.pick(it['caption'], lang); full = r + it['full']
+        figs += f'<figure class="s{k}"><button data-full="{full}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img loading="lazy" src="{full if k in (1, 4, 11, 12) else r + it['thumb']}" alt="Eve — {esc(cap)}"></button><figcaption data-n="{k:02d}">{esc(cap)}</figcaption></figure>\n'
     vid = lambda n: f'<video muted playsinline controls loop preload="none" data-hover poster="{A}video/{n}-poster.webp"><source src="{A}video/{n}.webm" type="video/webm"><source src="{A}video/{n}.mp4" type="video/mp4">{t["novideo"]}</video>'
     figs2 = ''
-    for n, cap, alt in zip(GALLERY2, GAL2_CAP[lang], GAL2_ALT[lang]):
-        figs2 += f'<figure><button data-full="{img(n, True)}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img loading="lazy" src="{img(n)}" alt="{esc(alt)}" width="450" height="600"></button><figcaption>{esc(cap)}</figcaption></figure>\n'
+    for it in GAL['grid']:   # content/gallery.json -> grid („Nowa sesja”; panel dopisuje na początek)
+        cap = content.pick(it['caption'], lang); alt = content.pick(it.get('alt') or {}, lang) or f'Eve — {cap}'
+        figs2 += f'<figure><button data-full="{r}{it["full"]}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img loading="lazy" src="{r}{it["thumb"]}" alt="{esc(alt)}" width="{it.get("w", 450)}" height="{it.get("h", 600)}"></button><figcaption>{esc(cap)}</figcaption></figure>\n'
     reel = ''.join(f'<article>{vid(n)}<h3>{vt}</h3><span class="sc">{t["frame"]} {i + 1:02d}</span></article>' for i, (n, vt) in enumerate(zip(VIDEOS, t['video_titles'])))
     traits = ''.join(f'<li>{x}</li>' for x in t['traits'])
     newtab = lambda u: f'<a class="cta fill" href="{u}" target="_blank" rel="noopener">{t["newtab"]}</a>'

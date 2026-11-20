@@ -1,0 +1,15 @@
+{
+ "version": 1,
+ "_info": "Baner sponsora. Format: docs/admin-data-format.md. Gdy sponsor.active = true, baner sponsora zastępuje baner reklamy własnej (strona główna, koniec wpisu, koniec komiksu).",
+ "sponsor": {
+  "active": false,
+  "name": "",
+  "link": "",
+  "image": "",
+  "w": 1200,
+  "h": 300,
+  "label": {"pl": "Partner", "en": "Partner"},
+  "alt": {"pl": ""},
+  "updated": ""
+ }
+}
