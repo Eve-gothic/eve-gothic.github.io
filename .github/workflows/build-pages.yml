@@ -35,8 +35,9 @@ jobs:
       - name: Narzędzia i fonty CJK
         run: |
           apt-get update -qq
-          apt-get install -y -qq --no-install-recommends git fonts-noto-cjk zstd >/dev/null
+          apt-get install -y -qq --no-install-recommends git fonts-noto-cjk libraqm0 zstd >/dev/null
           pip install -q pillow==13.0.0
+          python3 -c "from PIL import features as f; print('jpg', f.version('jpg'), 'webp', f.version('webp'), 'freetype', f.version('freetype2'), 'raqm', f.version('raqm'))"
       - uses: actions/checkout@v4
       - name: Czcionka odznaki powiadomień (ta sama co na skrzynce botów — scripts/pwa.py szuka jej tu)
         run: |
