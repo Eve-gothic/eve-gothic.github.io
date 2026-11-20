@@ -38,6 +38,11 @@ jobs:
           apt-get install -y -qq --no-install-recommends git fonts-noto-cjk zstd >/dev/null
           pip install -q pillow==13.0.0
       - uses: actions/checkout@v4
+      - name: Czcionka odznaki powiadomień (ta sama co na skrzynce botów — scripts/pwa.py szuka jej tu)
+        run: |
+          D="/usr/share/fonts/truetype/sand-box/google/Playfair Display"
+          mkdir -p "$D" && cp .github/fonts/PlayfairDisplay-VariableFont_wght.ttf "$D/"
+          if command -v fc-cache >/dev/null; then fc-cache -f >/dev/null; fc-match 'Playfair Display' --format '%{file}\n'; fi
       - name: Sprawdzenie danych z panelu (content/*.json)
         run: python3 scripts/content.py || echo "::warning::Błędne wpisy w content/ zostały pominięte — szczegóły powyżej"
       - name: Build (scripts/build.py)
