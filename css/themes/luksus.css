@@ -1,0 +1,128 @@
+/* Skórka „luksus” — GENEROWANA przez scripts/make_themes.py (część ręczna: scripts/themes/luksus.css). Nie edytuj tego pliku ręcznie. */
+:root{--ink:#070605;--bur:#15100a;--bur2:#2b2113;--gold:#d4af5f;--gold2:#f2dfa6;--paper:#f6f0e4;--mut:#b3a58f;--soft:#e8dfcb;
+--f-head:"Playfair Display",serif;--f-body:"Cormorant Garamond",Georgia,serif;--f-ui:"Inter",system-ui,sans-serif;--f-cap:"Cinzel","Playfair Display",serif}
+/* --- remap eve.css na zmienne --- */
+body{font-family:var(--f-body),Georgia,serif}
+.sc{font-family:var(--f-ui),system-ui,sans-serif}
+h1,h2,h3{font-family:var(--f-head),serif}
+.top{border-bottom:1px solid color-mix(in srgb,var(--gold) 25%,transparent)}
+.top .mast{font-family:var(--f-head)}
+.menu a{font-family:var(--f-ui)}
+.cover-img::after{background:linear-gradient(90deg,var(--bur) 0%,color-mix(in srgb,var(--bur) 35%,transparent) 30%,transparent 60%),linear-gradient(0deg,color-mix(in srgb,var(--ink) 60%,transparent),transparent 40%)}
+.cover .deck{color:var(--soft)}
+.issue b{font-family:var(--f-head)}
+.cta{font-family:var(--f-ui)}
+.head{border-bottom:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.head .no{font-family:var(--f-head)}
+.about .lede::first-letter{font-family:var(--f-head)}
+.quote{font-family:var(--f-head);color:var(--paper)}
+.spread figcaption::before{font-family:var(--f-ui)}
+.reel article{border:1px solid color-mix(in srgb,var(--gold) 35%,transparent)}
+.game p{color:var(--soft)}
+.embed .cta{background:color-mix(in srgb,var(--ink) 60%,transparent)}
+.aside .soon{font-family:var(--f-head)}
+footer{border-top:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+footer .mast{font-family:var(--f-head)}
+@media(max-width:900px){.menu a{border-top:1px solid color-mix(in srgb,var(--gold) 20%,transparent)}}
+.langs{font-family:var(--f-ui),system-ui,sans-serif}
+.langs a{color:color-mix(in srgb,var(--paper) 85%,transparent)}
+.langs a[aria-current]{border-color:color-mix(in srgb,var(--gold) 50%,transparent)}
+.pcard p{color:var(--soft)}
+.pcard .more{font-family:var(--f-ui)}
+.bloghead{border-bottom:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.bloghead p{color:var(--soft)}
+.post .deck{color:var(--soft)}
+.post .body>p:first-of-type::first-letter{font-family:var(--f-head)}
+.post .body blockquote{font-family:var(--f-head);color:var(--paper)}
+.post .body em{color:var(--soft)}
+.post .body h2.src{font-family:var(--f-ui),system-ui,sans-serif;border-top:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.ainote{border:1px solid color-mix(in srgb,var(--gold) 35%,transparent)}
+.rss{font-family:var(--f-ui)}
+footer a.adult{font-family:var(--f-ui),system-ui,sans-serif;border:1px solid color-mix(in srgb,var(--mut) 35%,transparent)}
+.gate .warn{color:var(--soft);border-top:1px solid color-mix(in srgb,var(--gold) 40%,transparent);border-bottom:1px solid color-mix(in srgb,var(--gold) 40%,transparent)}
+.gate button.cta{font-family:var(--f-ui),system-ui,sans-serif}
+.follow{color:var(--soft);border-top:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.sub{border-bottom:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.social-l{font-family:var(--f-ui),system-ui,sans-serif}
+.sbtn{border:1px solid color-mix(in srgb,var(--gold) 60%,transparent);font-family:var(--f-ui),system-ui,sans-serif;background:color-mix(in srgb,var(--ink) 45%,transparent)}
+.kcard p{color:var(--soft)}
+.kpage figcaption{font-family:var(--f-ui),system-ui,sans-serif}
+body.linki{background:radial-gradient(120% 60% at 50% 0%,var(--bur) 0%,color-mix(in srgb,var(--bur) 35%,transparent) 45%,var(--ink) 75%) fixed,var(--ink)}
+.llangs a{font-family:var(--f-ui),system-ui,sans-serif}
+.llangs a[aria-current]{border-color:color-mix(in srgb,var(--gold) 60%,transparent)}
+.lav{box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 12%,transparent),0 12px 40px rgba(0,0,0,.6)}
+.lbiot{color:var(--soft)}
+.aitag{font-family:var(--f-ui),system-ui,sans-serif}
+.lbtn{border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);background:color-mix(in srgb,var(--ink) 55%,transparent);font-family:var(--f-head),serif}
+.lbtn.feat{background:linear-gradient(90deg,color-mix(in srgb,var(--bur2) 85%,transparent),color-mix(in srgb,var(--ink) 70%,transparent))}
+.lbtn small{font-family:var(--f-ui),system-ui,sans-serif}
+.lbtn .la{font-family:var(--f-ui)}
+.langdd{font-family:var(--f-ui),system-ui,sans-serif}
+.langdd summary{border:1px solid color-mix(in srgb,var(--gold) 50%,transparent)}
+.langdd nav a{border-top:1px solid color-mix(in srgb,var(--gold) 18%,transparent)}
+body:lang(ja),body:lang(zh){font-family:var(--f-body),var(--cjk-serif),Georgia,serif}
+:lang(ja) h1,:lang(ja) h2,:lang(ja) h3,:lang(ja) .quote,:lang(ja) .post .body blockquote,:lang(ja) .issue b,:lang(zh) h1,:lang(zh) h2,:lang(zh) h3,:lang(zh) .quote,:lang(zh) .post .body blockquote,:lang(zh) .issue b{font-family:var(--f-head),var(--cjk-serif),serif}
+:lang(ja) .sc,:lang(ja) .menu a,:lang(ja) .cta,:lang(ja) .rss,:lang(ja) .social-l,:lang(ja) .pcard .more,:lang(ja) .post .body h2.src,:lang(ja) .kpage figcaption,:lang(ja) .lbtn small,:lang(ja) .spread figcaption::before,:lang(zh) .sc,:lang(zh) .menu a,:lang(zh) .cta,:lang(zh) .rss,:lang(zh) .social-l,:lang(zh) .pcard .more,:lang(zh) .post .body h2.src,:lang(zh) .kpage figcaption,:lang(zh) .lbtn small,:lang(zh) .spread figcaption::before{font-family:var(--f-ui),var(--cjk-sans),system-ui,sans-serif}
+:lang(ja) .lbtn,:lang(zh) .lbtn,:lang(ja) .aitag,:lang(zh) .aitag{font-family:var(--f-head),var(--cjk-serif),serif}
+.fblock{border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);background:radial-gradient(120% 140% at 50% 0%,color-mix(in srgb,var(--bur2) 75%,transparent) 0%,color-mix(in srgb,var(--bur) 45%,transparent) 45%,color-mix(in srgb,var(--ink) 90%,transparent) 100%)}
+.fblock::before{border:1px solid color-mix(in srgb,var(--gold) 18%,transparent)}
+.fblock .fline{font-family:var(--f-head),serif}
+.fbtn{font-family:var(--f-ui),system-ui,sans-serif}
+:lang(ja) .fblock .fline,:lang(zh) .fblock .fline{font-family:var(--f-head),var(--cjk-serif),serif}
+footer a.forcr,.lfoot a.forcr{text-decoration-color:color-mix(in srgb,var(--gold) 45%,transparent)}
+.crgrid p,.crsteps p{color:var(--soft)}
+.crcard{border:1px solid color-mix(in srgb,var(--gold) 45%,transparent)}
+.crcard:hover,.crcard:focus-visible{background:color-mix(in srgb,var(--bur2) 35%,transparent)}
+.crct strong{font-family:var(--f-head),serif}
+.crn{font-family:var(--f-head)}
+.crnotes{background:color-mix(in srgb,var(--bur) 35%,transparent)}
+.crnotes li{color:var(--soft)}
+.crcontact .crlead{color:var(--soft)}
+:lang(ja) .crhero h1,:lang(zh) .crhero h1{font-family:var(--f-head),var(--cjk-serif),serif}
+:lang(ja) .crgrid h3,:lang(zh) .crgrid h3,:lang(ja) .crsteps h3,:lang(zh) .crsteps h3,:lang(ja) .crct strong,:lang(zh) .crct strong{font-family:var(--f-head),var(--cjk-serif),serif}
+.hads-in{border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);background:linear-gradient(115deg,color-mix(in srgb,var(--bur) 55%,transparent),color-mix(in srgb,var(--ink) 92%,transparent) 70%)}
+.hads-lbl{font-family:var(--f-ui),system-ui,sans-serif}
+.hads-ph{box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 12%,transparent)}
+.hads-ph i{background:color-mix(in srgb,var(--gold) 35%,transparent)}
+.hads-ph i:nth-of-type(2){background:color-mix(in srgb,var(--bur2) 90%,transparent)}
+.hads-tx b{font-family:var(--f-head),var(--cjk-serif,serif),serif}
+.hads-tx span{color:var(--soft)}
+.hads-go{font-family:var(--f-ui),system-ui,sans-serif}
+dialog.hadm{background:radial-gradient(120% 120% at 50% 0%,var(--bur) 0%,var(--ink) 75%)}
+dialog.hadm::backdrop{background:color-mix(in srgb,var(--ink) 72%,transparent)}
+.hadm h2{font-family:var(--f-head),var(--cjk-serif,serif),serif}
+.hadm p{color:var(--soft)}
+.hadbar{background:color-mix(in srgb,var(--ink) 96%,transparent);border:1px solid color-mix(in srgb,var(--gold) 45%,transparent)}
+.hadbar p{color:var(--soft)}
+.hadbar .go{font-family:var(--f-ui),system-ui,sans-serif}
+/* --- dopracowanie motywu --- */
+.head h2,.sub h3,.bloghead h1,.cover h1,.lhead h1,.top .mast,footer .mast{font-family:var(--f-cap);font-style:normal}
+.head h2{text-transform:uppercase;letter-spacing:.1em;font-size:clamp(1.9rem,4.6vw,3.6rem)}
+:lang(ja) .head h2,:lang(zh) .head h2{font-size:clamp(1.8rem,4.4vw,3.2rem);letter-spacing:.04em}
+.sub h3{text-transform:uppercase;letter-spacing:.08em;font-size:clamp(1.5rem,3vw,2.2rem)}
+.head{grid-template-columns:1fr;justify-items:center;text-align:center;border-bottom:0;padding-bottom:30px;position:relative}
+.head::after{content:"◆";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);color:var(--gold);font-size:.8rem;background:var(--ink);padding:0 14px}
+.head::before{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--gold) 70%,transparent),transparent)}
+.head .no{order:-1;font-size:2.6rem;line-height:1;-webkit-text-stroke:0;color:var(--gold);font-family:var(--f-head);font-style:italic;margin-bottom:6px}
+.film .head::after{background:var(--bur)}
+.cover{background:var(--bur)}
+.cover::after{content:"";position:absolute;inset:16px;border:1px solid color-mix(in srgb,var(--gold) 38%,transparent);pointer-events:none;z-index:3}
+.cover h1{letter-spacing:.02em;font-weight:400;font-size:clamp(5.4rem,13vw,12rem)}
+.cover-img::after{background:linear-gradient(90deg,var(--bur) 0%,color-mix(in srgb,var(--bur) 40%,transparent) 30%,transparent 60%),linear-gradient(0deg,color-mix(in srgb,var(--ink) 70%,transparent),transparent 40%)}
+.cover-img img{filter:contrast(1.04) saturate(.92)}
+.top .mast{font-size:1.4rem;letter-spacing:.2em;text-transform:uppercase}
+.sc{letter-spacing:.38em}
+.cta{border-radius:0;outline:1px solid color-mix(in srgb,var(--gold) 45%,transparent);outline-offset:4px}
+.cta.fill{background:linear-gradient(180deg,var(--gold2),var(--gold))}
+/* ramki zdjęć jak passe-partout */
+.spread figure button,.grid2 button{box-sizing:border-box;padding:7px;border:1px solid color-mix(in srgb,var(--gold) 60%,transparent);background:#0d0a07}
+.spread figure button img,.grid2 button img{display:block}
+.reel article{background:#0d0a07;border-color:color-mix(in srgb,var(--gold) 55%,transparent);outline:1px solid color-mix(in srgb,var(--gold) 20%,transparent);outline-offset:4px}
+.film{background:var(--bur)}
+.pcard,.kcard,.crgrid li,.game{border-top:2px double color-mix(in srgb,var(--gold) 65%,transparent)}
+.pcard h3,.kcard h3,.game h3{font-family:var(--f-head)}
+.about .ph::before{inset:-14px 14px 14px -14px}
+.about .lede::first-letter{font-family:var(--f-cap);color:var(--gold)}
+.quote{text-align:center;border-top:1px solid color-mix(in srgb,var(--gold) 45%,transparent);border-bottom:1px solid color-mix(in srgb,var(--gold) 45%,transparent);padding:18px 10px}
+.sbtn,.fbtn,.lbtn{border-radius:0}
+.fblock{outline:1px solid color-mix(in srgb,var(--gold) 25%,transparent);outline-offset:6px}

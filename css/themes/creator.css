@@ -1,0 +1,170 @@
+/* Skórka „creator” — GENEROWANA przez scripts/make_themes.py (część ręczna: scripts/themes/creator.css). Nie edytuj tego pliku ręcznie. */
+:root{--ink:#0f0d14;--bur:#17141f;--bur2:#2a2535;--gold:#e1306c;--gold2:#ff8ac4;--paper:#f5f2fa;--mut:#a39cb3;--soft:#d9d3e6;--r:18px;
+--g:linear-gradient(45deg,#f9a03f 0%,#e1306c 35%,#c13584 60%,#833ab4 85%,#5851db 100%);--g2:linear-gradient(135deg,#ff4fa3,#8b5cf6);
+--f-head:"Poppins",system-ui,sans-serif;--f-body:"Poppins",system-ui,sans-serif;--f-ui:"Poppins",system-ui,sans-serif}
+/* --- remap eve.css na zmienne --- */
+body{font-family:var(--f-body),Georgia,serif}
+.sc{font-family:var(--f-ui),system-ui,sans-serif}
+h1,h2,h3{font-family:var(--f-head),serif}
+.top{border-bottom:1px solid color-mix(in srgb,var(--gold) 25%,transparent)}
+.top .mast{font-family:var(--f-head)}
+.menu a{font-family:var(--f-ui)}
+.cover-img::after{background:linear-gradient(90deg,var(--bur) 0%,color-mix(in srgb,var(--bur) 35%,transparent) 30%,transparent 60%),linear-gradient(0deg,color-mix(in srgb,var(--ink) 60%,transparent),transparent 40%)}
+.cover .deck{color:var(--soft)}
+.issue b{font-family:var(--f-head)}
+.cta{font-family:var(--f-ui)}
+.head{border-bottom:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.head .no{font-family:var(--f-head)}
+.about .lede::first-letter{font-family:var(--f-head)}
+.quote{font-family:var(--f-head);color:var(--paper)}
+.spread figcaption::before{font-family:var(--f-ui)}
+.reel article{border:1px solid color-mix(in srgb,var(--gold) 35%,transparent)}
+.game p{color:var(--soft)}
+.embed .cta{background:color-mix(in srgb,var(--ink) 60%,transparent)}
+.aside .soon{font-family:var(--f-head)}
+footer{border-top:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+footer .mast{font-family:var(--f-head)}
+@media(max-width:900px){.menu a{border-top:1px solid color-mix(in srgb,var(--gold) 20%,transparent)}}
+.langs{font-family:var(--f-ui),system-ui,sans-serif}
+.langs a{color:color-mix(in srgb,var(--paper) 85%,transparent)}
+.langs a[aria-current]{border-color:color-mix(in srgb,var(--gold) 50%,transparent)}
+.pcard p{color:var(--soft)}
+.pcard .more{font-family:var(--f-ui)}
+.bloghead{border-bottom:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.bloghead p{color:var(--soft)}
+.post .deck{color:var(--soft)}
+.post .body>p:first-of-type::first-letter{font-family:var(--f-head)}
+.post .body blockquote{font-family:var(--f-head);color:var(--paper)}
+.post .body em{color:var(--soft)}
+.post .body h2.src{font-family:var(--f-ui),system-ui,sans-serif;border-top:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.ainote{border:1px solid color-mix(in srgb,var(--gold) 35%,transparent)}
+.rss{font-family:var(--f-ui)}
+footer a.adult{font-family:var(--f-ui),system-ui,sans-serif;border:1px solid color-mix(in srgb,var(--mut) 35%,transparent)}
+.gate .warn{color:var(--soft);border-top:1px solid color-mix(in srgb,var(--gold) 40%,transparent);border-bottom:1px solid color-mix(in srgb,var(--gold) 40%,transparent)}
+.gate button.cta{font-family:var(--f-ui),system-ui,sans-serif}
+.follow{color:var(--soft);border-top:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.sub{border-bottom:1px solid color-mix(in srgb,var(--gold) 30%,transparent)}
+.social-l{font-family:var(--f-ui),system-ui,sans-serif}
+.sbtn{border:1px solid color-mix(in srgb,var(--gold) 60%,transparent);font-family:var(--f-ui),system-ui,sans-serif;background:color-mix(in srgb,var(--ink) 45%,transparent)}
+.kcard p{color:var(--soft)}
+.kpage figcaption{font-family:var(--f-ui),system-ui,sans-serif}
+body.linki{background:radial-gradient(120% 60% at 50% 0%,var(--bur) 0%,color-mix(in srgb,var(--bur) 35%,transparent) 45%,var(--ink) 75%) fixed,var(--ink)}
+.llangs a{font-family:var(--f-ui),system-ui,sans-serif}
+.llangs a[aria-current]{border-color:color-mix(in srgb,var(--gold) 60%,transparent)}
+.lav{box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 12%,transparent),0 12px 40px rgba(0,0,0,.6)}
+.lbiot{color:var(--soft)}
+.aitag{font-family:var(--f-ui),system-ui,sans-serif}
+.lbtn{border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);background:color-mix(in srgb,var(--ink) 55%,transparent);font-family:var(--f-head),serif}
+.lbtn.feat{background:linear-gradient(90deg,color-mix(in srgb,var(--bur2) 85%,transparent),color-mix(in srgb,var(--ink) 70%,transparent))}
+.lbtn small{font-family:var(--f-ui),system-ui,sans-serif}
+.lbtn .la{font-family:var(--f-ui)}
+.langdd{font-family:var(--f-ui),system-ui,sans-serif}
+.langdd summary{border:1px solid color-mix(in srgb,var(--gold) 50%,transparent)}
+.langdd nav a{border-top:1px solid color-mix(in srgb,var(--gold) 18%,transparent)}
+body:lang(ja),body:lang(zh){font-family:var(--f-body),var(--cjk-serif),Georgia,serif}
+:lang(ja) h1,:lang(ja) h2,:lang(ja) h3,:lang(ja) .quote,:lang(ja) .post .body blockquote,:lang(ja) .issue b,:lang(zh) h1,:lang(zh) h2,:lang(zh) h3,:lang(zh) .quote,:lang(zh) .post .body blockquote,:lang(zh) .issue b{font-family:var(--f-head),var(--cjk-serif),serif}
+:lang(ja) .sc,:lang(ja) .menu a,:lang(ja) .cta,:lang(ja) .rss,:lang(ja) .social-l,:lang(ja) .pcard .more,:lang(ja) .post .body h2.src,:lang(ja) .kpage figcaption,:lang(ja) .lbtn small,:lang(ja) .spread figcaption::before,:lang(zh) .sc,:lang(zh) .menu a,:lang(zh) .cta,:lang(zh) .rss,:lang(zh) .social-l,:lang(zh) .pcard .more,:lang(zh) .post .body h2.src,:lang(zh) .kpage figcaption,:lang(zh) .lbtn small,:lang(zh) .spread figcaption::before{font-family:var(--f-ui),var(--cjk-sans),system-ui,sans-serif}
+:lang(ja) .lbtn,:lang(zh) .lbtn,:lang(ja) .aitag,:lang(zh) .aitag{font-family:var(--f-head),var(--cjk-serif),serif}
+.fblock{border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);background:radial-gradient(120% 140% at 50% 0%,color-mix(in srgb,var(--bur2) 75%,transparent) 0%,color-mix(in srgb,var(--bur) 45%,transparent) 45%,color-mix(in srgb,var(--ink) 90%,transparent) 100%)}
+.fblock::before{border:1px solid color-mix(in srgb,var(--gold) 18%,transparent)}
+.fblock .fline{font-family:var(--f-head),serif}
+.fbtn{font-family:var(--f-ui),system-ui,sans-serif}
+:lang(ja) .fblock .fline,:lang(zh) .fblock .fline{font-family:var(--f-head),var(--cjk-serif),serif}
+footer a.forcr,.lfoot a.forcr{text-decoration-color:color-mix(in srgb,var(--gold) 45%,transparent)}
+.crgrid p,.crsteps p{color:var(--soft)}
+.crcard{border:1px solid color-mix(in srgb,var(--gold) 45%,transparent)}
+.crcard:hover,.crcard:focus-visible{background:color-mix(in srgb,var(--bur2) 35%,transparent)}
+.crct strong{font-family:var(--f-head),serif}
+.crn{font-family:var(--f-head)}
+.crnotes{background:color-mix(in srgb,var(--bur) 35%,transparent)}
+.crnotes li{color:var(--soft)}
+.crcontact .crlead{color:var(--soft)}
+:lang(ja) .crhero h1,:lang(zh) .crhero h1{font-family:var(--f-head),var(--cjk-serif),serif}
+:lang(ja) .crgrid h3,:lang(zh) .crgrid h3,:lang(ja) .crsteps h3,:lang(zh) .crsteps h3,:lang(ja) .crct strong,:lang(zh) .crct strong{font-family:var(--f-head),var(--cjk-serif),serif}
+.hads-in{border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);background:linear-gradient(115deg,color-mix(in srgb,var(--bur) 55%,transparent),color-mix(in srgb,var(--ink) 92%,transparent) 70%)}
+.hads-lbl{font-family:var(--f-ui),system-ui,sans-serif}
+.hads-ph{box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 12%,transparent)}
+.hads-ph i{background:color-mix(in srgb,var(--gold) 35%,transparent)}
+.hads-ph i:nth-of-type(2){background:color-mix(in srgb,var(--bur2) 90%,transparent)}
+.hads-tx b{font-family:var(--f-head),var(--cjk-serif,serif),serif}
+.hads-tx span{color:var(--soft)}
+.hads-go{font-family:var(--f-ui),system-ui,sans-serif}
+dialog.hadm{background:radial-gradient(120% 120% at 50% 0%,var(--bur) 0%,var(--ink) 75%)}
+dialog.hadm::backdrop{background:color-mix(in srgb,var(--ink) 72%,transparent)}
+.hadm h2{font-family:var(--f-head),var(--cjk-serif,serif),serif}
+.hadm p{color:var(--soft)}
+.hadbar{background:color-mix(in srgb,var(--ink) 96%,transparent);border:1px solid color-mix(in srgb,var(--gold) 45%,transparent)}
+.hadbar p{color:var(--soft)}
+.hadbar .go{font-family:var(--f-ui),system-ui,sans-serif}
+/* --- dopracowanie motywu --- */
+:lang(ja),:lang(zh){--cjk-serif:var(--cjk-sans)}
+body{font-size:17px;line-height:1.6}
+body:lang(ja),body:lang(zh){font-family:var(--f-body),var(--cjk-sans),system-ui,sans-serif}
+.sc{letter-spacing:.18em;font-weight:600;color:var(--gold2)}
+.top .mast{font-style:normal;font-weight:700;font-size:1.5rem;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.top{border-bottom-color:rgba(255,255,255,.08)}
+.menu a{font-size:.74rem;letter-spacing:.14em;font-weight:500}
+.langs a[aria-current]{border-radius:999px;border-color:var(--gold2)}
+.langdd summary{border-radius:999px}.langdd nav{border-radius:16px;overflow:hidden;border-color:var(--bur2)}
+h1,h2,h3,.cover h1,.head h2,.sub h3,.bloghead h1,.post h1,.lhead h1,.crhero h1,.gate h1,.cover .deck,.quote,.pcard h3,.kcard h3,.post .deck,.post .body h2,.post .body h3,.post .body blockquote,.reel h3,.game h3,.bloghead p,.lbiot,.hads-tx b,.hadm h2,.fblock .fline,.crct strong,.crgrid h3,.crsteps h3,.crnotes h3,.aside .soon,footer .mast{font-style:normal}
+h1,h2,h3{font-weight:700;letter-spacing:-.01em}
+.cover{margin:84px clamp(12px,3vw,40px) 0;border-radius:28px;height:min(84vh,800px);background:var(--bur)}
+.cover-img img{border-radius:0 28px 28px 0}
+.cover-img::after{background:linear-gradient(90deg,var(--bur) 0%,color-mix(in srgb,var(--bur) 40%,transparent) 28%,transparent 58%),linear-gradient(0deg,color-mix(in srgb,var(--ink) 55%,transparent),transparent 40%)}
+.cover h1{font-size:clamp(5rem,12vw,10.5rem);font-weight:800;letter-spacing:-.05em}
+.cover h1 span{background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cover .deck{font-weight:400;font-size:1.15rem;max-width:34ch;color:var(--soft)}
+@media(max-width:900px){.cover{margin-top:76px;height:auto}.cover-img img{border-radius:28px 28px 0 0}.cover h1{font-size:7.4rem}}
+.top{z-index:30}
+.issue b{background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.cta,.sbtn,.fbtn,.lbtn,.hads-go,.aitag{border-radius:999px}
+.cta{border:2px solid transparent;color:var(--paper);background:linear-gradient(var(--ink),var(--ink)) padding-box,var(--g) border-box;font-weight:600}
+.cta:hover{background:var(--g);color:#fff}
+.cta.fill{background:var(--g);color:#fff;border-color:transparent}.cta.fill:hover{filter:brightness(1.1);background:var(--g)}
+.sbtn{border-color:var(--bur2);background:var(--bur)}.sbtn svg{color:var(--gold2)}.sbtn:hover{background:var(--g);border-color:transparent;color:#fff}.sbtn:hover svg{color:#fff}
+.head{border-bottom-color:var(--bur2)}
+.head .no{-webkit-text-stroke:0;color:transparent;background:var(--g);-webkit-background-clip:text;background-clip:text;font-weight:800}
+.head h2{font-size:clamp(2.2rem,5vw,3.8rem)}
+:lang(ja) .head h2,:lang(zh) .head h2{font-size:clamp(1.9rem,4.6vw,3.2rem)}
+.about .ph img,.spread figure button,.grid2 button,.pcard .ph,.kcard .ph,.crcard,.embed,.reel article,.fblock,.hads-in,.lbtn,.ainote,.crnotes,.game,.pcard{border-radius:var(--r);overflow:hidden}
+.about .ph::before{border:0;inset:-10px 10px 10px -10px;background:var(--g);border-radius:var(--r);z-index:-1;opacity:.85}
+.about .lede::first-letter{font-family:var(--f-head);font-weight:800;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.about strong{color:var(--gold2)}
+.quote{font-weight:600;font-size:1.3rem;border-left:4px solid transparent;border-image:var(--g) 1;padding-left:18px}
+.traits li::before{color:var(--gold)}
+.spread img,.grid2 img{filter:none}
+.spread figcaption,.grid2 figcaption{font-style:normal;font-size:.9rem}
+.film{background:var(--bur)}
+.film::before,.film::after{background:repeating-linear-gradient(90deg,var(--ink) 0 14px,transparent 14px 28px)}
+.reel article{background:var(--ink);border-color:var(--bur2);padding:10px 10px 16px}
+.reel video{border-radius:calc(var(--r) - 6px)}
+.reel h3{font-size:1.05rem;font-weight:600;padding:0 6px}.reel .sc{padding:0 6px}
+.game{border-top:0;background:var(--bur);border:1px solid var(--bur2);padding:24px clamp(16px,2.6vw,30px) 30px}
+.game h3{font-size:1.8rem}
+.embed{outline:0;border-radius:var(--r)}
+.pcard,.kcard,.crgrid li{border-top:0}
+.pcard{background:var(--bur);border:1px solid var(--bur2);padding:0 0 22px}
+.pcard .ph{border-radius:0;margin-bottom:14px}.pcard>*:not(.ph){margin-left:20px;margin-right:20px}
+.pcard.big{padding:0;gap:0}.pcard.big>div{padding:24px}
+.pcard h3{font-size:1.35rem;line-height:1.25;font-weight:600}
+.pcard .more{color:var(--gold2)}
+.kcard .ph{outline:0}
+.crgrid li{background:var(--bur);border:1px solid var(--bur2);border-radius:var(--r);padding:20px 22px}
+.crcard{border-color:var(--bur2);background:var(--bur)}.crcard:hover,.crcard:focus-visible{border-color:var(--gold);background:var(--bur2)}
+.crnotes{border-left:0;background:var(--bur)}
+.crn{font-family:var(--f-head);-webkit-text-stroke:0;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.fblock{background:var(--bur);border-color:var(--bur2)}.fblock::before{border-radius:calc(var(--r) - 6px);border-color:var(--bur2)}
+.fbtn{border-color:transparent;background:var(--g);color:#fff}.fbtn svg{color:#fff}
+.fbtn:first-child{background:var(--g);color:#fff}.fbtn:first-child svg{color:#fff}
+.fbtn:hover,.fbtn:focus-visible{background:var(--g2);color:#fff;border-color:transparent}.fbtn:hover svg,.fbtn:focus-visible svg{color:#fff}
+.hads-in{background:var(--bur);border-color:var(--bur2)}.hads-go{background:var(--g);color:#fff}.hads-in:hover .hads-go{filter:brightness(1.1);background:var(--g)}
+dialog.hadm{border-radius:var(--r);border-color:var(--bur2)}
+.hadbar{border-radius:16px;border-color:var(--bur2)}
+.lbtn{background:var(--bur);border-color:var(--bur2)}
+.lbtn:hover,.lbtn:focus-visible{background:var(--g);color:#fff;border-color:transparent}.lbtn:hover small,.lbtn:focus-visible small{color:#fff}.lbtn:hover .li,.lbtn:focus-visible .li,.lbtn:hover .la{color:#fff}
+.lbtn.feat{background:linear-gradient(90deg,rgba(225,48,108,.3),var(--bur));border-color:var(--gold)}
+.lav{border:3px solid var(--ink);box-shadow:0 0 0 3px #c13584,0 0 0 6px rgba(193,53,132,.2),0 12px 40px rgba(0,0,0,.6)}
+.aitag{background:var(--g);color:#fff}
+.lhead h1 span,.bloghead h1 span{color:var(--gold)}
+footer{border-top-color:var(--bur2)}
+footer .mast{font-weight:800;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:2rem}

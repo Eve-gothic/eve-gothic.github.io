@@ -1,0 +1,33 @@
+/* luksus (wariant B „Gotycki luksus”): czerń i złoto zamiast burgundu, Cinzel w nagłówkach, cienkie złote ramki jak w albumie. */
+:root{--ink:#070605;--bur:#15100a;--bur2:#2b2113;--gold:#d4af5f;--gold2:#f2dfa6;--paper:#f6f0e4;--mut:#b3a58f;--soft:#e8dfcb;
+--f-head:"Playfair Display",serif;--f-body:"Cormorant Garamond",Georgia,serif;--f-ui:"Inter",system-ui,sans-serif;--f-cap:"Cinzel","Playfair Display",serif}
+.head h2,.sub h3,.bloghead h1,.cover h1,.lhead h1,.top .mast,footer .mast{font-family:var(--f-cap);font-style:normal}
+.head h2{text-transform:uppercase;letter-spacing:.1em;font-size:clamp(1.9rem,4.6vw,3.6rem)}
+:lang(ja) .head h2,:lang(zh) .head h2{font-size:clamp(1.8rem,4.4vw,3.2rem);letter-spacing:.04em}
+.sub h3{text-transform:uppercase;letter-spacing:.08em;font-size:clamp(1.5rem,3vw,2.2rem)}
+.head{grid-template-columns:1fr;justify-items:center;text-align:center;border-bottom:0;padding-bottom:30px;position:relative}
+.head::after{content:"◆";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);color:var(--gold);font-size:.8rem;background:var(--ink);padding:0 14px}
+.head::before{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--gold) 70%,transparent),transparent)}
+.head .no{order:-1;font-size:2.6rem;line-height:1;-webkit-text-stroke:0;color:var(--gold);font-family:var(--f-head);font-style:italic;margin-bottom:6px}
+.film .head::after{background:var(--bur)}
+.cover{background:var(--bur)}
+.cover::after{content:"";position:absolute;inset:16px;border:1px solid color-mix(in srgb,var(--gold) 38%,transparent);pointer-events:none;z-index:3}
+.cover h1{letter-spacing:.02em;font-weight:400;font-size:clamp(5.4rem,13vw,12rem)}
+.cover-img::after{background:linear-gradient(90deg,var(--bur) 0%,color-mix(in srgb,var(--bur) 40%,transparent) 30%,transparent 60%),linear-gradient(0deg,color-mix(in srgb,var(--ink) 70%,transparent),transparent 40%)}
+.cover-img img{filter:contrast(1.04) saturate(.92)}
+.top .mast{font-size:1.4rem;letter-spacing:.2em;text-transform:uppercase}
+.sc{letter-spacing:.38em}
+.cta{border-radius:0;outline:1px solid color-mix(in srgb,var(--gold) 45%,transparent);outline-offset:4px}
+.cta.fill{background:linear-gradient(180deg,var(--gold2),var(--gold))}
+/* ramki zdjęć jak passe-partout */
+.spread figure button,.grid2 button{box-sizing:border-box;padding:7px;border:1px solid color-mix(in srgb,var(--gold) 60%,transparent);background:#0d0a07}
+.spread figure button img,.grid2 button img{display:block}
+.reel article{background:#0d0a07;border-color:color-mix(in srgb,var(--gold) 55%,transparent);outline:1px solid color-mix(in srgb,var(--gold) 20%,transparent);outline-offset:4px}
+.film{background:var(--bur)}
+.pcard,.kcard,.crgrid li,.game{border-top:2px double color-mix(in srgb,var(--gold) 65%,transparent)}
+.pcard h3,.kcard h3,.game h3{font-family:var(--f-head)}
+.about .ph::before{inset:-14px 14px 14px -14px}
+.about .lede::first-letter{font-family:var(--f-cap);color:var(--gold)}
+.quote{text-align:center;border-top:1px solid color-mix(in srgb,var(--gold) 45%,transparent);border-bottom:1px solid color-mix(in srgb,var(--gold) 45%,transparent);padding:18px 10px}
+.sbtn,.fbtn,.lbtn{border-radius:0}
+.fblock{outline:1px solid color-mix(in srgb,var(--gold) 25%,transparent);outline-offset:6px}

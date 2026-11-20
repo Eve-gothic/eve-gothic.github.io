@@ -1,0 +1,67 @@
+/* neon (wariant A „Neon noc”): cyberpunk / gamer — czerń, neonowy róż i cyjan, poświata, linie skanowania. Fonty: Orbitron + Rajdhani. */
+:root{--ink:#05040a;--bur:#12061f;--bur2:#2a0630;--gold:#ff2bd6;--gold2:#00f0ff;--paper:#e9f6ff;--mut:#8b93a7;--soft:#c9dcea;
+--neon-m:#ff2bd6;--neon-c:#00f0ff;
+--f-head:"Orbitron",system-ui,sans-serif;--f-body:"Rajdhani",system-ui,sans-serif;--f-ui:"Orbitron",system-ui,sans-serif}
+:lang(ja),:lang(zh){--cjk-serif:var(--cjk-sans)}
+body{font-size:20px;font-weight:500;background-color:var(--ink);background-image:linear-gradient(90deg,rgba(0,240,255,.045) 1px,transparent 1px),linear-gradient(rgba(255,43,214,.035) 1px,transparent 1px);background-size:60px 60px;background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;background:repeating-linear-gradient(0deg,rgba(255,255,255,.022) 0 1px,transparent 1px 3px)}
+a{color:var(--neon-c)}
+/* nagłówki: techniczny krój, wersaliki, bez kursywy */
+.cover h1,.cover .deck,.head h2,.sub h3,.game h3,.reel h3,.bloghead h1,.post h1,.post .deck,.post .body h2,.post .body h3,.post .body blockquote,.quote,.pcard h3,.kcard h3,
+.crgrid h3,.crsteps h3,.crnotes h3,.crct strong,.hads-tx b,.hadm h2,.fblock .fline,.lhead h1,.lbiot,.aside .soon,.bloghead p,.top .mast,footer .mast,.lbtn.soc{font-style:normal}
+.head h2,.sub h3,.game h3,.reel h3,.kcard h3,.crgrid h3,.crsteps h3,.crnotes h3,.top .mast,footer .mast,.cover h1,.bloghead h1,.lhead h1{text-transform:uppercase;letter-spacing:.05em}
+.pcard h3,.post h1,.post .body h2,.post .body h3,.crct strong,.hads-tx b,.hadm h2,.fblock .fline,.post .body blockquote,.quote{font-family:var(--f-body);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.cover h1{font-size:clamp(5rem,12vw,11rem);line-height:.9;letter-spacing:.02em;text-shadow:0 0 30px color-mix(in srgb,var(--neon-m) 60%,transparent),0 0 70px color-mix(in srgb,var(--neon-m) 30%,transparent)}
+.cover h1 span,.bloghead h1 span,.lhead h1 span{color:var(--neon-m);text-shadow:0 0 18px var(--neon-m)}
+.cover .deck,.bloghead p,.post .deck,.lbiot{font-family:var(--f-body);font-weight:500;font-size:1.4rem}
+.cover-img img{filter:saturate(1.2) contrast(1.06)}
+.cover-img::after{background:linear-gradient(90deg,var(--ink) 0%,color-mix(in srgb,var(--bur) 55%,transparent) 32%,transparent 62%),linear-gradient(0deg,var(--ink),transparent 40%)}
+.top{background:linear-gradient(rgba(5,4,10,.88),rgba(5,4,10,0));border-bottom-color:color-mix(in srgb,var(--neon-c) 25%,transparent)}
+.top .mast{color:#fff;font-weight:900;text-shadow:0 0 12px var(--neon-m),0 0 30px var(--neon-m)}
+.menu a{color:var(--mut);font-family:var(--f-body);font-weight:600;font-size:.9rem;letter-spacing:.15em}.menu a:hover{color:var(--neon-c);text-shadow:0 0 10px var(--neon-c)}
+.issue b{color:var(--neon-c);text-shadow:0 0 14px var(--neon-c)}
+.sc{color:var(--neon-c);letter-spacing:.28em}
+.langs a[aria-current],.llangs a[aria-current]{color:var(--neon-c);border-color:var(--neon-c)}
+/* przyciski */
+.cta{border-color:var(--neon-c);color:var(--neon-c);background:color-mix(in srgb,var(--neon-c) 8%,transparent);box-shadow:0 0 16px color-mix(in srgb,var(--neon-c) 35%,transparent),inset 0 0 14px color-mix(in srgb,var(--neon-c) 18%,transparent);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.cta:hover{background:var(--neon-c);color:#000;box-shadow:0 0 34px var(--neon-c)}
+.cta.fill{background:var(--neon-m);border-color:var(--neon-m);color:#fff;box-shadow:0 0 22px color-mix(in srgb,var(--neon-m) 55%,transparent)}
+.cta.fill:hover{background:#fff;color:var(--neon-m);box-shadow:0 0 40px var(--neon-m)}
+.sbtn,.fbtn{border-color:color-mix(in srgb,var(--neon-c) 55%,transparent);border-radius:0;background:rgba(0,240,255,.05)}
+.sbtn svg,.fbtn svg{color:var(--neon-c)}
+.sbtn:hover,.fbtn:hover{background:var(--neon-c);color:#000;border-color:var(--neon-c)}.sbtn:hover svg,.fbtn:hover svg{color:#000}
+.fbtn:first-child{background:var(--neon-m);border-color:var(--neon-m);color:#fff}.fbtn:first-child svg{color:#fff}
+/* sekcje */
+.head{border-bottom-color:color-mix(in srgb,var(--neon-c) 30%,transparent)}
+.head .no{color:transparent;-webkit-text-stroke:1px var(--neon-m);text-shadow:0 0 18px var(--neon-m)}
+.head h2{font-size:clamp(2rem,5vw,3.8rem);font-weight:900}
+:lang(ja) .head h2,:lang(zh) .head h2{font-size:clamp(1.8rem,4.4vw,3.2rem)}
+.about .ph::before{border-color:var(--neon-m);box-shadow:0 0 22px color-mix(in srgb,var(--neon-m) 40%,transparent)}
+.about .ph img{filter:saturate(1.1) contrast(1.05)}
+.about .lede::first-letter{color:var(--neon-m);text-shadow:0 0 16px var(--neon-m)}
+.about strong,.post .body em{color:var(--neon-c)}
+.quote{border-left:2px solid var(--neon-m);padding-left:18px;color:var(--paper);font-size:1.5rem}
+.traits li::before{color:var(--neon-m)}
+.spread figure button,.grid2 button{border:1px solid var(--line-n,rgba(0,240,255,.2));transition:.3s;box-sizing:border-box}
+.spread figure button:hover,.grid2 button:hover{border-color:var(--neon-m);box-shadow:0 0 24px var(--neon-m)}
+.spread img,.grid2 img{filter:saturate(1.1) contrast(1.05)}
+.spread figcaption,.grid2 figcaption{font-family:var(--f-ui);font-style:normal;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.sub{border-bottom-color:color-mix(in srgb,var(--neon-c) 25%,transparent)}.sub h3{color:var(--neon-c);text-shadow:0 0 14px color-mix(in srgb,var(--neon-c) 50%,transparent)}
+.film{background:linear-gradient(160deg,#12061f,#06141f)}
+.film::before,.film::after{background:repeating-linear-gradient(90deg,var(--ink) 0 14px,transparent 14px 28px)}
+.reel article{background:#0a0912;border-color:color-mix(in srgb,var(--neon-c) 30%,transparent)}
+.reel article:nth-child(3n+2){border-color:var(--neon-m);box-shadow:0 0 30px rgba(255,43,214,.35)}
+.reel h3{font-size:1rem;color:var(--neon-c)}.reel h3::before{content:"▶ ";color:var(--neon-m)}
+.game{border-top-color:var(--neon-m)}.game h3{font-size:2rem;font-weight:900}
+.embed{outline:1px solid var(--neon-c);outline-offset:6px;box-shadow:0 0 30px color-mix(in srgb,var(--neon-c) 30%,transparent)}
+.pcard,.kcard,.crgrid li{border-top-color:var(--neon-m)}.pcard .more{color:var(--neon-c)}
+.kcard .ph{outline-color:var(--neon-m)}
+.crcard{border-color:color-mix(in srgb,var(--neon-c) 40%,transparent)}.crcard:hover,.crcard:focus-visible{border-color:var(--neon-m);background:color-mix(in srgb,var(--neon-m) 12%,transparent)}
+.crn,.crnotes{color:var(--neon-m)}.crn{color:transparent;-webkit-text-stroke:1px var(--neon-m)}
+.hads-in,.fblock,dialog.hadm,.hadbar{border-color:var(--neon-m);box-shadow:0 0 24px color-mix(in srgb,var(--neon-m) 25%,transparent)}
+.hads-go{background:var(--neon-m);color:#fff}
+.lbtn{border-color:color-mix(in srgb,var(--neon-c) 45%,transparent);border-radius:0}.lbtn:hover,.lbtn:focus-visible{background:var(--neon-c);color:#000}
+.lbtn.feat{border-color:var(--neon-m);background:linear-gradient(90deg,rgba(255,43,214,.25),rgba(5,4,10,.7))}
+.lav{border-color:var(--neon-m);box-shadow:0 0 0 6px rgba(255,43,214,.15),0 0 40px rgba(255,43,214,.4)}
+.aitag{background:var(--neon-m);color:#fff}
+footer{border-top-color:color-mix(in srgb,var(--neon-c) 25%,transparent)}
