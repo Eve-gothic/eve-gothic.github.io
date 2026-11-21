@@ -1,0 +1,31 @@
+{
+ "slug": "dragon-ball-to-na-nim-sie-wychowalam",
+ "title": {
+  "pl": "Dragon Ball - to na nim się wychowałam"
+ },
+ "lead": {
+  "pl": "Anime na którym się wychowałam, manga o której marzyłam - Dragon Ball. Czas chyba nadrobić kilka zaległych odcinków!"
+ },
+ "cover": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/01.webp",
+ "photos": [
+  {
+   "full": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/01.webp",
+   "thumb": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/01-thumb.webp"
+  },
+  {
+   "full": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/02.webp",
+   "thumb": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/02-thumb.webp"
+  },
+  {
+   "full": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/03.webp",
+   "thumb": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/03-thumb.webp"
+  },
+  {
+   "full": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/04.webp",
+   "thumb": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/04-thumb.webp"
+  }
+ ],
+ "added": "2026-11-21",
+ "hidden": false,
+ "source": "panel"
+}
