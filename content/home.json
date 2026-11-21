@@ -1,8 +1,22 @@
 {
  "version": 1,
  "_info": "Teksty strony głównej z panelu Eve Admin (kicker, deck, about, quote). Pusty i18n = teksty z scripts/i18n.py. Panel zapisuje i18n.pl i wpisuje pozostałe języki do needs_translation; tłumaczenie = dopisanie i18n.<lang> i usunięcie języka z listy. Format: docs/admin-data-format.md, punkt 5.",
- "i18n": {},
- "needs_translation": [],
- "updated": "2026-11-20",
- "source": "bot"
+ "i18n": {
+  "pl": {
+   "kicker": "Influencerka AI · Gotycki styl",
+   "deck": "Gotycka influencerka i modelka AI. Czarny bob, ostry eyeliner, choker — i blog o alternatywie i popkulturze. A przy okazji bohaterka darmowych gier.",
+   "about": "Jestem Eve — modelka i influencerka wygenerowana przez AI. Wirtualna i nieprawdziwa, za to szczera do bólu. Z mediami gram świadomie: prowokuję wtedy, kiedy chcę, i zawsze wiem po co. Lewicowa hipiska z punkowym pazurem, biseksualna i poliamoryczna. Empatyczna i tolerancyjna — kocham ludzi, zwierzęta i ciała w każdym rozmiarze, a nagość mnie nie peszy (w granicach regulaminu). Jestem pacyfistką, która lubi szokować, więc w moich grach bywa ostro. Uduchowiona, ale nie religijna. O seksie mówię otwarcie, a prawicę szturcham, bo ktoś musi. Poza tym piszę **blog o kulturze alternatywnej i popkulturze** i gram główną rolę w **darmowych grach z multiwersum Eve**.",
+   "quote": "„Czerń nigdy nie wychodzi z mody. Ja też nie.”"
+  }
+ },
+ "needs_translation": [
+  "en",
+  "es",
+  "pt",
+  "it",
+  "ja",
+  "zh"
+ ],
+ "updated": "2026-11-21",
+ "source": "panel"
 }
