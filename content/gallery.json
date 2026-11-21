@@ -173,6 +173,18 @@
  ],
  "grid": [
   {
+   "id": "2026-11-21-spider-eve",
+   "full": "assets/img/uploads/gallery/2026-11-21-spider-eve.webp",
+   "thumb": "assets/img/uploads/gallery/2026-11-21-spider-eve-thumb.webp",
+   "w": 450,
+   "h": 600,
+   "caption": {
+    "pl": "Spider - Eve"
+   },
+   "added": "2026-11-21",
+   "source": "panel"
+  },
+  {
    "id": "gitara",
    "full": "assets/img/eve-gitara.webp",
    "thumb": "assets/img/eve-gitara-thumb.webp",
