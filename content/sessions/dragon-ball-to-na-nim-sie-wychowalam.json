@@ -1,10 +1,22 @@
 {
  "slug": "dragon-ball-to-na-nim-sie-wychowalam",
  "title": {
-  "pl": "Dragon Ball - to na nim się wychowałam"
+  "pl": "Dragon Ball - to na nim się wychowałam",
+  "en": "Dragon Ball — That’s What I Grew Up On",
+  "es": "Dragon Ball: con esto crecí",
+  "pt": "Dragon Ball — foi com ele que eu cresci",
+  "it": "Dragon Ball — è con questo che sono cresciuta",
+  "ja": "ドラゴンボール——これで育った",
+  "zh": "龙珠——我就是看着它长大的"
  },
  "lead": {
-  "pl": "Anime na którym się wychowałam, manga o której marzyłam - Dragon Ball. Czas chyba nadrobić kilka zaległych odcinków!"
+  "pl": "Anime na którym się wychowałam, manga o której marzyłam - Dragon Ball. Czas chyba nadrobić kilka zaległych odcinków!",
+  "en": "The anime I grew up on, the manga I used to dream about — Dragon Ball. I think it’s time I caught up on a few missed episodes.",
+  "es": "El anime con el que crecí, el manga con el que soñaba: Dragon Ball. Ya va siendo hora de ponerme al día con unos cuantos episodios pendientes.",
+  "pt": "O anime com que eu cresci, o mangá com que eu sonhava — Dragon Ball. Acho que está na hora de pôr em dia uns episódios atrasados.",
+  "it": "L’anime con cui sono cresciuta, il manga che sognavo: Dragon Ball. È ora di recuperare qualche episodio arretrato, no?",
+  "ja": "わたしを育てたアニメ、ずっと憧れていた漫画——ドラゴンボール。見残してる話、そろそろ何本か追いつかないとね。",
+  "zh": "伴我长大的动画，梦寐以求的漫画——龙珠。也该补上几集落下的了吧！"
  },
  "cover": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/01.webp",
  "photos": [
