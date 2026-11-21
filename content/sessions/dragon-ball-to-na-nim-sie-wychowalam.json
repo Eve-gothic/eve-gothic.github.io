@@ -35,9 +35,39 @@
   {
    "full": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/04.webp",
    "thumb": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/04-thumb.webp"
+  },
+  {
+   "full": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/05.webp",
+   "thumb": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/05-thumb.webp"
+  },
+  {
+   "full": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/06.webp",
+   "thumb": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/06-thumb.webp"
+  },
+  {
+   "full": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/07.webp",
+   "thumb": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/07-thumb.webp"
+  },
+  {
+   "full": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/08.webp",
+   "thumb": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/08-thumb.webp"
+  },
+  {
+   "full": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/09.webp",
+   "thumb": "assets/img/uploads/sessions/dragon-ball-to-na-nim-sie-wychowalam/09-thumb.webp"
   }
  ],
  "added": "2026-11-21",
- "hidden": false,
- "source": "panel"
+ "source": "panel",
+ "_auto": {
+  "title": {
+   "from": "pl",
+   "src": "27c2ebb28c07f7d2"
+  },
+  "lead": {
+   "from": "pl",
+   "src": "5008f00c0ef7a643"
+  },
+  "photos": {}
+ }
 }
