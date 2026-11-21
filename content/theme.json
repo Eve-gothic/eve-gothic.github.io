@@ -1,7 +1,7 @@
 {
  "version": 1,
- "_info": "Wygląd strony wybrany w panelu Eve Admin: magazyn (domyślny) | neon | luksus | minimal | creator. Format: docs/admin-data-format.md, punkt 6.",
+ "_info": "Wygląd strony wybrany w panelu Eve Admin. build.py: <html data-theme=\"…\"> + css/themes/<theme>.css (magazyn = obecny wygląd, bez dodatkowego CSS).",
  "theme": "magazyn",
- "updated": "2026-11-20",
- "source": "bot"
+ "updated": "2026-11-21",
+ "source": "panel"
 }
