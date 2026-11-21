@@ -17,6 +17,7 @@ from pwa import pwa_head, build_pwa, TXT as PWA_TXT   # warstwa PWA (apka na tel
 from ads import ad_banner, ad_script, build_ads_js   # reklama własna usługi (baner, okienko, pasek po komiksie)
 import content   # dane z panelu „Eve Admin”: content/gallery.json, content/posts/*.json, content/ads.json (docs/admin-data-format.md)
 GAL = content.load_gallery(); SPONSOR = content.load_sponsor()
+SESSIONS_PANEL = content.load_sessions()      # content/sessions/*.json — nowe sesje zdjęciowe z panelu (/sesje/<slug>/); „czern” zostaje zaszyta niżej
 VIDEOS_PANEL = content.load_videos()          # content/videos.json — filmiki z panelu (przed VIDEOS z i18n.py)
 content.apply_home(T, content.load_home())    # content/home.json — teksty strony głównej z panelu (kicker, deck, about, quote)
 THEME = content.load_theme()                  # content/theme.json — wygląd: magazyn (domyślny, bez zmian w HTML) | neon | luksus | minimal | creator
@@ -571,25 +572,44 @@ SESJA = {
  'zh': dict(title='黑色，由我定义', kicker='写真', lead='黑色绑带，耳边的金色大圈，占据空间，绝不道歉。我的身体不需要任何人批准——一点点叛逆，和什么都很搭。', cta='看这组写真', photo='照片', ai='AI 生成图像 · Eve 是一位成年虚拟角色。'),
  'pt': dict(title='Preto, do meu jeito', kicker='Ensaio', lead='Tiras pretas, argolas douradas nas orelhas e zero desculpas por ocupar meu espaço. Meu corpo não precisa de permissão — e um pouco de rebeldia combina com tudo.', cta='Ver o ensaio', photo='Foto', ai='Imagens geradas por IA · Eve é uma personagem virtual adulta.'),
 }
-def path_sesja(lang): return prefix(lang) + 'sesje/czern/'
+def path_session(lang, slug): return prefix(lang) + f'sesje/{slug}/'
+def path_sesja(lang): return path_session(lang, 'czern')
+
+# Wspólna ścieżka dla „czern” (zaszyta) i sesji z panelu (content/sessions/<slug>.json) — jeden kod, ten sam HTML.
+SESJA_CZERN = dict(slug='czern', title={l: SESJA[l]['title'] for l in LANGS}, kicker={}, lead={l: SESJA[l]['lead'] for l in LANGS},
+                   cover='assets/sesje/czern/01.webp',
+                   photos=[dict(full=f'assets/sesje/czern/{n:02d}.webp', thumb=f'assets/sesje/czern/{n:02d}.webp', w=1200, h=1600, alt={}) for n in range(1, SESJA_N + 1)])
+SESSIONS_ALL = SESSIONS_PANEL + [SESJA_CZERN]    # kolejność na stronie głównej: najnowsze z panelu, na końcu „czern”
+
+def ses_view(lang, ses):
+    """Teksty sesji w danym języku (brak języka -> en -> pl); kicker/cta/„Zdjęcie”/nota AI — z tłumaczeń sesji „czern”."""
+    S = SESJA[lang]; pick = content.pick
+    return dict(title=pick(ses['title'], lang), kicker=pick(ses['kicker'], lang) or S['kicker'], lead=pick(ses['lead'], lang),
+                cta=S['cta'], photo=S['photo'], ai=S['ai'])
+
+def session_tease(lang, r, ses):
+    S = ses_view(lang, ses); path = path_session(lang, ses['slug'])
+    lead = f'<p>{esc(S["lead"])}</p>' if S['lead'] else ''
+    return f'<div class="sub ktease" style="margin-top:50px"><a class="kcard" href="{r}{path}"><div class="ph"><img loading="lazy" src="{r}{ses["cover"]}" alt="Eve — {esc(S["title"])}" width="1200" height="1600"></div><div><span class="sc">{esc(S["kicker"])} · {len(ses["photos"])}</span><h3>{esc(S["title"])}</h3>{lead}<span class="cta fill">{S["cta"]} →</span></div></a></div>'
 
 def sesja_tease(lang, r):
-    S = SESJA[lang]
-    return f'<div class="sub ktease" style="margin-top:50px"><a class="kcard" href="{r}{path_sesja(lang)}"><div class="ph"><img loading="lazy" src="{r}assets/sesje/czern/01.webp" alt="Eve — {esc(S["title"])}" width="1200" height="1600"></div><div><span class="sc">{S["kicker"]} · {SESJA_N}</span><h3>{S["title"]}</h3><p>{S["lead"]}</p><span class="cta fill">{S["cta"]} →</span></div></a></div>'
+    return ''.join(session_tease(lang, r, ses) for ses in SESSIONS_ALL)
 
-def sesja_page(lang):
-    t = T[lang]; S = SESJA[lang]; path = path_sesja(lang); r = root_for(path)
-    alts = {l: path_sesja(l) for l in LANGS}
-    og = f'og/sesja-czern-{lang}.jpg'
-    out = head(lang, path, f"{S['title']} — Eve", S['lead'], alts, og, 'website')
+def session_page(lang, ses):
+    t = T[lang]; S = ses_view(lang, ses); path = path_session(lang, ses['slug']); r = root_for(path); N = len(ses['photos'])
+    alts = {l: path_session(l, ses['slug']) for l in LANGS}
+    og = f'og/sesja-{ses["slug"]}-{lang}.jpg'
+    out = head(lang, path, f"{S['title']} — Eve", S['lead'] or S['title'], alts, og, 'website')
     figs = ''
-    for n in range(1, SESJA_N + 1):
-        src = f'{r}assets/sesje/czern/{n:02d}.webp'; cap = f"{S['title']} — {S['photo']} {n} / {SESJA_N}"
-        figs += f'<figure><button data-full="{src}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img src="{src}" alt="Eve — {esc(cap)}" width="1200" height="1600"' + (' fetchpriority="high"' if n == 1 else ' loading="lazy" decoding="async"') + '></button></figure>\n'
+    for n, ph in enumerate(ses['photos'], 1):
+        full = f'{r}{ph["full"]}'; src = f'{r}{ph["thumb"]}'; cap = f"{S['title']} — {S['photo']} {n} / {N}"
+        alt = content.pick(ph['alt'], lang) or f'Eve — {cap}'
+        figs += f'<figure><button data-full="{full}" data-cap="{esc(cap)}" aria-label="{t["zoom"]}: {esc(cap)}"><img src="{src}" alt="{esc(alt)}" width="{ph["w"]}" height="{ph["h"]}"' + (' fetchpriority="high"' if n == 1 else ' loading="lazy" decoding="async"') + '></button></figure>\n'
+    lead = f"<p>{esc(S['lead'])}</p>" if S['lead'] else ''
     out += topbar(lang, path, alts, solid=True) + f'''
 <main class="wrap">
-<section class="bloghead khead"><span class="sc">{S['kicker']} · {SESJA_N}</span>
-<h1>{S['title']}<span>.</span></h1><p>{S['lead']}</p>
+<section class="bloghead khead"><span class="sc">{esc(S['kicker'])} · {N}</span>
+<h1>{esc(S['title'])}<span>.</span></h1>{lead}
 <p class="small" style="margin-top:10px">{S['ai']}</p>
 {social(lang)}</section>
 {SLOT}
@@ -600,6 +620,31 @@ def sesja_page(lang):
 </main>
 ''' + footer(lang, path)
     return out
+
+def sesja_page(lang): return session_page(lang, SESJA_CZERN)
+
+def build_sessions(write):
+    """Strony i obrazki OG wszystkich sesji (czern + z panelu) + sprzątanie stron sesji, których już nie ma / są ukryte."""
+    for l in LANGS:
+        for ses in SESSIONS_ALL:
+            S = ses_view(l, ses)
+            try:
+                og_image(os.path.join(ROOT, f'og/sesja-{ses["slug"]}-{l}.jpg'), ses['cover'], S['kicker'], S['title'], lang=l)
+                write(path_session(l, ses['slug']) + 'index.html', session_page(l, ses))
+            except Exception as e:
+                content.warn(f'sesja {ses["slug"]} [{l}]: błąd budowania ({e}) — pominięta')
+    slugs = {ses['slug'] for ses in SESSIONS_ALL}
+    for l in LANGS:
+        sd = os.path.join(ROOT, prefix(l) + 'sesje')
+        if os.path.isdir(sd):
+            for e in os.listdir(sd):
+                full = os.path.join(sd, e)
+                if e not in slugs and os.path.isdir(full) and os.path.exists(os.path.join(full, 'index.html')):
+                    shutil.rmtree(full); print('usunięto', full)
+        og = os.path.join(ROOT, 'og')
+        for e in os.listdir(og):
+            m = re.fullmatch(r'sesja-(.+)-' + l + r'\.jpg', e)
+            if m and m.group(1) not in slugs: os.remove(os.path.join(og, e)); print('usunięto', os.path.join(og, e))
 
 
 # ── Komiks 2: It Was Always You (9.11.2026) ──
@@ -923,8 +968,6 @@ def main():
             og = os.path.join(ROOT, f'og/komiks3-{l}.jpg')
             if os.path.exists(og):
                 os.remove(og)
-        og_image(os.path.join(ROOT, f'og/sesja-czern-{l}.jpg'), 'assets/sesje/czern/01.webp', SESJA[l]['kicker'], SESJA[l]['title'], lang=l)
-        write(path_sesja(l) + 'index.html', sesja_page(l))
         og_image(os.path.join(ROOT, f'og/creators-{l}.jpg'), 'eve-londyn', CR[l]['kicker'], CR[l]['h1'], lang=l)
         write(path_creators(l) + 'index.html', creators_page(l))
         og_image(os.path.join(ROOT, f'og/linki-{l}.jpg'), 'assets/img/eve-spojrzenie-noir.webp', LINKI[l]['kicker'], LINKI[l]['bio'].split(' · ')[0], lang=l)
@@ -933,8 +976,9 @@ def main():
         for p in posts[l]:
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
         pass  # bramka 18+ usunięta na prośbę Daniela (5.11.2026)   # bramka 18+ — celowo NIE w sitemap.xml
+    build_sessions(write)   # /sesje/<slug>/ (czern + content/sessions/*.json) w 7 językach + OG
     write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
-    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + ([path_komiks3(l) for l in LANGS] if COMIC3_PUBLISHED else []) + [path_sesja(l) for l in LANGS] + [path_creators(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
+    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + ([path_komiks3(l) for l in LANGS] if COMIC3_PUBLISHED else []) + [path_sesja(l) for l in LANGS] + [path_session(l, x['slug']) for x in SESSIONS_PANEL for l in LANGS] + [path_creators(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     build_ads_js(write)   # js/ads.js (przed build_pwa — wchodzi do pamięci offline)
     build_pwa(ROOT, write, None if THEME == content.DEFAULT_THEME else THEME)   # manifest, sw.js, js/pwa.js, offline.html, ikony (po stronach — wersja cache z ich treści)

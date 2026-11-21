@@ -6,6 +6,7 @@
  • content/videos.json    — filmiki z panelu (przed filmikami z i18n.py VIDEOS) + assets/video/uploads/
  • content/home.json      — teksty strony głównej (kicker, deck, about, quote) nadpisujące i18n.py
  • content/theme.json     — wygląd strony: magazyn (domyślny) | neon | luksus | minimal | creator (css/themes/<nazwa>.css)
+ • content/sessions/<slug>.json — nowe sesje zdjęciowe (/sesje/<slug>/ w 7 językach) + assets/img/uploads/sessions/<slug>/
 Zasada: błędny plik/wpis z panelu NIE wywraca builda — jest pomijany z ostrzeżeniem „UWAGA (content)”.
 Sprawdzenie bez budowania:  python3 scripts/content.py   (kod wyjścia 1 = są błędy)"""
 import os, re, sys, json, html, datetime
@@ -172,6 +173,88 @@ def video_article(it, lang, r, novideo, n_label):
     return (f'<article><video muted playsinline controls loop preload="none" data-hover{poster} width="{it["w"]}" height="{it["h"]}">'
             f'<source src="{r}{esc(it["mp4"])}" type="video/mp4">{novideo}</video><h3>{title}</h3><span class="sc">{n_label}</span></article>')
 
+# ---------------- sesje zdjęciowe z panelu ----------------
+# Sesja „czern” (Czerń na własnych zasadach) jest zaszyta w build.py i nie ma pliku JSON — slug „czern” jest zarezerwowany.
+SESSION_RESERVED = ('czern', 'index')
+SESSION_IMG_RE = re.compile(r'^assets/img/uploads/sessions/[a-z0-9]+(?:-[a-z0-9]+)*/[a-z0-9]+(?:-[a-z0-9]+)*\.webp$')
+SESSION_MAX_PHOTOS, SESSION_FULL_MAX, SESSION_THUMB_MAX = 20, 500 * 1024, 100 * 1024   # twarde limity (zalecenie w docs: full ≤ 300 KB, thumb ≤ 40 KB)
+
+def _webp_size(path):
+    """-> (szerokość, wysokość) albo None, gdy to nie WebP (sygnatura RIFF/WEBP; wymiary przez Pillow, jeśli jest)."""
+    with open(path, 'rb') as f: head = f.read(32)
+    if not (head[:4] == b'RIFF' and head[8:12] == b'WEBP'): return None
+    try:
+        from PIL import Image
+        with Image.open(path) as im: return im.size
+    except Exception: return None
+
+def _session_img(path, what, max_bytes):
+    """Zwraca (w, h) poprawnego obrazka sesji albo None (z ostrzeżeniem)."""
+    if not isinstance(path, str) or not SESSION_IMG_RE.match(path):
+        warn(f'{what}: zła ścieżka {path!r} (oczekiwano assets/img/uploads/sessions/<slug>/<nazwa>.webp, znaki a-z0-9-)'); return None
+    full = os.path.join(ROOT, path)
+    if not os.path.isfile(full): warn(f'{what}: brak pliku {path}'); return None
+    n = os.path.getsize(full)
+    if n > max_bytes: warn(f'{what}: {path} ma {n // 1024} KB — limit {max_bytes // 1024} KB'); return None
+    wh = _webp_size(full)
+    if wh is None: warn(f'{what}: {path} to nie WebP (albo nie da się go odczytać)'); return None
+    if not (200 <= wh[0] <= 4000 and 200 <= wh[1] <= 4000): warn(f'{what}: {path} ma wymiary {wh[0]}×{wh[1]} — dozwolone 200–4000 px'); return None
+    return wh
+
+def _text_ok(d, req=False):
+    """Tekst tłumaczony: {"pl": "…"} (albo zwykły napis). req=True -> musi mieć niepustą treść."""
+    if isinstance(d, str): return bool(d.strip()) or not req
+    if isinstance(d, dict): return any(isinstance(x, str) and x.strip() for x in d.values()) or not req
+    return d is None and not req
+
+def load_sessions():
+    """-> lista sesji z content/sessions/*.json: najnowsze pierwsze (added malejąco, potem slug). Bez hidden i bez błędnych.
+    Każda: dict(slug, title, kicker, lead, ai, cover, photos[{full, thumb, w, h, alt}], added). Błędne zdjęcie jest pomijane (sesja zostaje, jeśli ma ≥ 1 poprawne)."""
+    d = os.path.join(C, 'sessions')
+    if not os.path.isdir(d): return []
+    out = []
+    for f in sorted(os.listdir(d)):
+        if not f.endswith('.json'): continue
+        rel = 'sessions/' + f; s = _load(rel)
+        if s is None: continue
+        slug = f[:-5]
+        if not isinstance(s, dict): warn(f'{rel}: oczekiwano obiektu JSON'); continue
+        if s.get('slug', slug) != slug or not SLUG_RE.match(slug): warn(f'{rel}: slug musi = nazwa pliku i pasować do a-z0-9-'); continue
+        if slug in SESSION_RESERVED: warn(f'{rel}: slug „{slug}” jest zarezerwowany (istniejąca sesja / trasa)'); continue
+        if s.get('hidden'): continue
+        if not _text_ok(s.get('title'), True): warn(f'{rel}: brak title ({{"pl": "…"}})'); continue
+        if any(not _text_ok(s.get(k)) for k in ('kicker', 'lead')): warn(f'{rel}: kicker/lead muszą być tekstem albo obiektem {{"pl": "…"}}'); continue
+        added = s.get('added')
+        if added is None: added = ''
+        else:
+            try: datetime.date.fromisoformat(added)
+            except (TypeError, ValueError): warn(f'{rel}: zła data added {added!r} (RRRR-MM-DD)'); continue
+        raw = s.get('photos')
+        if not isinstance(raw, list) or not raw: warn(f'{rel}: brak photos (lista min. 1 zdjęcia)'); continue
+        if len(raw) > SESSION_MAX_PHOTOS: warn(f'{rel}: {len(raw)} zdjęć — używam pierwszych {SESSION_MAX_PHOTOS}'); raw = raw[:SESSION_MAX_PHOTOS]
+        photos = []
+        for i, p in enumerate(raw):
+            what = f'{rel} photos[{i + 1}]'
+            if not isinstance(p, dict): warn(f'{what}: pozycja musi być obiektem'); continue
+            if p.get('hidden'): continue
+            fwh = _session_img(p.get('full'), what, SESSION_FULL_MAX)
+            if fwh is None: continue
+            thumb, gwh = p.get('thumb'), fwh
+            if thumb:
+                gwh = _session_img(thumb, what + ' thumb', SESSION_THUMB_MAX)
+                if gwh is None: continue
+            alt = p.get('alt')
+            if not _text_ok(alt): warn(f'{what}: alt musi być tekstem albo obiektem'); continue
+            photos.append(dict(full=p['full'], thumb=thumb or p['full'], w=gwh[0], h=gwh[1], alt=alt or {}))
+        if not photos: warn(f'{rel}: żadne zdjęcie nie przeszło sprawdzenia — sesja pominięta'); continue
+        cover = s.get('cover')
+        if cover:
+            if _session_img(cover, f'{rel} cover', SESSION_FULL_MAX) is None: continue
+        else: cover = photos[0]['full']
+        out.append(dict(slug=slug, title=s['title'], kicker=s.get('kicker') or {}, lead=s.get('lead') or {}, cover=cover, photos=photos, added=added))
+    out.sort(key=lambda x: (x['added'], x['slug']), reverse=True)   # najnowsze pierwsze
+    return out
+
 # ---------------- opis strony głównej ----------------
 HOME_KEYS = {'kicker': 160, 'deck': 600, 'about': 3000, 'quote': 400}   # pole -> maks. długość
 
@@ -229,8 +312,8 @@ if __name__ == '__main__':
     sys.path.insert(0, os.path.dirname(__file__))
     from i18n import CATEGORIES
     g = load_gallery(); ps = load_json_posts(CATEGORIES); s = load_sponsor()
-    vs = load_videos(); hm = load_home(); th = load_theme()
+    vs = load_videos(); hm = load_home(); th = load_theme(); ss = load_sessions()
     print(f'galeria: spread {len(g["spread"])}, grid {len(g["grid"])}; wpisy z panelu: '
           + ', '.join(f'{l}:{len(v)}' for l, v in ps.items() if v) + f' ; sponsor: {"aktywny" if s else "brak"}'
-          + f' ; filmiki z panelu: {len(vs)} ; opis głównej: {",".join(hm) or "domyślny"} ; wygląd: {th}')
+          + f' ; filmiki z panelu: {len(vs)} ; opis głównej: {",".join(hm) or "domyślny"} ; wygląd: {th} ; sesje z panelu: {len(ss)}')
     sys.exit(1 if PROBLEMS else 0)

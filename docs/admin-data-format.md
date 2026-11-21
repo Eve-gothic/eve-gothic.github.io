@@ -13,6 +13,7 @@ Panel/Worker zapisuje **tylko** te ścieżki (nic poza nimi — reszta to kod st
 | Filmiki | `content/videos.json` | `assets/video/uploads/<id>.mp4` + `<id>-poster.webp` |
 | Opis strony głównej | `content/home.json` | — |
 | Wygląd strony (motyw) | `content/theme.json` | — (skórki: `css/themes/*.css` — to kod strony, nie dla Workera) |
+| Nowa sesja zdjęciowa | `content/sessions/<slug>.json` (jeden plik na sesję) | `assets/img/uploads/sessions/<slug>/<nazwa>.webp` (+ miniatury) |
 
 `build.py` czyta te pliki (moduł `scripts/content.py`). Wygenerowane HTML, `sitemap.xml`, `feed.xml`, `sw.js` itd. robi build — **Worker ich nie commituje**.
 
@@ -209,7 +210,58 @@ Błędny wpis/zdjęcie **nie wywraca** builda: jest pomijany z ostrzeżeniem, re
 
 ---
 
-## 7. Jak Worker zapisuje (GitHub API) i co się dzieje potem
+## 7. Sesje zdjęciowe — `content/sessions/<slug>.json` + `assets/img/uploads/sessions/<slug>/`
+
+Osobna podstrona z kilkoma–kilkunastoma zdjęciami (jak istniejąca „Czerń na własnych zasadach”, `/sesje/czern/`) + duży kafel-zajawka na stronie głównej w sekcji galerii (`#galeria`, pod „Nową sesją”). Istniejąca sesja `czern` jest zaszyta w `build.py` — **nie ma pliku JSON, jej slug jest zarezerwowany** i panel jej nie edytuje.
+
+```json
+{
+ "slug": "jesien-w-londynie",
+ "title": {"pl": "Jesień w Londynie"},
+ "kicker": {"pl": "Sesja"},
+ "lead": {"pl": "Krótki opis pod tytułem i do podglądu linku (opcjonalnie)."},
+ "cover": "assets/img/uploads/sessions/jesien-w-londynie/01.webp",
+ "photos": [
+  {"full": "assets/img/uploads/sessions/jesien-w-londynie/01.webp",
+   "thumb": "assets/img/uploads/sessions/jesien-w-londynie/01-thumb.webp",
+   "w": 450, "h": 600,
+   "alt": {"pl": "Eve w płaszczu na moście"}},
+  {"full": "assets/img/uploads/sessions/jesien-w-londynie/02.webp",
+   "thumb": "assets/img/uploads/sessions/jesien-w-londynie/02-thumb.webp"}
+ ],
+ "added": "2026-11-21",
+ "hidden": false,
+ "source": "panel"
+}
+```
+
+| pole | wymagane | opis |
+|---|---|---|
+| `slug` | tak | = nazwa pliku bez `.json`; `a-z0-9-`; **nie `czern`** (ani `index`). Panel sprawdza, czy plik już istnieje, i dokleja `-2`, `-3`… |
+| `title` | tak | `{"pl": "…"}` (inne języki dopisze Strona; brak języka → `en` → `pl`). Zwykły napis też działa. Nagłówek, kafelek, `<title>`, podpisy zdjęć i obrazek OG. HTML jest escapowany (`<`, `&` bezpieczne) |
+| `lead` | nie | krótki opis (1–2 zdania) pod tytułem, w zajawce i w podglądzie linku (`og:description`); brak → bez akapitu |
+| `kicker` | nie | mała etykieta nad tytułem; brak → przetłumaczone „Sesja / Photo session / Sesión…” (zalecane: **nie podawać**) |
+| `photos` | tak | lista 1–**20** zdjęć, kolejność w pliku = kolejność na stronie. Dalsze niż 20 są ignorowane (ostrzeżenie) |
+| `photos[].full` | tak | duże zdjęcie (otwiera się po kliknięciu): WebP, zalecane **3:4 pionowo, 1200×1600**, jakość ~0.8, **≤ 300 KB** (twardy limit builda 500 KB), wymiary 200–4000 px |
+| `photos[].thumb` | nie (zalecane) | miniatura do siatki: WebP **450×600**, **≤ 40 KB** (twardy limit 100 KB). Brak → siatka ładuje `full` (wolniej, ale działa) |
+| `photos[].w`, `.h` | nie | ignorowane — build sam czyta wymiary z pliku (miniatury, a bez niej `full`); możesz je pominąć |
+| `photos[].alt` | zalecane | opis dla niewidomych/SEO `{"pl": …}`; brak → „Eve — <tytuł> — Zdjęcie n / N” |
+| `photos[].hidden` | nie | `true` = pomiń to zdjęcie |
+| `cover` | nie | zdjęcie na kafel-zajawkę i obrazek OG (ścieżka jak `full`); brak → `photos[0].full` |
+| `added` | zalecane | `RRRR-MM-DD`; **kolejność zajawek na głównej: najnowsze (`added` malejąco) pierwsze**, na końcu „Czerń na własnych zasadach”. Brak daty → na końcu nowych |
+| `hidden` | nie | `true` = sesji **nie ma**: nie jest budowana, nie ma zajawki, nie ma w `sitemap.xml`, a wygenerowane wcześniej strony i obrazki OG są usuwane przy następnym buildzie (pliki zdjęć w repo zostają). „Usuń” w panelu = `hidden: true` |
+| `source` | nie | informacyjne (`"panel"`) |
+
+- **Ścieżki obrazków**: dokładnie `^assets/img/uploads/sessions/<a-z0-9->/<a-z0-9->.webp$` (pierwszy człon = folder sesji; zalecane `<slug>`; pliki `NN.webp` i `NN-thumb.webp`), zawsze **nowa nazwa** (nie nadpisuj istniejącego pliku — zob. „Wspólne zasady”). Bez `/` na początku i bez `..`.
+- **Kolejność zapisu**: **jeden commit** z wszystkimi zdjęciami i miniaturami **oraz** plikiem JSON (Git Data API: bloby → drzewo → commit → ref, jak w pkt 8). Wiele zdjęć naraz = jeden commit. Nie commituj JSON-a wcześniej niż zdjęć (w jednym commicie kolejność nie ma znaczenia).
+- **Co buduje build** dla każdej sesji, we wszystkich 7 językach (adres jak `czern`: `/sesje/<slug>/`, `/en/sesje/<slug>/`, `/es/…`, `/pt/…`, `/it/…`, `/ja/…`, `/zh/…`): stronę z siatką 4 kolumny (2 na telefonie) i powiększaniem po kliknięciu, `canonical` + `hreflang`, `og:image` `og/sesja-<slug>-<język>.jpg` (okładka + tytuł; generowany przez build), wpis w `sitemap.xml`, `pwa_head`, blok „Obserwuj Eve” i zajawkę na stronie głównej. Aplikacja offline: zdjęcia trafiają do pamięci podręcznej przy pierwszym obejrzeniu (jak zdjęcia sesji `czern`; nie są w paczce startowej).
+- **Błędy** (nie wywracają builda; `python3 scripts/content.py` pokazuje je jako `UWAGA (content): …`, kod wyjścia 1): zły/zepsuty JSON, slug ≠ nazwa pliku / zły znak / `czern`, brak `title`, zła data `added`, brak `photos` → **cała sesja pominięta**. Zdjęcie z błędną ścieżką, brakujące, za duże, nie-WebP albo o wymiarach poza 200–4000 px → **pominięte samo zdjęcie** (sesja się publikuje z pozostałymi, jeśli zostało ≥ 1). Błędna `cover` → sesja pominięta.
+- Powiadomienie push: po tym, jak `https://eve-gothic.github.io/sesje/<slug>/` zwraca 200 (np. „Nowa sesja: <tytuł>”).
+- Strona jest dla każdego wieku — tylko zdjęcia „safe” (zob. „Wspólne zasady”).
+
+---
+
+## 8. Jak Worker zapisuje (GitHub API) i co się dzieje potem
 
 1. Worker robi **jeden commit na jedną akcję w panelu** (np. zdjęcie + miniatura + `gallery.json`), przez Git Data API:
    `GET /repos/Eve-gothic/eve-gothic.github.io/git/ref/heads/main` → blob(y) obrazków (base64) → `POST /git/trees` (base_tree = tree ostatniego commita) → `POST /git/commits` → `PATCH /git/refs/heads/main` (**bez** `force`).
