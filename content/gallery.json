@@ -203,10 +203,32 @@
    "w": 450,
    "h": 600,
    "caption": {
-    "pl": "Spider - Eve"
+    "pl": "Spider - Eve",
+    "en": "Spider - Eve",
+    "es": "Spider - Eva",
+    "pt": "Spider - Eve",
+    "it": "Spider - Eva",
+    "ja": "スパイダー - EVE",
+    "zh": "蜘蛛 - Eve",
+    "fr": "Spider - Eve",
+    "de": "Spider - Eve"
    },
    "added": "2026-11-21",
-   "source": "panel"
+   "source": "panel",
+   "_auto": {
+    "caption": {
+     "en": "41507a4885c47da0",
+     "es": "8eb3362147292492",
+     "pt": "41507a4885c47da0",
+     "it": "8eb3362147292492",
+     "ja": "19e5211f3fdf4569",
+     "zh": "58cff6fef10c4f35",
+     "fr": "41507a4885c47da0",
+     "de": "41507a4885c47da0",
+     "from": "pl",
+     "src": "b847bbeb4ad357cb"
+    }
+   }
   },
   {
    "id": "gitara",
@@ -237,7 +259,17 @@
     "de": "Eve in einer Jacke mit Patches spielt neben einem Verstärker E-Gitarre"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "cb894e7b79386b1f"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "dfdf4d3669d93832"
+    }
+   }
   },
   {
    "id": "kozuch",
@@ -268,7 +300,17 @@
     "de": "Eve im cremefarbenen Teddymantel an einem Tisch in einem herbstlichen Park"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "e4b21d7c7bb152c5"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "1ed88f55e9994a93"
+    }
+   }
   },
   {
    "id": "szal",
@@ -299,7 +341,17 @@
     "de": "Eve in einen rostfarbenen Schal gehüllt zwischen Herbstlaub"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "28417dd2c334ca68"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "70153a3e92b94e5f"
+    }
+   }
   },
   {
    "id": "lisc",
@@ -330,7 +382,17 @@
     "de": "Eve mit Mütze und Pullover verdeckt ein Auge mit einem Ahornblatt"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "b71a3f349c5db838"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "cbc056267f3fe7f2"
+    }
+   }
   },
   {
    "id": "paski",
@@ -361,7 +423,17 @@
     "de": "Eve im T-Shirt über einem Streifenoberteil vor buntem Graffiti"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "dc845952e2b22797"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "b98622e6f469bc50"
+    }
+   }
   },
   {
    "id": "mikrofon",
@@ -392,7 +464,17 @@
     "de": "Eve in Lederjacke spricht in ein Mikrofon auf einem Ständer"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "21e5f2adb4f5667d"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "bab0694ecc5f4114"
+    }
+   }
   },
   {
    "id": "stadion",
@@ -423,7 +505,17 @@
     "de": "Eve in schwarzer Jacke in einem Stadion zwischen Fans und Bengalos"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "2b339bd524f28fae"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "45ce64e095698314"
+    }
+   }
   },
   {
    "id": "golf",
@@ -454,7 +546,17 @@
     "de": "Schwarz-Weiß-Porträt von Eve im schwarzen Rollkragenpullover"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "d423d8ec294734ae"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "a251bdd6ff186ed0"
+    }
+   }
   },
   {
    "id": "czapka",
@@ -485,7 +587,17 @@
     "de": "Eve mit cremefarbener Mütze, Schal und Mantel im Herbst"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "5f6ef00d1c605380"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "fd293446039a23bb"
+    }
+   }
   },
   {
    "id": "monochrom",
@@ -516,7 +628,17 @@
     "de": "Schwarz-Weiß-Nahaufnahme von Eve mit ihren Piercings"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "68b722835e1862ab"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "b220b59b86429fce"
+    }
+   }
   },
   {
    "id": "spojrzenie-noir",
@@ -547,7 +669,17 @@
     "de": "Eve im schwarzen Rollkragenpullover vor dunkelblauem Hintergrund"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "87000cddf86c1741"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "0044c1ae506b456c"
+    }
+   }
   },
   {
    "id": "kapelusz",
@@ -578,7 +710,17 @@
     "de": "Schwarz-Weiß-Profil von Eve mit breitkrempigem Hut"
    },
    "added": "2026-11-05",
-   "source": "bot"
+   "source": "bot",
+   "_auto": {
+    "caption": {
+     "from": "pl",
+     "src": "6115bef7445e889a"
+    },
+    "alt": {
+     "from": "pl",
+     "src": "f4dc7ae615c4672e"
+    }
+   }
   }
  ]
 }
