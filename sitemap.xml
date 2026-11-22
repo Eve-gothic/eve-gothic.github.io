@@ -7,6 +7,8 @@
 <url><loc>https://eve-gothic.github.io/it/</loc></url>
 <url><loc>https://eve-gothic.github.io/ja/</loc></url>
 <url><loc>https://eve-gothic.github.io/zh/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/</loc></url>
 <url><loc>https://eve-gothic.github.io/linki/</loc></url>
 <url><loc>https://eve-gothic.github.io/pl/linki/</loc></url>
 <url><loc>https://eve-gothic.github.io/es/linki/</loc></url>
@@ -14,6 +16,8 @@
 <url><loc>https://eve-gothic.github.io/it/linki/</loc></url>
 <url><loc>https://eve-gothic.github.io/ja/linki/</loc></url>
 <url><loc>https://eve-gothic.github.io/zh/linki/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/linki/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/linki/</loc></url>
 <url><loc>https://eve-gothic.github.io/komiks/</loc></url>
 <url><loc>https://eve-gothic.github.io/en/komiks/</loc></url>
 <url><loc>https://eve-gothic.github.io/es/komiks/</loc></url>
@@ -42,6 +46,8 @@
 <url><loc>https://eve-gothic.github.io/it/sesje/czern/</loc></url>
 <url><loc>https://eve-gothic.github.io/ja/sesje/czern/</loc></url>
 <url><loc>https://eve-gothic.github.io/zh/sesje/czern/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/sesje/czern/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/sesje/czern/</loc></url>
 <url><loc>https://eve-gothic.github.io/sesje/dragon-ball-to-na-nim-sie-wychowalam/</loc></url>
 <url><loc>https://eve-gothic.github.io/en/sesje/dragon-ball-to-na-nim-sie-wychowalam/</loc></url>
 <url><loc>https://eve-gothic.github.io/es/sesje/dragon-ball-to-na-nim-sie-wychowalam/</loc></url>
@@ -49,6 +55,8 @@
 <url><loc>https://eve-gothic.github.io/it/sesje/dragon-ball-to-na-nim-sie-wychowalam/</loc></url>
 <url><loc>https://eve-gothic.github.io/ja/sesje/dragon-ball-to-na-nim-sie-wychowalam/</loc></url>
 <url><loc>https://eve-gothic.github.io/zh/sesje/dragon-ball-to-na-nim-sie-wychowalam/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/sesje/dragon-ball-to-na-nim-sie-wychowalam/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/sesje/dragon-ball-to-na-nim-sie-wychowalam/</loc></url>
 <url><loc>https://eve-gothic.github.io/dla-tworcow/</loc></url>
 <url><loc>https://eve-gothic.github.io/en/for-creators/</loc></url>
 <url><loc>https://eve-gothic.github.io/es/for-creators/</loc></url>
@@ -56,6 +64,8 @@
 <url><loc>https://eve-gothic.github.io/it/for-creators/</loc></url>
 <url><loc>https://eve-gothic.github.io/ja/for-creators/</loc></url>
 <url><loc>https://eve-gothic.github.io/zh/for-creators/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/for-creators/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/for-creators/</loc></url>
 <url><loc>https://eve-gothic.github.io/blog/</loc></url>
 <url><loc>https://eve-gothic.github.io/en/blog/</loc></url>
 <url><loc>https://eve-gothic.github.io/es/blog/</loc></url>
@@ -63,6 +73,8 @@
 <url><loc>https://eve-gothic.github.io/it/blog/</loc></url>
 <url><loc>https://eve-gothic.github.io/ja/blog/</loc></url>
 <url><loc>https://eve-gothic.github.io/zh/blog/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/blog/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/blog/</loc></url>
 <url><loc>https://eve-gothic.github.io/blog/gta-6-premiera/</loc></url>
 <url><loc>https://eve-gothic.github.io/blog/joy-division-new-order-rock-hall/</loc></url>
 <url><loc>https://eve-gothic.github.io/blog/dcu-gunn-latcham/</loc></url>
@@ -105,4 +117,16 @@
 <url><loc>https://eve-gothic.github.io/zh/blog/gta-vi-212-gb/</loc></url>
 <url><loc>https://eve-gothic.github.io/zh/blog/ebenezer-ti-west/</loc></url>
 <url><loc>https://eve-gothic.github.io/zh/blog/ocarina-of-time-remake/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/blog/gta-6-premiera/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/blog/joy-division-new-order-rock-hall/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/blog/dcu-gunn-latcham/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/blog/gta-vi-212-gb/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/blog/ebenezer-ti-west/</loc></url>
+<url><loc>https://eve-gothic.github.io/fr/blog/ocarina-of-time-remake/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/blog/gta-6-premiera/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/blog/joy-division-new-order-rock-hall/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/blog/dcu-gunn-latcham/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/blog/gta-vi-212-gb/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/blog/ebenezer-ti-west/</loc></url>
+<url><loc>https://eve-gothic.github.io/de/blog/ocarina-of-time-remake/</loc></url>
 </urlset>

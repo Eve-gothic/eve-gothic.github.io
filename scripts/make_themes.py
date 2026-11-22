@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """Generuje skórki wyglądu strony: css/themes/<motyw>.css  (motywy wybierane w panelu „Eve Admin” → content/theme.json).
 
-Skórka = SAM CSS na istniejącym HTML (blog, komiksy, gry, 7 języków i PWA działają bez zmian). Ładowana PO css/eve.css.
+Skórka = SAM CSS na istniejącym HTML (blog, komiksy, gry, 9 języków i PWA działają bez zmian). Ładowana PO css/eve.css.
 Każdy plik powstaje z dwóch części:
   1) „remap” — wygenerowany z css/eve.css: wszystkie deklaracje z na sztywno wpisanymi kolorami (złoto, burgund, kremowe teksty)
      i fontami przepisane na zmienne CSS (--gold, --ink, --paper, --soft, --f-head, --f-body, --f-ui …), dzięki czemu skórka

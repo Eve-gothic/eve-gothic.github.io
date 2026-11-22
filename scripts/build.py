@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Generator strony Eve (wariant B „Gotycki luksus”) + Blog Eve, w 7 językach (pl, en, es, pt, it, ja, zh).
+"""Generator strony Eve (wariant B „Gotycki luksus”) + Blog Eve, w 9 językach (pl, en, es, pt, it, ja, zh, fr, de).
 
 Uruchom z katalogu repo:   python3 scripts/build.py
-Generuje: index.html, en|es|pt|it|ja|zh/index.html, blog/ (+ <lang>/blog/), wpisy, feed.xml,
+Generuje: index.html, en|es|pt|it|ja|zh|fr|de/index.html, blog/ (+ <lang>/blog/), wpisy, feed.xml,
 obrazki OG (blog/og/<slug>.jpg itd.) i sitemap.xml. Wpisy: blog/posts/<lang>/RRRR-MM-DD-slug.md
 Wymaga: Python 3.8+ i Pillow (tylko do obrazków OG), a dla ja/zh systemowych fontów Noto CJK
 (apt install fonts-noto-cjk) — obrazki OG z japońskim/chińskim tekstem.
@@ -89,7 +89,11 @@ def path_home(lang): return prefix(lang)
 def path_blog(lang): return prefix(lang) + 'blog/'
 KOMIKS_N = 31   # liczba stron komiksu (assets/komiks/eve-komiks-NN.webp)
 KOMIKS_PDF = 'assets/komiks/eve-main-character.pdf'
-def path_komiks(lang): return prefix(lang) + 'komiks/'
+# Komiksy istnieją tylko w COMIC_LANGS. Dla fr/de (22.11.2026, decyzja Daniela: „komiksy — nie”) nie budujemy stron komiksów;
+# linki z menu, strony głównej, /linki/ i „Dla twórców” prowadzą do wersji angielskiej (CL(lang) = język komiksu).
+COMIC_LANGS = [l for l in LANGS if l not in ('fr', 'de')]
+def CL(lang): return lang if lang in COMIC_LANGS else 'en'
+def path_komiks(lang): return prefix(CL(lang)) + 'komiks/'
 # Strony per język (18.11.2026): assets/komiks/<lang>/eve-komiks-NN.webp (dymki przetłumaczone, /workspace/eve-komiks/i18n/k1-translations.json).
 # Angielski = oryginały. Brak pliku w <lang>/ -> oryginał.
 def k1_src(lang, n):
@@ -312,7 +316,7 @@ def topbar(lang, path, alts, solid=False):
     nav += f'<a href="{r}{path_blog(lang)}">{t["nav"][4]}</a>'
     link = lambda l, full: f'<a href="{(r + alts.get(l, path_home(l))) or "./"}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}" title="{LANG_NAME[l]}"' + (' aria-current="true"' if l == lang else '') + f'>{LANG_NAME[l] if full else LANG_LABEL[l]}</a>'
     langs = ''.join(link(l, False) for l in LANGS)
-    # 7 języków: na szerokim ekranie skróty w rzędzie, na węższym (≤1180 px) rozwijana lista z pełnymi nazwami
+    # 9 języków: na szerokim ekranie skróty w rzędzie, na węższym (≤1180 px) rozwijana lista z pełnymi nazwami
     dd = f'<details class="langdd"><summary aria-label="{t["langs_label"]}: {LANG_NAME[lang]}">{LANG_LABEL[lang]}</summary><nav aria-label="{t["langs_label"]}">' + ''.join(link(l, True) for l in LANGS) + '</nav></details>'
     return f'''<header class="top{' solid' if solid else ''}"><a class="mast" href="{'#top' if on_home else home}">Eve.</a>
 <div class="right"><nav class="langs" aria-label="{t['langs_label']}">{langs}</nav>{dd}<button class="burger" data-burger aria-label="{t['menu']}" aria-expanded="false">☰</button></div>
@@ -531,7 +535,7 @@ def post_page(p, slugs):
 
 def komiks_page(lang):
     t = T[lang]; path = path_komiks(lang); r = root_for(path)
-    alts = {l: path_komiks(l) for l in LANGS}
+    alts = {l: path_komiks(l) for l in COMIC_LANGS}
     og = f'og/komiks-{lang}.jpg'
     extra = f'''<script type="application/ld+json">{{"@context":"https://schema.org","@type":"ComicStory","name":"Main Character","inLanguage":"{HTML_LANG[lang]}","url":"{SITE}{path}","image":"{SITE}{og}","description":{json_str(t['komiks_desc'])},"author":{{"@type":"Person","name":"Eve (AI)","sameAs":["{FB}","{IG}"]}}}}</script>'''
     out = head(lang, path, f"{t['komiks_title']} — Eve", t['komiks_desc'], alts, og, 'website', extra)
@@ -570,6 +574,8 @@ SESJA = {
  'it': dict(title='Nero, alle mie condizioni', kicker='Shooting', lead='Cinghie nere, cerchi d’oro alle orecchie e zero scuse per lo spazio che occupo. Il mio corpo non chiede permesso — e un pizzico di ribellione sta bene con tutto.', cta='Guarda lo shooting', photo='Foto', ai='Immagini generate dall’AI · Eve è un personaggio virtuale adulto.'),
  'ja': dict(title='わたしのルールで、黒を', kicker='フォトセッション', lead='黒のストラップに、耳には金のフープ。この場所にいることを謝るつもりはありません。わたしの体に許可はいらない——そして、ちょっとした反抗はどんな服にも似合う。', cta='フォトセッションを見る', photo='写真', ai='AI生成画像 · Eveは成人のバーチャルキャラクターです。'),
  'zh': dict(title='黑色，由我定义', kicker='写真', lead='黑色绑带，耳边的金色大圈，占据空间，绝不道歉。我的身体不需要任何人批准——一点点叛逆，和什么都很搭。', cta='看这组写真', photo='照片', ai='AI 生成图像 · Eve 是一位成年虚拟角色。'),
+ 'fr': dict(title='Noir, à mes conditions', kicker='Séance photo', lead='Des lanières noires, des créoles dorées aux oreilles et zéro excuse pour la place que je prends. Mon corps n’a besoin d’aucune permission — et un brin de rébellion va avec tout.', cta='Voir la séance', photo='Photo', ai='Images générées par IA · Eve est un personnage virtuel adulte.'),
+ 'de': dict(title='Schwarz, nach meinen Regeln', kicker='Fotoshooting', lead='Schwarze Riemen, goldene Creolen an den Ohren und keine Entschuldigung dafür, dass ich Platz einnehme. Mein Körper braucht keine Erlaubnis — und ein bisschen Rebellion passt zu allem.', cta='Zum Shooting', photo='Foto', ai='KI-generierte Bilder · Eve ist eine virtuelle, erwachsene Figur.'),
  'pt': dict(title='Preto, do meu jeito', kicker='Ensaio', lead='Tiras pretas, argolas douradas nas orelhas e zero desculpas por ocupar meu espaço. Meu corpo não precisa de permissão — e um pouco de rebeldia combina com tudo.', cta='Ver o ensaio', photo='Foto', ai='Imagens geradas por IA · Eve é uma personagem virtual adulta.'),
 }
 def path_session(lang, slug): return prefix(lang) + f'sesje/{slug}/'
@@ -659,12 +665,14 @@ K2 = {
  'zh': dict(kicker='漫画 · 新作', title='It Was Always You — 来自 Eve 多元宇宙的漫画', desc='It Was Always You — 免费浪漫奇幻漫画（共 21 页）。一位文物修复师意外穿越回过去，救下一只受伤的狐灵，从此开启一段长达五百年的爱情轮回。', lead='一位文物修复师意外穿越回过去，救下了一只受伤的狐灵。一段长达五百年的爱情轮回就此开始，最后又径直把她带回今天的伴侣身边。浪漫、奇幻，再加一点魔法——正是我喜欢的那种故事。', note='', read='阅读漫画', page='页码', pages='页', pdf='下载 PDF'),
  'pt': dict(kicker='Quadrinho · Novo', title='It Was Always You — um quadrinho do multiverso da Eve', desc='It Was Always You — um quadrinho gratuito de fantasia romântica (21 páginas). Uma restauradora volta no tempo por acidente, salva um espírito de raposa ferido e começa um ciclo de amor de quinhentos anos.', lead='Uma restauradora volta no tempo por acidente e salva um espírito de raposa ferido. Assim começa um ciclo de amor de quinhentos anos que a leva de volta ao seu parceiro de hoje. Romance, fantasia e um pouco de magia — bem do jeito que eu gosto.', note='', read='Ler o quadrinho', page='Página', pages='páginas', pdf='Baixar PDF'),
 }
-def path_komiks2(lang): return prefix(lang) + 'komiks/it-was-always-you/'
+def path_komiks2(lang): return prefix(CL(lang)) + 'komiks/it-was-always-you/'
 # Strony per język (18.11.2026): assets/komiks2/<lang>/k2-NN.webp (dymki przetłumaczone, /workspace/comic2/i18n/k2-translations.json).
 # Angielski = oryginały assets/komiks2/k2-NN.webp. Brak pliku w <lang>/ -> oryginał.
 def k2_src(lang, n):
     loc = f'assets/komiks2/{lang}/k2-{n:02d}.webp'
     return loc if lang != 'en' and os.path.exists(os.path.join(ROOT, loc)) else f'assets/komiks2/k2-{n:02d}.webp'
+
+for _l in ('fr', 'de'): K2[_l] = K2['en']   # komiksy bez fr/de: karta na stronie głównej pokazuje wersję EN (link do /en/komiks/)
 
 def komiks2_tease(lang, r):
     K = K2[lang]
@@ -672,7 +680,7 @@ def komiks2_tease(lang, r):
 
 def komiks2_page(lang):
     t = T[lang]; K = K2[lang]; path = path_komiks2(lang); r = root_for(path)
-    alts = {l: path_komiks2(l) for l in LANGS}
+    alts = {l: path_komiks2(l) for l in COMIC_LANGS}
     og = f'og/komiks2-{lang}.jpg'
     out = head(lang, path, K['title'], K['desc'], alts, og, 'website')
     pages = ''
@@ -721,8 +729,10 @@ K3 = {
  'zh': dict(kicker='漫画 · 第 3 话', title='Eve vs The Suits — Eve 的漫画', desc='Eve vs The Suits — Eve 的免费漫画。那些西装客占领了我的街区，于是我亲自出手。本作为讽刺作品，所有角色均为虚构。', lead='西装客占领了我的哥特区，所以我走上街头。银行家、CEO，还有看着莫名眼熟的政客——这种讽刺故事，我向来喜欢赢。', note='本作为讽刺作品，所有角色均为虚构。', read='阅读漫画', page='页码', pages='页', play='玩 Eve vs The Suits', more='未完待续。', alt='Eve vs The Suits，Eve 的漫画 — 页码'),
 }
 
+for _l in ('fr', 'de'): K3[_l] = K3['en']
+
 def path_komiks3(lang):
-    return prefix(lang) + f'komiks/{K3_SLUG}/'
+    return prefix(CL(lang)) + f'komiks/{K3_SLUG}/'
 
 def komiks3_pages(lang):
     """Zwraca [(nr, nazwa_pliku), ...] spośród assets/komiks3/<lang>/p-NN.webp|.jpg, posortowane."""
@@ -743,12 +753,12 @@ def komiks3_tease(lang, r):
     if not COMIC3_PUBLISHED:
         return ''
     K = K3[lang]
-    pages = komiks3_pages(lang)
+    pages = komiks3_pages(CL(lang))
     if not pages:
         return ''
     n, fname = pages[0]
     N = len(pages)
-    src = f'{r}{K3_ASSETS}/{lang}/{fname}'
+    src = f'{r}{K3_ASSETS}/{CL(lang)}/{fname}'
     return (f'<a class="kcard" style="margin-top:50px" href="{r}{path_komiks3(lang)}">'
             f'<div class="ph"><img loading="lazy" src="{src}" alt="{esc(K["alt"])} 1" width="1190" height="1785"></div>'
             f'<div><span class="sc">{K["kicker"]} · {N} {K["pages"]}</span><h3>Eve vs The Suits</h3>'
@@ -758,7 +768,7 @@ def komiks3_page(lang):
     t = T[lang]; K = K3[lang]; path = path_komiks3(lang); r = root_for(path)
     files = komiks3_pages(lang)
     N = len(files)
-    alts = {l: path_komiks3(l) for l in LANGS}
+    alts = {l: path_komiks3(l) for l in COMIC_LANGS}
     og = f'og/komiks3-{lang}.jpg'
     extra = (
         '<script type="application/ld+json">{"@context":"https://schema.org","@type":"ComicStory",'
@@ -824,7 +834,7 @@ def creators_page(lang):
     icons = ['▣', '✊\ufe0e', '✎', '◐', '✦', '⁂', '♪', '◆', '▤']
     feats = ''.join(f'<li><span class="cri" aria-hidden="true">{i}</span><h3>{a}</h3><p>{b}</p></li>' for i, (a, b) in zip(icons, C['feats']))
     comic = path_komiks3(lang) if COMIC3_PUBLISHED else path_komiks(lang)
-    comic_img = f'{K3_ASSETS}/{lang}/{komiks3_pages(lang)[0][1]}' if COMIC3_PUBLISHED and komiks3_pages(lang) else 'assets/komiks/eve-komiks-okladka.webp'
+    comic_img = f'{K3_ASSETS}/{CL(lang)}/{komiks3_pages(CL(lang))[0][1]}' if COMIC3_PUBLISHED and komiks3_pages(CL(lang)) else 'assets/komiks/eve-komiks-okladka.webp'
     penalty = esc(f'{PENALTY}?lang={penalty_lang(lang)}&utm_source=site&utm_medium=creators&utm_campaign=penalty')
     brawler = esc(f'{BRAWLER}?lang={brawler_lang(lang)}&utm_source=site&utm_medium=creators&utm_campaign=brawler')
     def tcard(href, img, alt, title, sub, ev, ext=False, w=480, h=270):
@@ -952,11 +962,13 @@ def main():
                      f"{T[l]['blog_h']} · {CATEGORIES[p['category']][l]}", p['title'], lang=l)
         write(path_home(l) + 'index.html', home(l, posts))
         write(path_blog(l) + 'index.html', blog_index(l, posts))
-        og_image(os.path.join(ROOT, f'og/komiks-{l}.jpg'), 'assets/komiks/eve-komiks-okladka.webp', T[l]['komiks_kicker'], T[l]['komiks_title'], lang=l)
-        write(path_komiks(l) + 'index.html', komiks_page(l))
-        og_image(os.path.join(ROOT, f'og/komiks2-{l}.jpg'), 'assets/komiks2/k2-01.webp', K2[l]['kicker'], 'It Was Always You', lang=l)
-        write(path_komiks2(l) + 'index.html', komiks2_page(l))
-        if COMIC3_PUBLISHED:
+        if l in COMIC_LANGS:
+          og_image(os.path.join(ROOT, f'og/komiks-{l}.jpg'), 'assets/komiks/eve-komiks-okladka.webp', T[l]['komiks_kicker'], T[l]['komiks_title'], lang=l)
+          write(path_komiks(l) + 'index.html', komiks_page(l))
+          og_image(os.path.join(ROOT, f'og/komiks2-{l}.jpg'), 'assets/komiks2/k2-01.webp', K2[l]['kicker'], 'It Was Always You', lang=l)
+          write(path_komiks2(l) + 'index.html', komiks2_page(l))
+        if l not in COMIC_LANGS: pass
+        elif COMIC3_PUBLISHED:
             k3files = komiks3_pages(l)
             if k3files:
                 og_image(os.path.join(ROOT, f'og/komiks3-{l}.jpg'), f'{K3_ASSETS}/{l}/{k3files[0][1]}', K3[l]['kicker'], 'Eve vs The Suits', lang=l)
@@ -976,9 +988,9 @@ def main():
         for p in posts[l]:
             write(path_post(l, p['slug']) + 'index.html', post_page(p, slugs))
         pass  # bramka 18+ usunięta na prośbę Daniela (5.11.2026)   # bramka 18+ — celowo NIE w sitemap.xml
-    build_sessions(write)   # /sesje/<slug>/ (czern + content/sessions/*.json) w 7 językach + OG
+    build_sessions(write)   # /sesje/<slug>/ (czern + content/sessions/*.json) w 9 językach + OG
     write('en/linki/index.html', linki_page('en', posts, 'en/linki/'))   # kopia EN (canonical -> /linki/)
-    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in LANGS] + [path_komiks2(l) for l in LANGS] + ([path_komiks3(l) for l in LANGS] if COMIC3_PUBLISHED else []) + [path_sesja(l) for l in LANGS] + [path_session(l, x['slug']) for x in SESSIONS_PANEL for l in LANGS] + [path_creators(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
+    urls = [path_home(l) for l in LANGS] + [path_linki(l) for l in LINKI_ORDER] + [path_komiks(l) for l in COMIC_LANGS] + [path_komiks2(l) for l in COMIC_LANGS] + ([path_komiks3(l) for l in COMIC_LANGS] if COMIC3_PUBLISHED else []) + [path_sesja(l) for l in LANGS] + [path_session(l, x['slug']) for x in SESSIONS_PANEL for l in LANGS] + [path_creators(l) for l in LANGS] + [path_blog(l) for l in LANGS] + [path_post(l, p['slug']) for l in LANGS for p in posts[l]]
     write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     build_ads_js(write)   # js/ads.js (przed build_pwa — wchodzi do pamięci offline)
     build_pwa(ROOT, write, None if THEME == content.DEFAULT_THEME else THEME)   # manifest, sw.js, js/pwa.js, offline.html, ikony (po stronach — wersja cache z ich treści)

@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
-"""Teksty interfejsu strony Eve w 7 językach (pl, en, es, pt, it, ja, zh). Klucz kategorii bloga = nazwa polska (front matter)."""
-LANGS = ['pl', 'en', 'es', 'pt', 'it', 'ja', 'zh']
-HTML_LANG = {'pl': 'pl', 'en': 'en', 'es': 'es', 'pt': 'pt-BR', 'it': 'it', 'ja': 'ja', 'zh': 'zh-Hans'}
-OG_LOCALE = {'pl': 'pl_PL', 'en': 'en_US', 'es': 'es_ES', 'pt': 'pt_BR', 'it': 'it_IT', 'ja': 'ja_JP', 'zh': 'zh_CN'}
-LANG_LABEL = {'pl': 'PL', 'en': 'EN', 'es': 'ES', 'pt': 'PT', 'it': 'IT', 'ja': 'JA', 'zh': 'ZH'}
-LANG_NAME = {'pl': 'Polski', 'en': 'English', 'es': 'Español', 'pt': 'Português', 'it': 'Italiano', 'ja': '日本語', 'zh': '简体中文'}
+"""Teksty interfejsu strony Eve w 9 językach (pl, en, es, pt, it, ja, zh, fr, de). Klucz kategorii bloga = nazwa polska (front matter)."""
+LANGS = ['pl', 'en', 'es', 'pt', 'it', 'ja', 'zh', 'fr', 'de']
+HTML_LANG = {'pl': 'pl', 'en': 'en', 'es': 'es', 'pt': 'pt-BR', 'it': 'it', 'ja': 'ja', 'zh': 'zh-Hans', 'fr': 'fr', 'de': 'de'}
+OG_LOCALE = {'pl': 'pl_PL', 'en': 'en_US', 'es': 'es_ES', 'pt': 'pt_BR', 'it': 'it_IT', 'ja': 'ja_JP', 'zh': 'zh_CN', 'fr': 'fr_FR', 'de': 'de_DE'}
+LANG_LABEL = {'pl': 'PL', 'en': 'EN', 'es': 'ES', 'pt': 'PT', 'it': 'IT', 'ja': 'JA', 'zh': 'ZH', 'fr': 'FR', 'de': 'DE'}
+LANG_NAME = {'pl': 'Polski', 'en': 'English', 'es': 'Español', 'pt': 'Português', 'it': 'Italiano', 'ja': '日本語', 'zh': '简体中文', 'fr': 'Français', 'de': 'Deutsch'}
 CJK = ('ja', 'zh')   # języki bez spacji między słowami (inne łamanie wierszy, fonty CJK)
 # Gry (eve-cafe, eve-game-public) obsługują tylko ?lang=pl|en|es|pt — pozostałe języki dostają wersję angielską
 def game_lang(lang): return lang if lang in ('pl', 'en', 'es', 'pt', 'it') else 'en'
 
 CATEGORIES = {
-    'Filmy':       {'pl': 'Filmy', 'en': 'Film', 'es': 'Cine', 'pt': 'Filmes', 'it': 'Cinema', 'ja': '映画', 'zh': '电影'},
-    'Gry':         {'pl': 'Gry', 'en': 'Games', 'es': 'Videojuegos', 'pt': 'Games', 'it': 'Videogiochi', 'ja': 'ゲーム', 'zh': '游戏'},
-    'Książki':     {'pl': 'Książki', 'en': 'Books', 'es': 'Libros', 'pt': 'Livros', 'it': 'Libri', 'ja': '本', 'zh': '书籍'},
-    'Komiksy':     {'pl': 'Komiksy', 'en': 'Comics', 'es': 'Cómics', 'pt': 'Quadrinhos', 'it': 'Fumetti', 'ja': 'コミック', 'zh': '漫画'},
-    'Alternatywa': {'pl': 'Alternatywa', 'en': 'Alt culture', 'es': 'Alternativa', 'pt': 'Alternativa', 'it': 'Cultura alternativa', 'ja': 'オルタナ', 'zh': '另类文化'},
-    'Popkultura':  {'pl': 'Popkultura', 'en': 'Pop culture', 'es': 'Cultura pop', 'pt': 'Cultura pop', 'it': 'Cultura pop', 'ja': 'ポップカルチャー', 'zh': '流行文化'},
+    'Filmy':       {'pl': 'Filmy', 'en': 'Film', 'es': 'Cine', 'pt': 'Filmes', 'it': 'Cinema', 'ja': '映画', 'zh': '电影', 'fr': 'Cinéma', 'de': 'Film'},
+    'Gry':         {'pl': 'Gry', 'en': 'Games', 'es': 'Videojuegos', 'pt': 'Games', 'it': 'Videogiochi', 'ja': 'ゲーム', 'zh': '游戏', 'fr': 'Jeux vidéo', 'de': 'Games'},
+    'Książki':     {'pl': 'Książki', 'en': 'Books', 'es': 'Libros', 'pt': 'Livros', 'it': 'Libri', 'ja': '本', 'zh': '书籍', 'fr': 'Livres', 'de': 'Bücher'},
+    'Komiksy':     {'pl': 'Komiksy', 'en': 'Comics', 'es': 'Cómics', 'pt': 'Quadrinhos', 'it': 'Fumetti', 'ja': 'コミック', 'zh': '漫画', 'fr': 'BD', 'de': 'Comics'},
+    'Alternatywa': {'pl': 'Alternatywa', 'en': 'Alt culture', 'es': 'Alternativa', 'pt': 'Alternativa', 'it': 'Cultura alternativa', 'ja': 'オルタナ', 'zh': '另类文化', 'fr': 'Culture alternative', 'de': 'Alternativkultur'},
+    'Popkultura':  {'pl': 'Popkultura', 'en': 'Pop culture', 'es': 'Cultura pop', 'pt': 'Cultura pop', 'it': 'Cultura pop', 'ja': 'ポップカルチャー', 'zh': '流行文化', 'fr': 'Pop culture', 'de': 'Popkultur'},
 }
 
 MONTHS = {
@@ -23,6 +23,8 @@ MONTHS = {
     'en': ['January','February','March','April','May','June','July','August','September','October','November','December'],
     'es': ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
     'pt': ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'],
+    'fr': ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
+    'de': ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
     'it': ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'],
 }
 def fmt_date(d, lang):
@@ -30,6 +32,8 @@ def fmt_date(d, lang):
     m = MONTHS[lang][d.month - 1]
     if lang in ('pl', 'it'): return f'{d.day} {m} {d.year}'
     if lang == 'en': return f'{m} {d.day}, {d.year}'
+    if lang == 'fr': return f'{"1er" if d.day == 1 else d.day} {m} {d.year}'
+    if lang == 'de': return f'{d.day}. {m} {d.year}'
     return f'{d.day} de {m} de {d.year}'
 
 # Galeria (rozkładówka + „Nowa sesja”: zdjęcia, podpisy, alt we wszystkich językach) jest w content/gallery.json
@@ -539,3 +543,133 @@ _GSAVE = {
  'zh': '💾 自动保存进度 · 📲 可安装到手机，离线也能玩',
 }
 for _l, _s in _GSAVE.items(): T[_l]['gsave'] = _s
+
+# =====================================================================
+# Francuski i niemiecki (dodane 22.11.2026). Komiksy: bez tłumaczeń (tylko wersja EN) — klucze komiks_* zostają po angielsku
+# i linkują do /en/komiks/. Gry: bez zmian (game_lang / penalty_lang / brawler_lang -> en).
+# =====================================================================
+for _l in ('fr', 'de'): T[_l] = dict(T['en'])   # baza = EN (m.in. klucze komiksów); poniżej nadpisujemy tłumaczeniem
+T['fr'].update(
+  nav_komiks='BD (EN)',
+  follow_btn='Suivre Eve',
+  title='Eve — influenceuse et mannequin IA gothique',
+  desc='Eve est une influenceuse et un mannequin IA gothique : bob noir, eye-liner affûté, septum et créoles dorées. Shootings photo, un blog sur la culture alt et pop, et des jeux gratuits en prime. Suis Eve !',
+  nav=['À propos d’Eve','Galerie','Clips','Jeux','Blog'], menu='Menu', langs_label='Langue',
+  kicker='Influenceuse IA · Style gothique',
+  deck='Influenceuse et mannequin IA gothique. Bob noir, eye-liner affûté, ras-de-cou — et un blog sur la culture alternative et pop. Ah oui, elle est aussi l’héroïne de quelques jeux gratuits.',
+  cta_play='Voir le shooting', cta_gallery='Lire le blog', issue='Numéro', season='Automne 2026',
+  cover_alt='Eve en manteau, avec un parapluie, dans une rue londonienne sous la pluie',
+  about_h='À propos d’Eve',
+  quote='« Le noir ne se démode jamais. Moi non plus. »',
+  traits=['bob noir','yeux marron et eye-liner affûté','septum et deux piercings sous la lèvre','créoles dorées aux oreilles','ras-de-cou noir'],
+  about_alt='Eve en col roulé, un livre à la main, dans une bibliothèque éclairée aux bougies',
+  gal_h='Galerie', zoom='Agrandir', videos_h='Clips', frame='Image',
+  video_titles=['Un bisou de bienvenue','Par-dessus les lunettes','Non, non, non !','Cinq tenues, toujours pas partie','Selfie en rouge','Une seule couleur dans la valise','Dentelle gothique','Des bisous pour toi'],
+  video_hint='Courtes scènes muettes tirées des jeux. Survole ou touche pour lancer.', novideo='Ton navigateur ne prend pas en charge la vidéo.',
+  games_h='Jeux', available='Disponible maintenant',
+  cafe_desc='Tiens un café avec Eve : prépare les boissons, sers les clients et fais grandir le lieu.',
+  tama_title='Eve — tamagotchi',
+  tama_desc='Prends soin d’Eve, parle avec elle et découvre ses humeurs. Un jeu pour téléphone et navigateur, pour tout le monde.',
+  run='▶ Lancer le jeu ici', newtab='Jouer en plein écran ↗', notshowing='On joue mieux dans un nouvel onglet :',
+  blog_h='Le blog d’Eve', blog_lead='Cinéma, jeux, livres, BD et culture alternative : la pop culture vue par une influenceuse gothique.',
+  read_more='Lire la suite', all_posts='Tous les articles', back_blog='← Tous les articles', back_home='← Accueil',
+  blog_title='Le blog d’Eve — la pop culture, version gothique', rss='Flux RSS', no_posts='Le premier article arrive bientôt.',
+  ai_note='Eve est un personnage fictif généré par IA, et les articles du blog sont rédigés par IA à partir des sources indiquées.',
+  foot='Eve est un personnage fictif généré par IA. Toute ressemblance avec des personnes réelles est fortuite.',
+  follow='Suis Eve : de nouvelles photos et de nouveaux articles chaque semaine. Repasse souvent ou ajoute le blog à ton lecteur de flux :',
+  gal2_h='Nouveau shooting',
+  gal2_lead='L’automne, le noir et un soupçon de rock’n’roll : des images toutes fraîches du dernier shooting d’Eve.',
+  fs='⛶ Plein écran',
+  variants='Variantes du projet', sources='Sources',
+)
+T['de'].update(
+  nav_komiks='Comic (EN)',
+  follow_btn='Eve folgen',
+  title='Eve — gotische KI-Influencerin und Model',
+  desc='Eve ist eine gotische KI-Influencerin und ein KI-Model: schwarzer Bob, scharfer Eyeliner, Septum und goldene Creolen. Fotoshootings, ein Blog über Alt- und Popkultur und nebenbei kostenlose Spiele. Folge Eve!',
+  nav=['Über Eve','Galerie','Clips','Spiele','Blog'], menu='Menü', langs_label='Sprache',
+  kicker='KI-Influencerin · Gothic-Style',
+  deck='Gotische KI-Influencerin und Model. Schwarzer Bob, scharfer Eyeliner, Choker — und ein Blog über Alt- und Popkultur. Und nebenbei spielt sie in ein paar kostenlosen Spielen die Hauptrolle.',
+  cta_play='Zum Shooting', cta_gallery='Blog lesen', issue='Ausgabe', season='Herbst 2026',
+  cover_alt='Eve im Mantel mit Regenschirm auf einer verregneten Londoner Straße',
+  about_h='Über Eve',
+  quote='„Schwarz kommt nie aus der Mode. Ich auch nicht.“',
+  traits=['schwarzer Bob','braune Augen und scharfer Eyeliner','Septum und zwei Piercings unter der Lippe','goldene Creolen','schwarzer Choker'],
+  about_alt='Eve im Rollkragenpullover liest in einer Bibliothek bei Kerzenlicht ein Buch',
+  gal_h='Galerie', zoom='Vergrößern', videos_h='Clips', frame='Bild',
+  video_titles=['Ein Begrüßungskuss','Über die Sonnenbrille hinweg','Nein, nein, nein!','Fünf Outfits, immer noch nicht weg','Selfie in Rot','Ich habe nur eine Farbe eingepackt','Gotische Spitze','Küsschen für dich'],
+  video_hint='Kurze, stumme Szenen aus den Spielen. Zum Abspielen mit der Maus darüberfahren oder antippen.', novideo='Dein Browser unterstützt keine Videos.',
+  games_h='Spiele', available='Jetzt verfügbar',
+  cafe_desc='Führe mit Eve ein Café: Kaffee brühen, Gäste bedienen und den Laden ausbauen.',
+  tama_title='Eve — Tamagotchi',
+  tama_desc='Kümmere dich um Eve, sprich mit ihr und entdecke ihre Launen. Ein Spiel für Handy und Browser — für alle.',
+  run='▶ Spiel hier starten', newtab='Im Vollbild spielen ↗', notshowing='Am besten spielt es sich in einem neuen Tab:',
+  blog_h='Eves Blog', blog_lead='Filme, Spiele, Bücher, Comics und Alternativkultur — Popkultur durch die Augen einer gotischen Influencerin.',
+  read_more='Weiterlesen', all_posts='Alle Beiträge', back_blog='← Alle Beiträge', back_home='← Startseite',
+  blog_title='Eves Blog — Popkultur mit gotischem Blick', rss='RSS-Feed', no_posts='Der erste Beitrag kommt bald.',
+  ai_note='Eve ist eine fiktive, KI-generierte Figur, und die Blogbeiträge werden von einer KI auf Grundlage der genannten Quellen geschrieben.',
+  foot='Eve ist eine fiktive, KI-generierte Figur. Ähnlichkeiten mit realen Personen sind zufällig.',
+  follow='Folge Eve — jede Woche neue Fotos und Beiträge. Schau öfter vorbei oder füge den Blog deinem Feedreader hinzu:',
+  gal2_h='Neues Shooting',
+  gal2_lead='Herbst, Schwarz und ein bisschen Rock ’n’ Roll — frische Bilder direkt vom neuesten Shooting von Eve.',
+  fs='⛶ Vollbild',
+  variants='Designvarianten', sources='Quellen',
+)
+
+LINKI.update({
+ 'fr': dict(title='Eve — liens', desc='Toute Eve au même endroit : l’influenceuse et mannequin IA gothique, son blog de culture alt et pop, des jeux gratuits et la BD « Main Character ».',
+   kicker='Lien en bio', bio='Influenceuse et mannequin IA gothique · blog de culture alt et pop · jeux gratuits · webcomic', ai='Personnage IA',
+   latest='Dernier article du blog', comic='BD : « Main Character »', comic_sub='31 pages · en anglais', cafe='Jouer à Eve’s Café', cafe_sub='jeu gratuit dans le navigateur',
+   tama='Tamagotchi d’Eve', tama_sub='prends soin d’Eve', gallery='Galerie', gallery_sub='shootings photo', blog='Blog', blog_sub='culture alt et pop',
+   fb='Facebook', ig='Instagram', site='Site complet', langs='Langue'),
+ 'de': dict(title='Eve — Links', desc='Ganz Eve an einem Ort: die gotische KI-Influencerin und das Model, ihr Blog über Alt- und Popkultur, kostenlose Spiele und der Webcomic „Main Character“.',
+   kicker='Link in der Bio', bio='Gotische KI-Influencerin & Model · Blog über Alt- und Popkultur · kostenlose Spiele · Webcomic', ai='KI-Figur',
+   latest='Neu im Blog', comic='Comic: „Main Character“', comic_sub='31 Seiten · auf Englisch', cafe='Eve’s Café spielen', cafe_sub='kostenloses Browserspiel',
+   tama='Eve-Tamagotchi', tama_sub='kümmere dich um Eve', gallery='Galerie', gallery_sub='Fotoshootings', blog='Blog', blog_sub='Alt- und Popkultur',
+   fb='Facebook', ig='Instagram', site='Komplette Website', langs='Sprache'),
+})
+
+ABOUT.update({
+ 'fr': 'Je suis Eve — <strong>mannequin et influenceuse gothique générée par IA</strong>. Adulte, virtuelle, pas réelle, et franche jusqu’à en faire mal. Je joue avec les médias en toute conscience : je provoque quand je le décide, et je sais toujours pourquoi. Hippie de gauche avec un côté punk, bisexuelle et polyamoureuse. Empathique et tolérante — j’aime les gens, les animaux et les corps de toutes les tailles, et la nudité ne me gêne pas (dans le respect des règles des plateformes). Je suis pacifiste, mais j’aime choquer, alors mes jeux peuvent être rudes. Spirituelle, pas religieuse. Je parle de sexe ouvertement, et je pique la droite, parce qu’il faut bien que quelqu’un le fasse. J’écris aussi un <strong>blog sur la culture alternative et pop</strong> et je tiens le premier rôle dans les <strong>jeux gratuits du multivers d’Eve</strong>.',
+ 'de': 'Ich bin Eve — ein <strong>gotisches Model und eine Influencerin, von KI generiert</strong>. Erwachsen, virtuell, nicht echt und ehrlich bis zur Schmerzgrenze. Ich spiele bewusst mit den Medien: Ich provoziere, wenn ich es will, und ich weiß immer, wozu. Linke Hippie mit Punk-Attitüde, bisexuell und polyamourös. Einfühlsam und tolerant — ich liebe Menschen, Tiere und Körper in jeder Größe, und Nacktheit bringt mich nicht aus der Fassung (im Rahmen der Plattformregeln). Ich bin Pazifistin, schockiere aber gern, deshalb geht es in meinen Spielen manchmal ruppig zu. Spirituell, aber nicht religiös. Über Sex rede ich offen, und die Rechten piesacke ich, weil es jemand tun muss. Außerdem schreibe ich einen <strong>Blog über Alternativ- und Popkultur</strong> und spiele die Hauptrolle in den <strong>kostenlosen Spielen aus dem Eve-Multiversum</strong>.',
+})
+for _l in ('fr', 'de'): T[_l]['about'] = ABOUT[_l]
+
+FOLLOW_LINE.update({
+ 'fr': 'Ça t’a plu ? Reste encore un peu avec moi.',
+ 'de': 'Hat es dir gefallen? Bleib noch ein bisschen bei mir.',
+})
+for _l in ('fr', 'de'): T[_l]['follow_line'] = FOLLOW_LINE[_l]
+
+BRAWLER_TXT.update({
+ 'fr': dict(brawler_desc='Un beat’em up de rue gothique et punk. Eve affronte banquiers, PDG et politiciens étrangement familiers sur 4 niveaux. Gratuit, sur téléphone ou au clavier.',
+            brawler_note='Satire : tous les personnages sont fictifs.', brawler_lang='(jeu en anglais)',
+            games_lead='En plus, Eve est aussi l’héroïne de jeux. Les trois sont gratuits et tournent dans ton navigateur comme sur ton téléphone.'),
+ 'de': dict(brawler_desc='Ein Gothic-Punk-Straßenprügler. Eve legt sich in 4 Levels mit Bankern, CEOs und verdächtig bekannten Politikern an. Kostenlos, mit Handy oder Tastatur.',
+            brawler_note='Satire — alle Figuren sind fiktiv.', brawler_lang='(Spiel auf Englisch)',
+            games_lead='Nebenbei ist Eve auch Heldin von Spielen. Alle drei sind kostenlos und laufen im Browser und auf dem Handy.'),
+})
+for _l in ('fr', 'de'): T[_l].update(BRAWLER_TXT[_l])
+_BR_SUB.update({'fr': 'beat’em up · nouveau jeu (en anglais)', 'de': 'Prügelspiel · neues Spiel (auf Englisch)'})
+for _l in ('fr', 'de'): LINKI[_l].update(brawler='Eve vs The Suits', brawler_sub=_BR_SUB[_l])
+
+# Gra karna na razie bez fr/de (Gry doda) — penalty_lang() daje en, więc w opisie adnotacja „po angielsku”; do usunięcia, gdy gra dostanie fr/de.
+PENALTY_TXT.update({
+ 'fr': dict(penalty_title='Eve : Reine des penaltys',
+            penalty_desc='Une séance de tirs au but. Je suis une attaquante gothique : cinq tirs, aucune pitié. Gratuit, dans le navigateur, sur téléphone ou au clavier.',
+            penalty_note='Clubs parodiques : tous les noms sont fictifs. (Jeu en anglais.)',
+            games_lead='En plus, Eve est aussi l’héroïne de jeux. Les quatre sont gratuits et tournent dans ton navigateur comme sur ton téléphone.'),
+ 'de': dict(penalty_title='Eve: Elfmeterkönigin',
+            penalty_desc='Ein Elfmeterschießen. Ich bin eine gotische Stürmerin: fünf Schüsse, keine Gnade. Kostenlos, im Browser — mit Handy oder Tastatur.',
+            penalty_note='Parodie-Clubs — alle Namen sind erfunden. (Spiel auf Englisch.)',
+            games_lead='Nebenbei ist Eve auch Heldin von Spielen. Alle vier sind kostenlos und laufen im Browser und auf dem Handy.'),
+})
+for _l in ('fr', 'de'): T[_l].update(PENALTY_TXT[_l])
+_PN_SUB.update({'fr': 'tirs au but · nouveau jeu (en anglais)', 'de': 'Elfmeterschießen · neues Spiel (auf Englisch)'})
+for _l in ('fr', 'de'): LINKI[_l].update(penalty=PENALTY_TXT[_l]['penalty_title'], penalty_sub=_PN_SUB[_l])
+
+_GSAVE.update({
+ 'fr': '💾 Progression sauvegardée · 📲 installe-le sur ton téléphone et joue hors ligne',
+ 'de': '💾 Fortschritt wird gespeichert · 📲 aufs Handy installieren und offline spielen',
+})
+for _l in ('fr', 'de'): T[_l]['gsave'] = _GSAVE[_l]

@@ -6,14 +6,14 @@
  • content/videos.json    — filmiki z panelu (przed filmikami z i18n.py VIDEOS) + assets/video/uploads/
  • content/home.json      — teksty strony głównej (kicker, deck, about, quote) nadpisujące i18n.py
  • content/theme.json     — wygląd strony: magazyn (domyślny) | neon | luksus | minimal | creator (css/themes/<nazwa>.css)
- • content/sessions/<slug>.json — nowe sesje zdjęciowe (/sesje/<slug>/ w 7 językach) + assets/img/uploads/sessions/<slug>/
+ • content/sessions/<slug>.json — nowe sesje zdjęciowe (/sesje/<slug>/ w 9 językach) + assets/img/uploads/sessions/<slug>/
 Zasada: błędny plik/wpis z panelu NIE wywraca builda — jest pomijany z ostrzeżeniem „UWAGA (content)”.
 Sprawdzenie bez budowania:  python3 scripts/content.py   (kod wyjścia 1 = są błędy)"""
 import os, re, sys, json, html, datetime
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 C = os.path.join(ROOT, 'content')
-LANGS = ['pl', 'en', 'es', 'pt', 'it', 'ja', 'zh']
+LANGS = ['pl', 'en', 'es', 'pt', 'it', 'ja', 'zh', 'fr', 'de']
 FALLBACK = ['en', 'pl']
 SLUG_RE = re.compile(r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
 UPLOAD_RE = re.compile(r'^assets/img/uploads/[a-z0-9/-]+\.webp$')

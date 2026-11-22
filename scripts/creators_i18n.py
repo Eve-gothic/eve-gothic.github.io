@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """Teksty podstrony „Dla twórców” (pl: /dla-tworcow/, inne: /<lang>/for-creators/) — usługa: strony-aplikacje dla twórców.
-Bez nazwy usługi i bez cen (18.11.2026). Kolejność `feats`: app, gry, komiksy, galeria+wideo, blog, 7 języków, powiadomienia, sponsorzy, raporty."""
+Bez nazwy usługi i bez cen (18.11.2026). Kolejność `feats`: app, gry, komiksy, galeria+wideo, blog, 9 języków, powiadomienia, sponsorzy, raporty."""
 
 CR = {
 'en': dict(
- title='Your own fan app, like this one — for creators', desc='A site your fans install on their phone like an app: games starring you, comics, gallery, videos and a blog in seven languages, with sponsor spots and reports for brands. No app stores.',
+ title='Your own fan app, like this one — for creators', desc='A site your fans install on their phone like an app: games starring you, comics, gallery, videos and a blog in nine languages, with sponsor spots and reports for brands. No app stores.',
  kicker='For creators', h1='Your own fan app. Like this one.',
- pitch='A site your fans install on their phone like an app — with games starring you, comics, your gallery, videos and a blog, in seven languages. No app stores. It’s yours, not the algorithm’s.',
+ pitch='A site your fans install on their phone like an app — with games starring you, comics, your gallery, videos and a blog, in nine languages. No app stores. It’s yours, not the algorithm’s.',
  cta='Ask about your app', cta2='See what it can do',
  feat_h='What you get', feats=[
   ('An app, without the app store', 'Fans tap “Install” on Android or “Add to Home Screen” on iPhone. Your icon sits right next to Instagram — and every visit still counts as traffic to your site.'),
@@ -14,7 +14,7 @@ CR = {
   ('Comics', 'Your stories told in panels, with a reader built for phones: scroll, zoom, read.'),
   ('Gallery and video', 'Photo shoots and short clips, presented like a magazine spread instead of lost in a feed.'),
   ('Blog', 'Posts that are truly yours, with an RSS feed and pages Google can find. Nothing disappears after 24 hours.'),
-  ('Seven languages', 'English, Polish, Spanish, Portuguese, Italian, Japanese and Chinese — so fans abroad feel at home.'),
+  ('Nine languages', 'English, Polish, Spanish, Portuguese, Italian, Japanese, Chinese, French and German — so fans abroad feel at home.'),
   ('Notifications', 'Fans who install the app can get a ping whenever you publish a new post, comic or shoot.'),
   ('Spots for your sponsors', 'Give the brands you already work with something new: a banner, their product inside a game or comic, a discount code as a game reward. Always clearly labelled “Partner” or “Ad”.'),
   ('Reports for brands', 'Simple numbers to show a sponsor: views, link clicks and game starts.'),
@@ -36,9 +36,9 @@ CR = {
  msg_ig='Message on Instagram', msg_fb='Message on Facebook', mail='Email us',
  foot_link='Want an app like this?', try_aria='Live examples on this site'),
 'pl': dict(
- title='Twoja własna aplikacja dla fanów, taka jak ta — dla twórców', desc='Strona, którą fani instalują na telefonie jak aplikację: gry z Tobą w roli głównej, komiksy, galeria, filmiki i blog w siedmiu językach, do tego miejsca dla sponsorów i raporty dla marek. Bez sklepów z aplikacjami.',
+ title='Twoja własna aplikacja dla fanów, taka jak ta — dla twórców', desc='Strona, którą fani instalują na telefonie jak aplikację: gry z Tobą w roli głównej, komiksy, galeria, filmiki i blog w dziewięciu językach, do tego miejsca dla sponsorów i raporty dla marek. Bez sklepów z aplikacjami.',
  kicker='Dla twórców', h1='Twoja własna aplikacja dla fanów. Taka jak ta.',
- pitch='Strona, którą fani instalują na telefonie jak aplikację: z grami, w których grasz główną rolę, komiksami, galerią, filmikami i blogiem — w siedmiu językach. Bez sklepów z aplikacjami. Twoja, a nie algorytmu.',
+ pitch='Strona, którą fani instalują na telefonie jak aplikację: z grami, w których grasz główną rolę, komiksami, galerią, filmikami i blogiem — w dziewięciu językach. Bez sklepów z aplikacjami. Twoja, a nie algorytmu.',
  cta='Zapytaj o swoją aplikację', cta2='Zobacz, co potrafi',
  feat_h='Co dostajesz', feats=[
   ('Aplikacja bez sklepu', 'Fani klikają „Zainstaluj” na Androidzie albo „Do ekranu początkowego” na iPhonie. Twoja ikona ląduje obok Instagrama, a każde wejście to nadal ruch na Twojej stronie.'),
@@ -46,7 +46,7 @@ CR = {
   ('Komiksy', 'Twoje historie w kadrach, z czytnikiem dopasowanym do telefonu: przewijasz, przybliżasz, czytasz.'),
   ('Galeria i filmiki', 'Sesje zdjęciowe i krótkie klipy podane jak w magazynie, a nie zgubione w feedzie.'),
   ('Blog', 'Własne wpisy z kanałem RSS i stronami, które znajdzie Google. Nic nie znika po 24 godzinach.'),
-  ('Siedem języków', 'Polski, angielski, hiszpański, portugalski, włoski, japoński i chiński — żeby fani z zagranicy czuli się jak u siebie.'),
+  ('Dziewięć języków', 'Polski, angielski, hiszpański, portugalski, włoski, japoński, chiński, francuski i niemiecki — żeby fani z zagranicy czuli się jak u siebie.'),
   ('Powiadomienia', 'Fani, którzy zainstalują aplikację, mogą dostać powiadomienie o nowym wpisie, komiksie albo sesji.'),
   ('Miejsca dla sponsorów', 'Daj markom, z którymi już współpracujesz, coś nowego: baner, ich produkt w grze lub komiksie, kod rabatowy jako nagrodę za wygraną. Zawsze z wyraźnym oznaczeniem „Partner” albo „Reklama”.'),
   ('Raporty dla marek', 'Proste liczby dla sponsora: wyświetlenia, kliknięcia w link i uruchomienia gry.'),
@@ -68,9 +68,9 @@ CR = {
  msg_ig='Napisz na Instagramie', msg_fb='Napisz na Facebooku', mail='Napisz e-mail',
  foot_link='Chcesz taką aplikację dla siebie?', try_aria='Działające przykłady na tej stronie'),
 'es': dict(
- title='Tu propia app para fans, como esta — para creadores', desc='Una web que tus fans instalan en el móvil como una app: juegos protagonizados por ti, cómics, galería, vídeos y blog en siete idiomas, con espacios para patrocinadores e informes para marcas. Sin tiendas de apps.',
+ title='Tu propia app para fans, como esta — para creadores', desc='Una web que tus fans instalan en el móvil como una app: juegos protagonizados por ti, cómics, galería, vídeos y blog en nueve idiomas, con espacios para patrocinadores e informes para marcas. Sin tiendas de apps.',
  kicker='Para creadores', h1='Tu propia app para fans. Como esta.',
- pitch='Una web que tus fans instalan en el móvil como una app, con juegos protagonizados por ti, cómics, galería, vídeos y blog, en siete idiomas. Sin tiendas de aplicaciones. Tuya, no del algoritmo.',
+ pitch='Una web que tus fans instalan en el móvil como una app, con juegos protagonizados por ti, cómics, galería, vídeos y blog, en nueve idiomas. Sin tiendas de aplicaciones. Tuya, no del algoritmo.',
  cta='Pregunta por tu app', cta2='Mira lo que puede hacer',
  feat_h='Qué incluye', feats=[
   ('Una app sin tienda de apps', 'Tus fans tocan «Instalar» en Android o «Añadir a pantalla de inicio» en iPhone. Tu icono queda junto a Instagram, y cada visita sigue contando como tráfico de tu web.'),
@@ -78,7 +78,7 @@ CR = {
   ('Cómics', 'Tus historias en viñetas, con un lector pensado para el móvil: desliza, amplía y lee.'),
   ('Galería y vídeos', 'Sesiones de fotos y clips cortos presentados como en una revista, no perdidos en un feed.'),
   ('Blog', 'Entradas que son tuyas de verdad, con RSS y páginas que Google puede encontrar. Nada desaparece a las 24 horas.'),
-  ('Siete idiomas', 'Español, inglés, polaco, portugués, italiano, japonés y chino, para que tus fans de fuera se sientan como en casa.'),
+  ('Nueve idiomas', 'Español, inglés, polaco, portugués, italiano, japonés, chino, francés y alemán, para que tus fans de fuera se sientan como en casa.'),
   ('Notificaciones', 'Quien instale la app puede recibir un aviso cada vez que publiques una entrada, un cómic o una sesión nueva.'),
   ('Espacios para tus patrocinadores', 'Ofrece algo nuevo a las marcas con las que ya trabajas: un banner, su producto dentro de un juego o un cómic, un código de descuento como premio. Siempre con la etiqueta «Partner» o «Publicidad» bien visible.'),
   ('Informes para marcas', 'Cifras sencillas para enseñar a un patrocinador: visualizaciones, clics en el enlace y partidas iniciadas.'),
@@ -100,9 +100,9 @@ CR = {
  msg_ig='Escribir por Instagram', msg_fb='Escribir por Facebook', mail='Enviar un email',
  foot_link='¿Quieres una app como esta?', try_aria='Ejemplos reales en esta web'),
 'pt': dict(
- title='Seu próprio app para fãs, igual a este — para criadores', desc='Um site que seus fãs instalam no celular como um app: jogos estrelados por você, quadrinhos, galeria, vídeos e blog em sete idiomas, com espaços para patrocinadores e relatórios para marcas. Sem lojas de apps.',
+ title='Seu próprio app para fãs, igual a este — para criadores', desc='Um site que seus fãs instalam no celular como um app: jogos estrelados por você, quadrinhos, galeria, vídeos e blog em nove idiomas, com espaços para patrocinadores e relatórios para marcas. Sem lojas de apps.',
  kicker='Para criadores', h1='Seu próprio app para fãs. Igual a este.',
- pitch='Um site que seus fãs instalam no celular como um app, com jogos estrelados por você, quadrinhos, galeria, vídeos e blog, em sete idiomas. Sem lojas de aplicativos. Seu, não do algoritmo.',
+ pitch='Um site que seus fãs instalam no celular como um app, com jogos estrelados por você, quadrinhos, galeria, vídeos e blog, em nove idiomas. Sem lojas de aplicativos. Seu, não do algoritmo.',
  cta='Pergunte sobre o seu app', cta2='Veja o que ele faz',
  feat_h='O que você recebe', feats=[
   ('Um app sem loja de apps', 'Os fãs tocam em “Instalar” no Android ou em “Adicionar à Tela de Início” no iPhone. Seu ícone fica ao lado do Instagram, e cada visita continua contando como tráfego do seu site.'),
@@ -110,7 +110,7 @@ CR = {
   ('Quadrinhos', 'Suas histórias em quadros, com um leitor feito para o celular: role, amplie e leia.'),
   ('Galeria e vídeos', 'Ensaios e vídeos curtos apresentados como numa revista, e não perdidos no feed.'),
   ('Blog', 'Posts que são realmente seus, com RSS e páginas que o Google encontra. Nada some depois de 24 horas.'),
-  ('Sete idiomas', 'Português, inglês, espanhol, polonês, italiano, japonês e chinês, para os fãs de fora se sentirem em casa.'),
+  ('Nove idiomas', 'Português, inglês, espanhol, polonês, italiano, japonês, chinês, francês e alemão, para os fãs de fora se sentirem em casa.'),
   ('Notificações', 'Quem instalar o app pode receber um aviso sempre que você publicar um post, quadrinho ou ensaio novo.'),
   ('Espaços para patrocinadores', 'Ofereça algo novo às marcas com quem você já trabalha: um banner, o produto delas dentro de um jogo ou quadrinho, um cupom de desconto como prêmio. Sempre com o selo “Parceiro” ou “Publicidade” bem visível.'),
   ('Relatórios para marcas', 'Números simples para mostrar ao patrocinador: visualizações, cliques no link e partidas iniciadas.'),
@@ -132,9 +132,9 @@ CR = {
  msg_ig='Mensagem no Instagram', msg_fb='Mensagem no Facebook', mail='Enviar e-mail',
  foot_link='Quer um app como este?', try_aria='Exemplos reais neste site'),
 'it': dict(
- title='La tua app per i fan, come questa — per creator', desc='Un sito che i tuoi fan installano sul telefono come un’app: giochi con te protagonista, fumetti, galleria, video e blog in sette lingue, con spazi per gli sponsor e report per i brand. Niente store.',
+ title='La tua app per i fan, come questa — per creator', desc='Un sito che i tuoi fan installano sul telefono come un’app: giochi con te protagonista, fumetti, galleria, video e blog in nove lingue, con spazi per gli sponsor e report per i brand. Niente store.',
  kicker='Per creator', h1='La tua app per i fan. Come questa.',
- pitch='Un sito che i tuoi fan installano sul telefono come un’app, con giochi in cui il protagonista sei tu, fumetti, galleria, video e blog, in sette lingue. Niente store. Ed è tuo, non dell’algoritmo.',
+ pitch='Un sito che i tuoi fan installano sul telefono come un’app, con giochi in cui il protagonista sei tu, fumetti, galleria, video e blog, in nove lingue. Niente store. Ed è tuo, non dell’algoritmo.',
  cta='Chiedi la tua app', cta2='Guarda cosa sa fare',
  feat_h='Cosa ottieni', feats=[
   ('Un’app senza store', 'I fan toccano «Installa» su Android o «Aggiungi alla schermata Home» su iPhone. La tua icona finisce accanto a Instagram, e ogni visita conta comunque come traffico del tuo sito.'),
@@ -142,7 +142,7 @@ CR = {
   ('Fumetti', 'Le tue storie a vignette, con un lettore pensato per il telefono: scorri, ingrandisci, leggi.'),
   ('Galleria e video', 'Shooting e clip brevi presentati come su una rivista, non persi nel feed.'),
   ('Blog', 'Post davvero tuoi, con feed RSS e pagine che Google trova. Niente sparisce dopo 24 ore.'),
-  ('Sette lingue', 'Italiano, inglese, spagnolo, portoghese, polacco, giapponese e cinese: così anche i fan all’estero si sentono a casa.'),
+  ('Nove lingue', 'Italiano, inglese, spagnolo, portoghese, polacco, giapponese, cinese, francese e tedesco: così anche i fan all’estero si sentono a casa.'),
   ('Notifiche', 'Chi installa l’app può ricevere un avviso ogni volta che pubblichi un nuovo post, fumetto o shooting.'),
   ('Spazi per gli sponsor', 'Offri qualcosa di nuovo ai brand con cui già collabori: un banner, il loro prodotto dentro un gioco o un fumetto, un codice sconto come premio. Sempre con l’etichetta «Partner» o «Pubblicità» ben visibile.'),
   ('Report per i brand', 'Numeri semplici da mostrare allo sponsor: visualizzazioni, clic sul link e partite avviate.'),
@@ -164,9 +164,9 @@ CR = {
  msg_ig='Scrivi su Instagram', msg_fb='Scrivi su Facebook', mail='Scrivici un’email',
  foot_link='Vuoi un’app come questa?', try_aria='Esempi reali su questo sito'),
 'ja': dict(
- title='あなただけのファンアプリを — クリエイターの方へ', desc='ファンがスマホにアプリのようにインストールできるサイト。あなたが主役のゲーム、コミック、ギャラリー、動画、ブログを7言語で。スポンサー枠とブランド向けレポート付き。アプリストアは不要です。',
+ title='あなただけのファンアプリを — クリエイターの方へ', desc='ファンがスマホにアプリのようにインストールできるサイト。あなたが主役のゲーム、コミック、ギャラリー、動画、ブログを9言語で。スポンサー枠とブランド向けレポート付き。アプリストアは不要です。',
  kicker='クリエイターの方へ', h1='あなただけのファンアプリを。このサイトのように。',
- pitch='ファンがスマホにアプリのようにインストールできるサイト。あなたが主役のゲーム、コミック、ギャラリー、動画、ブログを7言語で。アプリストアは不要。アルゴリズムではなく、あなたのための場所です。',
+ pitch='ファンがスマホにアプリのようにインストールできるサイト。あなたが主役のゲーム、コミック、ギャラリー、動画、ブログを9言語で。アプリストアは不要。アルゴリズムではなく、あなたのための場所です。',
  cta='アプリについて問い合わせる', cta2='できることを見る',
  feat_h='できること', feats=[
   ('ストア不要のアプリ', 'Androidでは「インストール」、iPhoneでは「ホーム画面に追加」をタップするだけ。Instagramの隣にあなたのアイコンが並び、アクセスはすべてあなたのサイトへの訪問としてカウントされます。'),
@@ -174,7 +174,7 @@ CR = {
   ('コミック', 'あなたのストーリーをコマ割りで。スマホ向けのリーダーで、スクロールも拡大も快適です。'),
   ('ギャラリーと動画', '撮影写真やショート動画を、フィードに埋もれさせず、雑誌のように見せられます。'),
   ('ブログ', 'RSSに対応し、Googleにも見つけてもらえるあなた自身の記事。24時間で消えることはありません。'),
-  ('7つの言語', '日本語、英語、スペイン語、ポルトガル語、イタリア語、ポーランド語、中国語に対応。海外のファンにも届きます。'),
+  ('9つの言語', '日本語、英語、スペイン語、ポルトガル語、イタリア語、ポーランド語、中国語、フランス語、ドイツ語に対応。海外のファンにも届きます。'),
   ('プッシュ通知', 'アプリを入れたファンに、新しい記事やコミック、写真の公開をお知らせできます。'),
   ('スポンサー枠', 'すでに提携しているブランドに新しい提案を。バナー、ゲームやコミックへの商品登場、ゲームの報酬としての割引コードなど。必ず「PR」または「パートナー」と明記します。'),
   ('ブランド向けレポート', 'スポンサーに見せられるシンプルな数字：表示回数、リンクのクリック数、ゲームの起動回数。'),
@@ -196,9 +196,9 @@ CR = {
  msg_ig='Instagramでメッセージ', msg_fb='Facebookでメッセージ', mail='メールで問い合わせ',
  foot_link='こんなアプリが欲しい方へ', try_aria='このサイトで動く実例'),
 'zh': dict(
- title='属于你的粉丝 App，就像这个 — 致创作者', desc='一个粉丝可以像 App 一样安装到手机上的网站：由你主演的小游戏、漫画、相册、视频和博客，支持七种语言，还有赞助位和品牌数据报告。无需应用商店。',
+ title='属于你的粉丝 App，就像这个 — 致创作者', desc='一个粉丝可以像 App 一样安装到手机上的网站：由你主演的小游戏、漫画、相册、视频和博客，支持九种语言，还有赞助位和品牌数据报告。无需应用商店。',
  kicker='致创作者', h1='属于你的粉丝 App，就像这个。',
- pitch='一个粉丝可以像 App 一样安装到手机上的网站：由你主演的小游戏、漫画、相册、视频和博客，支持七种语言。无需应用商店。它属于你，而不是算法。',
+ pitch='一个粉丝可以像 App 一样安装到手机上的网站：由你主演的小游戏、漫画、相册、视频和博客，支持九种语言。无需应用商店。它属于你，而不是算法。',
  cta='咨询你的专属 App', cta2='看看它能做什么',
  feat_h='你将获得', feats=[
   ('无需应用商店的 App', '安卓用户点“安装”，iPhone 用户点“添加到主屏幕”即可。你的图标就在 Instagram 旁边，而每一次打开仍然算作你网站的访问量。'),
@@ -206,7 +206,7 @@ CR = {
   ('漫画', '用分镜讲述你的故事，配有专为手机设计的阅读器：滑动、放大、阅读。'),
   ('相册与视频', '写真和短视频像杂志一样呈现，而不是淹没在信息流里。'),
   ('博客', '真正属于你的文章，带 RSS，能被 Google 搜到，不会 24 小时后消失。'),
-  ('七种语言', '中文、英语、西班牙语、葡萄牙语、意大利语、日语和波兰语，让海外粉丝也有宾至如归的感觉。'),
+  ('九种语言', '中文、英语、西班牙语、葡萄牙语、意大利语、日语、波兰语、法语和德语，让海外粉丝也有宾至如归的感觉。'),
   ('推送通知', '安装了 App 的粉丝，可以在你发布新文章、新漫画或新写真时收到提醒。'),
   ('赞助位', '为已经合作的品牌提供新玩法：横幅、在游戏或漫画中植入产品、把优惠码作为游戏奖励。所有内容都会清楚标注“合作”或“广告”。'),
   ('品牌数据报告', '给赞助商看的简单数据：浏览量、链接点击量和游戏启动次数。'),
@@ -228,3 +228,69 @@ CR = {
  msg_ig='在 Instagram 上发消息', msg_fb='在 Facebook 上发消息', mail='发送邮件',
  foot_link='想要一个这样的 App 吗？', try_aria='本站上的真实示例'),
 }
+
+CR['fr'] = dict(
+ title='Ta propre appli de fans, comme celle-ci — pour les créateurs', desc='Un site que tes fans installent sur leur téléphone comme une appli : des jeux dont tu es la star, des BD, une galerie, des vidéos et un blog en neuf langues, avec des emplacements pour les sponsors et des rapports pour les marques. Sans magasin d’applis.',
+ kicker='Pour les créateurs', h1='Ta propre appli de fans. Comme celle-ci.',
+ pitch='Un site que tes fans installent sur leur téléphone comme une appli — avec des jeux dont tu es la star, des BD, ta galerie, des vidéos et un blog, en neuf langues. Sans magasin d’applis. C’est à toi, pas à l’algorithme.',
+ cta='Demander ton appli', cta2='Voir ce qu’elle sait faire',
+ feat_h='Ce que tu obtiens', feats=[
+  ('Une appli sans magasin d’applis', 'Tes fans touchent « Installer » sur Android ou « Sur l’écran d’accueil » sur iPhone. Ton icône se range à côté d’Instagram — et chaque visite reste du trafic vers ton site.'),
+  ('Des jeux dont tu es la star', 'De courts jeux mobiles avec ton propre personnage, tes tenues et tes couleurs. Ils sauvegardent la progression et fonctionnent aussi hors ligne.'),
+  ('Des BD', 'Tes histoires en cases, avec un lecteur pensé pour le téléphone : on fait défiler, on zoome, on lit.'),
+  ('Galerie et vidéo', 'Des shootings photo et de courts clips présentés comme dans un magazine, plutôt que perdus dans un fil d’actu.'),
+  ('Blog', 'Des articles bien à toi, avec un flux RSS et des pages que Google peut trouver. Rien ne disparaît au bout de 24 heures.'),
+  ('Neuf langues', 'Anglais, polonais, espagnol, portugais, italien, japonais, chinois, français et allemand — pour que tes fans à l’étranger se sentent chez eux.'),
+  ('Notifications', 'Les fans qui installent l’appli peuvent recevoir une alerte dès que tu publies un nouvel article, une BD ou un shooting.'),
+  ('Des places pour tes sponsors', 'Offre aux marques avec lesquelles tu travailles déjà quelque chose de nouveau : une bannière, leur produit dans un jeu ou une BD, un code promo comme récompense de jeu. Toujours clairement signalé « Partenaire » ou « Pub ».'),
+  ('Des rapports pour les marques', 'Des chiffres simples à montrer à un sponsor : vues, clics sur les liens et parties lancées.'),
+ ],
+ try_h='Essaie maintenant', try_lead='Ce site est la démo. Tout ce qui suit fonctionne vraiment — ouvre-le sur ton téléphone et vois par toi-même.',
+ try_gal='La galerie', try_gal_sub='Des shootings photo, façon magazine', try_comic='BD : Eve vs The Suits', try_comic_sub='Un lecteur de BD pour téléphone (en anglais)', try_game='Jeu', try_game_sub='Se joue dans le navigateur, sans téléchargement',
+ how_h='Comment ça marche', steps=[
+  ('Tu envoies tes photos et ton style', 'Des photos ou des illustrations, tes couleurs, les marques avec lesquelles tu travailles, et ce que tu aimerais que tes fans jouent et lisent.'),
+  ('On construit ton appli', 'Le site, des jeux avec ton personnage, des BD et des places pour les sponsors — réglés et testés sur de vrais téléphones.'),
+  ('Tu partages le lien', 'Tu le mets dans ta bio, tu regardes tes fans l’installer, et tu reçois un rapport simple à montrer à tes sponsors.'),
+ ],
+ notes_h='Bon à savoir', notes=[
+  'Les jeux et les contenus qu’un fan a déjà ouverts continuent de fonctionner hors ligne.',
+  'Les notifications fonctionnent sur Android. Sur iPhone, il faut iOS 16.4 ou plus récent, et l’appli doit d’abord être ajoutée à l’écran d’accueil.',
+  'Nous n’utilisons que des photos et des images dont tu détiens les droits, et chaque contenu sponsorisé est clairement signalé.',
+  'Eve est un personnage IA. Ton appli, elle, est construite autour de toi.',
+ ],
+ contact_h='Envie de la tienne ?', contact_lead='Écris-nous un e-mail ou envoie un message à Eve sur Instagram ou Facebook. Parle-nous un peu de ton profil et nous te répondrons avec des idées et un devis.',
+ msg_ig='Écrire sur Instagram', msg_fb='Écrire sur Facebook', mail='Nous écrire un e-mail',
+ foot_link='Envie d’une appli comme celle-ci ?', try_aria='Exemples en direct sur ce site')
+
+CR['de'] = dict(
+ title='Deine eigene Fan-App, so wie diese — für Creator', desc='Eine Website, die deine Fans wie eine App auf dem Handy installieren: Spiele mit dir in der Hauptrolle, Comics, Galerie, Videos und ein Blog in neun Sprachen, dazu Platz für Sponsoren und Berichte für Marken. Ohne App-Stores.',
+ kicker='Für Creator', h1='Deine eigene Fan-App. So wie diese.',
+ pitch='Eine Website, die deine Fans wie eine App auf dem Handy installieren — mit Spielen, in denen du die Hauptrolle spielst, Comics, deiner Galerie, Videos und einem Blog, in neun Sprachen. Ohne App-Stores. Sie gehört dir, nicht dem Algorithmus.',
+ cta='Nach deiner App fragen', cta2='Sieh, was sie kann',
+ feat_h='Das bekommst du', feats=[
+  ('Eine App ohne App-Store', 'Deine Fans tippen auf Android auf „Installieren“, auf dem iPhone auf „Zum Home-Bildschirm“. Dein Icon landet direkt neben Instagram — und jeder Besuch zählt weiter als Traffic auf deiner Website.'),
+  ('Spiele mit dir in der Hauptrolle', 'Kurze Handyspiele mit deiner eigenen Figur, deinen Outfits und Farben. Sie speichern den Fortschritt und laufen auch offline.'),
+  ('Comics', 'Deine Geschichten in Panels, mit einem Reader für das Handy: scrollen, zoomen, lesen.'),
+  ('Galerie und Video', 'Fotoshootings und kurze Clips, präsentiert wie in einem Magazin statt verloren im Feed.'),
+  ('Blog', 'Beiträge, die wirklich dir gehören, mit RSS-Feed und Seiten, die Google findet. Nichts verschwindet nach 24 Stunden.'),
+  ('Neun Sprachen', 'Englisch, Polnisch, Spanisch, Portugiesisch, Italienisch, Japanisch, Chinesisch, Französisch und Deutsch — damit sich Fans im Ausland zu Hause fühlen.'),
+  ('Benachrichtigungen', 'Fans, die die App installieren, können eine Nachricht bekommen, sobald du einen neuen Beitrag, Comic oder ein neues Shooting veröffentlichst.'),
+  ('Platz für deine Sponsoren', 'Gib den Marken, mit denen du schon arbeitest, etwas Neues: ein Banner, ihr Produkt in einem Spiel oder Comic, einen Rabattcode als Spielbelohnung. Immer klar als „Partner“ oder „Werbung“ gekennzeichnet.'),
+  ('Berichte für Marken', 'Einfache Zahlen für Sponsoren: Aufrufe, Link-Klicks und Spielstarts.'),
+ ],
+ try_h='Jetzt ausprobieren', try_lead='Diese Website ist die Demo. Alles unten funktioniert wirklich — öffne sie auf dem Handy und überzeuge dich selbst.',
+ try_gal='Die Galerie', try_gal_sub='Fotoshootings im Magazinstil', try_comic='Comic: Eve vs The Suits', try_comic_sub='Ein handytauglicher Comic-Reader (auf Englisch)', try_game='Spiel', try_game_sub='Läuft im Browser, ohne Download',
+ how_h='So funktioniert es', steps=[
+  ('Du schickst deine Fotos und deinen Stil', 'Fotos oder Illustrationen, deine Farben, die Marken, mit denen du arbeitest, und was deine Fans spielen und lesen sollen.'),
+  ('Wir bauen deine App', 'Die Website, Spiele mit deiner Figur, Comics und Platz für Sponsoren — eingerichtet und auf echten Handys getestet.'),
+  ('Du teilst den Link', 'Du packst ihn in deine Bio, siehst zu, wie Fans die App installieren, und bekommst einen einfachen Bericht für deine Sponsoren.'),
+ ],
+ notes_h='Gut zu wissen', notes=[
+  'Spiele und Inhalte, die ein Fan schon geöffnet hat, funktionieren auch offline weiter.',
+  'Benachrichtigungen funktionieren auf Android. Auf dem iPhone brauchst du iOS 16.4 oder neuer, und die App muss zuerst zum Home-Bildschirm hinzugefügt werden.',
+  'Wir verwenden nur Fotos und Abbildungen, an denen du die Rechte hast, und jeder gesponserte Inhalt ist deutlich gekennzeichnet.',
+  'Eve ist eine KI-Figur. Deine App wird rund um dich gebaut.',
+ ],
+ contact_h='Willst du auch eine?', contact_lead='Schreib uns eine E-Mail oder eine Nachricht an Eve auf Instagram oder Facebook. Erzähl uns kurz etwas über dein Profil, und wir melden uns mit Ideen und einem Angebot.',
+ msg_ig='Nachricht auf Instagram', msg_fb='Nachricht auf Facebook', mail='E-Mail schreiben',
+ foot_link='Willst du so eine App?', try_aria='Live-Beispiele auf dieser Website')

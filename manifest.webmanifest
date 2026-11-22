@@ -2,7 +2,7 @@
  "id": "/",
  "name": "Eve",
  "short_name": "Eve",
- "description": "Eve — gotycka muza AI: blog, komiksy, gry, galeria. Blog, comics, games and gallery in 7 languages.",
+ "description": "Eve — gotycka muza AI: blog, komiksy, gry, galeria. Blog, comics, games and gallery in 9 languages.",
  "lang": "pl",
  "dir": "ltr",
  "start_url": "./?source=pwa",

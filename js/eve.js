@@ -1,5 +1,5 @@
 /* Eve — wspólne skrypty: lightbox, osadzanie gier, wideo, menu (kopia warianty/shared.js + etykiety i18n) */
-const EVE_L={pl:['Zamknij','Poprzednie','Następne'],en:['Close','Previous','Next'],es:['Cerrar','Anterior','Siguiente'],pt:['Fechar','Anterior','Próxima'],it:['Chiudi','Precedente','Successiva'],ja:['閉じる','前へ','次へ'],zh:['关闭','上一张','下一张']}[(document.documentElement.lang||'pl').slice(0,2)]||['Zamknij','Poprzednie','Następne'];
+const EVE_L={pl:['Zamknij','Poprzednie','Następne'],en:['Close','Previous','Next'],es:['Cerrar','Anterior','Siguiente'],pt:['Fechar','Anterior','Próxima'],it:['Chiudi','Precedente','Successiva'],ja:['閉じる','前へ','次へ'],zh:['关闭','上一张','下一张'],fr:['Fermer','Précédent','Suivant'],de:['Schließen','Zurück','Weiter']}[(document.documentElement.lang||'pl').slice(0,2)]||['Zamknij','Poprzednie','Następne'];
 (()=>{
 const y=document.getElementById('y');if(y)y.textContent=new Date().getFullYear();
 const burger=document.querySelector('[data-burger]'),menu=document.querySelector('[data-menu]');

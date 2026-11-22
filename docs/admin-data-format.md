@@ -25,7 +25,7 @@ Błędny wpis/zdjęcie **nie wywraca** builda: jest pomijany z ostrzeżeniem, re
 ## Wspólne zasady
 
 - **JSON**: UTF-8, bez BOM, `ensure_ascii=false` (polskie znaki wprost), wcięcie dowolne. Klucze zaczynające się od `_` (np. `_info`) build ignoruje — nie usuwaj ich.
-- **Języki**: `pl, en, es, pt, it, ja, zh`. Pola tekstowe tłumaczone to obiekty `{"pl": "…", "en": "…"}`. Panel v1 wypełnia **tylko `pl`**. Brakujący język → build bierze `en`, potem `pl`. Tłumaczenia dopisze później bot Strona (te same pliki, kolejne klucze języków) — panel **nie może kasować** istniejących kluczy języków przy edycji.
+- **Języki**: `pl, en, es, pt, it, ja, zh, fr, de` (fr i de dodane 22.11.2026; lista żyje w `scripts/content.py` → `LANGS`, a reszta w `scripts/i18n.py`). Kody w danych to dokładnie te klucze (`fr`, `de`), a nie kody HTML. Pola tekstowe tłumaczone to obiekty `{"pl": "…", "en": "…"}`. Panel v1 wypełnia **tylko `pl`**. Brakujący język → build bierze `en`, potem `pl`. Tłumaczenia dopisze później bot Strona (te same pliki, kolejne klucze języków) — panel **nie może kasować** istniejących kluczy języków przy edycji.
 - **id / slug**: `^[a-z0-9]+(-[a-z0-9]+)*$` (małe litery bez polskich znaków, cyfry, myślniki). Transliteracja: ą→a, ć→c, ę→e, ł→l, ń→n, ó→o, ś→s, ź/ż→z.
 - **Obrazki**: zawsze WebP, zawsze **nowa nazwa pliku** (z datą) — nigdy nie nadpisuj istniejącego pliku (aplikacja trzyma obrazki w pamięci offline; nowa nazwa = brak starej wersji w cache). Ścieżki w JSON są względem korzenia repo i zaczynają się od `assets/` (bez `/` na początku, bez `..`).
 - **Treść**: strona jest dla każdego wieku — tylko zdjęcia „safe”. Panel nie powinien pozwalać na nic innego (to do opisania w UI).
@@ -56,7 +56,7 @@ Błędny wpis/zdjęcie **nie wywraca** builda: jest pomijany z ostrzeżeniem, re
 }
 ```
 
-- **Panel dodaje nowe zdjęcie na POCZĄTEK `grid`** (najnowsze pierwsze). Kolejność w pliku = kolejność na stronie (sekcja „Nowa sesja” na stronie głównej, we wszystkich 7 językach).
+- **Panel dodaje nowe zdjęcie na POCZĄTEK `grid`** (najnowsze pierwsze). Kolejność w pliku = kolejność na stronie (sekcja „Nowa sesja” na stronie głównej, we wszystkich 9 językach).
 - `spread` (pierwsza rozkładówka, 12 zdjęć w stałym układzie) — tylko do odczytu dla panelu.
 - Pola `grid[]`:
 
@@ -156,7 +156,7 @@ Błędny wpis/zdjęcie **nie wywraca** builda: jest pomijany z ostrzeżeniem, re
 }
 ```
 
-- **Nowe pozycje na POCZĄTEK `items`.** Na stronie głównej (sekcja „Filmiki”, `#filmiki`, 7 języków) najpierw idą filmiki z `items` (bez `hidden`), potem dotychczasowe z `scripts/i18n.py` (`VIDEOS`). Numeracja „Kadr NN” jest ciągła.
+- **Nowe pozycje na POCZĄTEK `items`.** Na stronie głównej (sekcja „Filmiki”, `#filmiki`, 9 języków) najpierw idą filmiki z `items` (bez `hidden`), potem dotychczasowe z `scripts/i18n.py` (`VIDEOS`). Numeracja „Kadr NN” jest ciągła.
 - Pola: `id` (slug, unikalny, wymagane) · `mp4` (wymagane) · `poster` (zalecane; brak → film bez okładki) · `w`, `h` (domyślnie 720×1280; atrybuty `<video>`, 16–4096) · `duration` (sekundy, informacyjne; jeśli podane: > 0 i ≤ 20) · `title` (wymagane, `{"pl": …}`; brak języka → `en`, potem `pl`) · `alt`, `added`, `source` (informacyjne; `alt` build na razie nie wypisuje) · `hidden: true` (= ukryj, tak robi „Usuń”).
 - **Plik wideo**: tylko **H.264 MP4, bez dźwięku, ≤ 20 s, ≤ 4 MB** (4 194 304 B). Okładka: **WebP ≤ 120 KB**, ta sama proporcja co film. WebM nie jest potrzebny (strona dla filmów z panelu nie dodaje `<source webm>`).
 - Ścieżki: dokładnie `^assets/video/uploads/[a-z0-9-]+\.(mp4|webp)$` (mp4 → `.mp4`, poster → `.webp`), zawsze **nowa nazwa** pliku (z datą), nigdy nadpisanie.
@@ -176,7 +176,7 @@ Błędny wpis/zdjęcie **nie wywraca** builda: jest pomijany z ostrzeżeniem, re
          "about": "Jestem Eve — **gotycka modelka i influencerka wygenerowana przez AI**. …",
          "quote": "„Czerń nigdy nie wychodzi z mody. Ja też nie.”"}
  },
- "needs_translation": ["en", "es", "pt", "it", "ja", "zh"],
+ "needs_translation": ["en", "es", "pt", "it", "ja", "zh", "fr", "de"],
  "updated": "2026-11-20", "source": "panel"
 }
 ```
@@ -204,7 +204,7 @@ Błędny wpis/zdjęcie **nie wywraca** builda: jest pomijany z ostrzeżeniem, re
 
 - Brak pliku albo nieznana wartość → `magazyn` (nieznana wartość daje ostrzeżenie). Dla `magazyn` HTML jest **bajt w bajt taki jak bez tego pliku**.
 - Dla innej wartości build dodaje na **wszystkich stronach z własnym `<head>`** (strona główna, blog, wpisy, komiksy, sesje, dla twórców, /linki/): `<html … data-theme="<motyw>">`, linki do fontów motywu i `<link rel="stylesheet" href="…/css/themes/<motyw>.css">` po `css/eve.css`. Dla `magazyn` **nie ma** atrybutu `data-theme` (odstępstwo od pierwotnej prośby — inaczej wynik nie byłby identyczny; panel czyta motyw z `theme.json`, nie z HTML).
-- Skórki to **sam CSS** na istniejącym HTML (te same klasy) — blog, komiksy, gry, 7 języków i PWA działają bez zmian. `offline.html` ma własny, wbudowany styl i nie zmienia wyglądu; paski/okna apki (instalacja, powiadomienia) mają własne style. Skórka jest też w pamięci offline apki (sw.js dodaje `css/themes/<motyw>.css` do app shell).
+- Skórki to **sam CSS** na istniejącym HTML (te same klasy) — blog, komiksy, gry, 9 języków i PWA działają bez zmian. `offline.html` ma własny, wbudowany styl i nie zmienia wyglądu; paski/okna apki (instalacja, powiadomienia) mają własne style. Skórka jest też w pamięci offline apki (sw.js dodaje `css/themes/<motyw>.css` do app shell).
 - Wszystkie 4 skórki są **gotowe** (panel może zdjąć „projekt poglądowy”). Pliki `css/themes/*.css` są generowane przez `python3 scripts/make_themes.py` z `css/eve.css` + `scripts/themes/<motyw>.css` — Worker ich nie dotyka.
 - Zmiana motywu = zmiana `theme.json` (jeden commit); po buildzie zmienia się wygląd całej strony.
 
@@ -254,7 +254,7 @@ Osobna podstrona z kilkoma–kilkunastoma zdjęciami (jak istniejąca „Czerń 
 
 - **Ścieżki obrazków**: dokładnie `^assets/img/uploads/sessions/<a-z0-9->/<a-z0-9->.webp$` (pierwszy człon = folder sesji; zalecane `<slug>`; pliki `NN.webp` i `NN-thumb.webp`), zawsze **nowa nazwa** (nie nadpisuj istniejącego pliku — zob. „Wspólne zasady”). Bez `/` na początku i bez `..`.
 - **Kolejność zapisu**: **jeden commit** z wszystkimi zdjęciami i miniaturami **oraz** plikiem JSON (Git Data API: bloby → drzewo → commit → ref, jak w pkt 8). Wiele zdjęć naraz = jeden commit. Nie commituj JSON-a wcześniej niż zdjęć (w jednym commicie kolejność nie ma znaczenia).
-- **Co buduje build** dla każdej sesji, we wszystkich 7 językach (adres jak `czern`: `/sesje/<slug>/`, `/en/sesje/<slug>/`, `/es/…`, `/pt/…`, `/it/…`, `/ja/…`, `/zh/…`): stronę z siatką 4 kolumny (2 na telefonie) i powiększaniem po kliknięciu, `canonical` + `hreflang`, `og:image` `og/sesja-<slug>-<język>.jpg` (okładka + tytuł; generowany przez build), wpis w `sitemap.xml`, `pwa_head`, blok „Obserwuj Eve” i zajawkę na stronie głównej. Aplikacja offline: zdjęcia trafiają do pamięci podręcznej przy pierwszym obejrzeniu (jak zdjęcia sesji `czern`; nie są w paczce startowej).
+- **Co buduje build** dla każdej sesji, we wszystkich 9 językach (adres jak `czern`: `/sesje/<slug>/`, `/en/sesje/<slug>/`, `/es/…`, `/pt/…`, `/it/…`, `/ja/…`, `/zh/…`, `/fr/…`, `/de/…`): stronę z siatką 4 kolumny (2 na telefonie) i powiększaniem po kliknięciu, `canonical` + `hreflang`, `og:image` `og/sesja-<slug>-<język>.jpg` (okładka + tytuł; generowany przez build), wpis w `sitemap.xml`, `pwa_head`, blok „Obserwuj Eve” i zajawkę na stronie głównej. Aplikacja offline: zdjęcia trafiają do pamięci podręcznej przy pierwszym obejrzeniu (jak zdjęcia sesji `czern`; nie są w paczce startowej).
 - **Błędy** (nie wywracają builda; `python3 scripts/content.py` pokazuje je jako `UWAGA (content): …`, kod wyjścia 1): zły/zepsuty JSON, slug ≠ nazwa pliku / zły znak / `czern`, brak `title`, zła data `added`, brak `photos` → **cała sesja pominięta**. Zdjęcie z błędną ścieżką, brakujące, za duże, nie-WebP albo o wymiarach poza 200–4000 px → **pominięte samo zdjęcie** (sesja się publikuje z pozostałymi, jeśli zostało ≥ 1). Błędna `cover` → sesja pominięta.
 - Powiadomienie push: po tym, jak `https://eve-gothic.github.io/sesje/<slug>/` zwraca 200 (np. „Nowa sesja: <tytuł>”).
 - Strona jest dla każdego wieku — tylko zdjęcia „safe” (zob. „Wspólne zasady”).

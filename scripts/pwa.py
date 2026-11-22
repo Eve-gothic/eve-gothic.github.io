@@ -12,8 +12,8 @@ Powiadomienia push: Worker eve-push (/workspace/eve-push, prywatny). Przycisk �
 """
 import os, json, hashlib, html, shutil, subprocess
 
-LANGS = ['pl', 'en', 'es', 'pt', 'it', 'ja', 'zh']
-HTML_LANG = {'pl': 'pl', 'en': 'en', 'es': 'es', 'pt': 'pt-BR', 'it': 'it', 'ja': 'ja', 'zh': 'zh-Hans'}
+LANGS = ['pl', 'en', 'es', 'pt', 'it', 'ja', 'zh', 'fr', 'de']
+HTML_LANG = {'pl': 'pl', 'en': 'en', 'es': 'es', 'pt': 'pt-BR', 'it': 'it', 'ja': 'ja', 'zh': 'zh-Hans', 'fr': 'fr', 'de': 'de'}
 INK, GOLD, GOLD2, PAPER, BUR = '#0c0708', '#c9a35b', '#e8cf96', '#f3ece0', '#3a0b16'
 ICON_SRC = 'assets/img/eve-avatar.webp'   # portret SFW (twarz) — źródło ikon apki
 PWA_DIR = 'assets/pwa/'
@@ -41,6 +41,10 @@ TXT = {
             off_t='オフラインです', off='このページはまだアプリに保存されていません。一度開いたページはオフラインでも見られます。', retry='再読み込み', home='ホーム', games='ゲームはアプリで一度開くと、インターネットなしで遊べます。'),
  'zh': dict(push_t='Eve 的新消息', push='有新文章、漫画或游戏时第一时间通知你。', push_on='开启通知', push_ok='通知已开启。回头见！', install='安装 Eve 应用', sub='游戏、漫画和最新文章，从主屏幕直达。', ios_t='把 Eve 装成应用', ios='点击<b>分享</b> {share}，然后选择<b>“添加到主屏幕”</b>。', close='关闭',
             off_t='你已离线', off='此页面尚未保存到应用中。打开过的页面可以离线浏览。', retry='重试', home='首页', games='游戏在应用中打开过一次后，即可离线游玩。'),
+ 'fr': dict(push_t='Nouveautés d’Eve', push='Reçois une alerte quand un nouvel article, une BD ou un jeu sort.', push_on='Activer les notifications', push_ok='Notifications activées. À bientôt !', install='Installer l’appli d’Eve', sub='Jeux, BD et nouveaux articles directement depuis ton écran d’accueil.', ios_t='L’appli Eve', ios='Touche <b>Partager</b> {share}, puis <b>« Sur l’écran d’accueil »</b>.', close='Fermer',
+            off_t='Tu es hors ligne', off='Cette page n’est pas encore enregistrée dans l’appli. Les pages que tu as déjà ouvertes fonctionnent sans internet.', retry='Réessayer', home='Accueil', games='Les jeux fonctionnent sans internet une fois ouverts dans l’appli.'),
+ 'de': dict(push_t='Neues von Eve', push='Wir sagen dir Bescheid, wenn ein neuer Beitrag, Comic oder ein neues Spiel erscheint.', push_on='Benachrichtigungen aktivieren', push_ok='Benachrichtigungen sind aktiv. Bis bald!', install='Eve-App installieren', sub='Spiele, Comics und neue Beiträge direkt vom Home-Bildschirm.', ios_t='Eve als App', ios='Tippe auf <b>Teilen</b> {share} und dann auf <b>„Zum Home-Bildschirm“</b>.', close='Schließen',
+            off_t='Du bist offline', off='Diese Seite ist noch nicht in der App gespeichert. Seiten, die du schon geöffnet hast, funktionieren ohne Internet.', retry='Erneut versuchen', home='Startseite', games='Spiele funktionieren ohne Internet, sobald du sie einmal in der App geöffnet hast.'),
 }
 
 def pwa_head(r, lang):
@@ -126,7 +130,7 @@ def manifest(ROOT):
             shots.append({'src': PWA_DIR + f, 'sizes': '780x1688', 'type': 'image/webp', 'form_factor': 'narrow', 'label': lbl})
     m = {
         'id': '/', 'name': 'Eve', 'short_name': 'Eve',
-        'description': 'Eve — gotycka muza AI: blog, komiksy, gry, galeria. Blog, comics, games and gallery in 7 languages.',
+        'description': 'Eve — gotycka muza AI: blog, komiksy, gry, galeria. Blog, comics, games and gallery in 9 languages.',
         'lang': 'pl', 'dir': 'ltr', 'start_url': './?source=pwa', 'scope': './',
         'display': 'standalone', 'display_override': ['standalone', 'minimal-ui'], 'orientation': 'portrait',
         'background_color': INK, 'theme_color': INK, 'categories': ['entertainment', 'lifestyle', 'games'],
@@ -174,7 +178,7 @@ const MAX_PAGES = 60, MAX_IMGS = 150, MAX_FONTS = 40;
 const BASE = new URL('./', self.location).href;               // korzeń strony (scope)
 const REQUIRED = __REQUIRED__;                                 // app shell — musi się pobrać
 const OPTIONAL = __OPTIONAL__;                                 // mile widziane — 404 nie psuje instalacji
-const LANGS = ['en', 'es', 'pt', 'it', 'ja', 'zh'];
+const LANGS = ['en', 'es', 'pt', 'it', 'ja', 'zh', 'fr', 'de'];
 const u = p => new URL(p, BASE).href;
 const GAMES = new URL('gry/', BASE).pathname;                  // /gry/ — gry w apce (scripts/sync_games.sh)
 

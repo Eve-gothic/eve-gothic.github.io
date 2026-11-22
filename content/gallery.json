@@ -13,7 +13,9 @@
     "pt": "Retrato",
     "it": "Ritratto",
     "ja": "ポートレート",
-    "zh": "肖像"
+    "zh": "肖像",
+    "fr": "Portrait",
+    "de": "Porträt"
    }
   },
   {
@@ -27,7 +29,9 @@
     "pt": "Barista no Eve's Café",
     "it": "Barista all'Eve's Café",
     "ja": "Eve's Caféのバリスタ",
-    "zh": "Eve's Café 的咖啡师"
+    "zh": "Eve's Café 的咖啡师",
+    "fr": "Barista à l’Eve’s Café",
+    "de": "Barista im Eve’s Café"
    }
   },
   {
@@ -41,7 +45,9 @@
     "pt": "Londres chuvosa",
     "it": "Londra sotto la pioggia",
     "ja": "雨のロンドン",
-    "zh": "雨中伦敦"
+    "zh": "雨中伦敦",
+    "fr": "Londres sous la pluie",
+    "de": "Regnerisches London"
    }
   },
   {
@@ -55,7 +61,9 @@
     "pt": "Na biblioteca",
     "it": "In biblioteca",
     "ja": "図書館で",
-    "zh": "在图书馆"
+    "zh": "在图书馆",
+    "fr": "À la bibliothèque",
+    "de": "In der Bibliothek"
    }
   },
   {
@@ -69,7 +77,9 @@
     "pt": "Outono no parque",
     "it": "Autunno al parco",
     "ja": "秋の公園",
-    "zh": "秋日公园"
+    "zh": "秋日公园",
+    "fr": "Automne au parc",
+    "de": "Herbst im Park"
    }
   },
   {
@@ -83,7 +93,9 @@
     "pt": "Noite de games",
     "it": "Serata di giochi",
     "ja": "ゲームの夜",
-    "zh": "游戏之夜"
+    "zh": "游戏之夜",
+    "fr": "Soirée jeux",
+    "de": "Spieleabend"
    }
   },
   {
@@ -97,7 +109,9 @@
     "pt": "Sorriso",
     "it": "Sorriso",
     "ja": "笑顔",
-    "zh": "微笑"
+    "zh": "微笑",
+    "fr": "Sourire",
+    "de": "Lächeln"
    }
   },
   {
@@ -111,7 +125,9 @@
     "pt": "Por cima dos óculos",
     "it": "Da sopra gli occhiali",
     "ja": "サングラス越しに",
-    "zh": "从墨镜上方"
+    "zh": "从墨镜上方",
+    "fr": "Par-dessus les lunettes",
+    "de": "Über die Sonnenbrille hinweg"
    }
   },
   {
@@ -125,7 +141,9 @@
     "pt": "O olhar",
     "it": "Lo sguardo",
     "ja": "まなざし",
-    "zh": "凝视"
+    "zh": "凝视",
+    "fr": "Le regard",
+    "de": "Der Blick"
    }
   },
   {
@@ -139,7 +157,9 @@
     "pt": "Sorriso travesso",
     "it": "Sorriso birichino",
     "ja": "いたずらな笑み",
-    "zh": "坏笑"
+    "zh": "坏笑",
+    "fr": "Sourire espiègle",
+    "de": "Schelmisches Lächeln"
    }
   },
   {
@@ -153,7 +173,9 @@
     "pt": "Estilo gótico",
     "it": "Stile gotico",
     "ja": "ゴシックスタイル",
-    "zh": "哥特风格"
+    "zh": "哥特风格",
+    "fr": "Style gothique",
+    "de": "Gothic-Style"
    }
   },
   {
@@ -167,7 +189,9 @@
     "pt": "Não, não, não",
     "it": "No, no, no",
     "ja": "ダメ、ダメ、ダメ",
-    "zh": "不、不、不"
+    "zh": "不、不、不",
+    "fr": "Non, non, non",
+    "de": "Nein, nein, nein"
    }
   }
  ],
@@ -197,7 +221,9 @@
     "pt": "Rock de garagem",
     "it": "Rock da garage",
     "ja": "ガレージロック",
-    "zh": "车库摇滚"
+    "zh": "车库摇滚",
+    "fr": "Rock de garage",
+    "de": "Garagenrock"
    },
    "alt": {
     "pl": "Eve w kurtce z naszywkami gra na gitarze elektrycznej przy wzmacniaczu",
@@ -206,7 +232,9 @@
     "pt": "Eve de jaqueta com patches tocando guitarra elétrica ao lado de um amplificador",
     "it": "Eve con una giacca piena di toppe suona la chitarra elettrica accanto a un amplificatore",
     "ja": "ワッペン付きジャケットのEveが、アンプの横でエレキギターを弾いている",
-    "zh": "穿着贴布夹克的 Eve 在音箱旁弹电吉他"
+    "zh": "穿着贴布夹克的 Eve 在音箱旁弹电吉他",
+    "fr": "Eve en veste à écussons, à la guitare électrique près d’un ampli",
+    "de": "Eve in einer Jacke mit Patches spielt neben einem Verstärker E-Gitarre"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -224,7 +252,9 @@
     "pt": "Casaco de pelúcia",
     "it": "Cappotto teddy",
     "ja": "テディコート",
-    "zh": "泰迪大衣"
+    "zh": "泰迪大衣",
+    "fr": "Manteau en peluche",
+    "de": "Teddymantel"
    },
    "alt": {
     "pl": "Eve w kremowym pluszowym płaszczu przy stole w jesiennym parku",
@@ -233,7 +263,9 @@
     "pt": "Eve de casaco de pelúcia creme numa mesa de um parque no outono",
     "it": "Eve con un cappotto teddy color crema a un tavolo in un parco autunnale",
     "ja": "クリーム色のテディコートを着たEveが、秋の公園のテーブルにいる",
-    "zh": "穿奶油色泰迪大衣的 Eve 坐在秋日公园的桌边"
+    "zh": "穿奶油色泰迪大衣的 Eve 坐在秋日公园的桌边",
+    "fr": "Eve en manteau en peluche crème, à une table dans un parc en automne",
+    "de": "Eve im cremefarbenen Teddymantel an einem Tisch in einem herbstlichen Park"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -251,7 +283,9 @@
     "pt": "Enrolada no cachecol",
     "it": "Avvolta nella sciarpa",
     "ja": "マフラーにくるまって",
-    "zh": "裹着围巾"
+    "zh": "裹着围巾",
+    "fr": "Enroulée dans une écharpe",
+    "de": "In einen Schal gehüllt"
    },
    "alt": {
     "pl": "Eve otulona rudym szalem wśród jesiennych liści",
@@ -260,7 +294,9 @@
     "pt": "Eve enrolada num cachecol cor de ferrugem entre folhas de outono",
     "it": "Eve avvolta in una sciarpa color ruggine tra le foglie d’autunno",
     "ja": "秋の落ち葉の中、錆色のマフラーにくるまるEve",
-    "zh": "Eve 裹着铁锈色围巾，置身秋天的落叶中"
+    "zh": "Eve 裹着铁锈色围巾，置身秋天的落叶中",
+    "fr": "Eve enroulée dans une écharpe couleur rouille parmi les feuilles d’automne",
+    "de": "Eve in einen rostfarbenen Schal gehüllt zwischen Herbstlaub"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -278,7 +314,9 @@
     "pt": "Folha de bordo",
     "it": "Foglia d’acero",
     "ja": "カエデの葉",
-    "zh": "枫叶"
+    "zh": "枫叶",
+    "fr": "Feuille d’érable",
+    "de": "Ahornblatt"
    },
    "alt": {
     "pl": "Eve w czapce i swetrze zasłania jedno oko klonowym liściem",
@@ -287,7 +325,9 @@
     "pt": "Eve de gorro e suéter cobrindo um olho com uma folha de bordo",
     "it": "Eve con berretto e maglione si copre un occhio con una foglia d’acero",
     "ja": "ニット帽とセーター姿のEveが、カエデの葉で片目を隠している",
-    "zh": "戴毛线帽、穿毛衣的 Eve 用一片枫叶遮住一只眼睛"
+    "zh": "戴毛线帽、穿毛衣的 Eve 用一片枫叶遮住一只眼睛",
+    "fr": "Eve en bonnet et pull, un œil caché derrière une feuille d’érable",
+    "de": "Eve mit Mütze und Pullover verdeckt ein Auge mit einem Ahornblatt"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -305,7 +345,9 @@
     "pt": "Listras e grafite",
     "it": "Righe e graffiti",
     "ja": "ボーダーとグラフィティ",
-    "zh": "条纹与涂鸦"
+    "zh": "条纹与涂鸦",
+    "fr": "Rayures et graffitis",
+    "de": "Streifen und Graffiti"
    },
    "alt": {
     "pl": "Eve w koszulce i bluzce w paski przed kolorowym graffiti",
@@ -314,7 +356,9 @@
     "pt": "Eve de camiseta sobre blusa listrada diante de um grafite colorido",
     "it": "Eve con una T-shirt sopra una maglia a righe davanti a graffiti colorati",
     "ja": "ボーダーのトップスにTシャツを重ねたEveが、カラフルなグラフィティの前に立つ",
-    "zh": "T 恤叠穿条纹上衣的 Eve 站在彩色涂鸦前"
+    "zh": "T 恤叠穿条纹上衣的 Eve 站在彩色涂鸦前",
+    "fr": "Eve en T-shirt sur un haut rayé devant des graffitis colorés",
+    "de": "Eve im T-Shirt über einem Streifenoberteil vor buntem Graffiti"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -332,7 +376,9 @@
     "pt": "No microfone",
     "it": "Al microfono",
     "ja": "マイクの前で",
-    "zh": "麦克风前"
+    "zh": "麦克风前",
+    "fr": "Au micro",
+    "de": "Am Mikrofon"
    },
    "alt": {
     "pl": "Eve w skórzanej kurtce mówi do mikrofonu na statywie",
@@ -341,7 +387,9 @@
     "pt": "Eve de jaqueta de couro falando num microfone com pedestal",
     "it": "Eve con una giacca di pelle parla a un microfono con l’asta",
     "ja": "レザージャケットのEveが、スタンドマイクに向かって話している",
-    "zh": "穿皮夹克的 Eve 对着立式麦克风说话"
+    "zh": "穿皮夹克的 Eve 对着立式麦克风说话",
+    "fr": "Eve en blouson de cuir parle dans un micro sur pied",
+    "de": "Eve in Lederjacke spricht in ein Mikrofon auf einem Ständer"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -359,7 +407,9 @@
     "pt": "Na arquibancada",
     "it": "In tribuna",
     "ja": "スタンドにて",
-    "zh": "看台上"
+    "zh": "看台上",
+    "fr": "Dans les tribunes",
+    "de": "Auf der Tribüne"
    },
    "alt": {
     "pl": "Eve w czarnej kurtce na stadionie wśród kibiców i rac",
@@ -368,7 +418,9 @@
     "pt": "Eve de jaqueta preta num estádio entre torcedores e sinalizadores",
     "it": "Eve con una giacca nera in uno stadio tra tifosi e fumogeni",
     "ja": "黒いジャケットのEveが、サポーターと発煙筒に囲まれたスタジアムにいる",
-    "zh": "穿黑夹克的 Eve 在体育场里，周围是球迷和烟火"
+    "zh": "穿黑夹克的 Eve 在体育场里，周围是球迷和烟火",
+    "fr": "Eve en veste noire dans un stade, entourée de supporters et de fumigènes",
+    "de": "Eve in schwarzer Jacke in einem Stadion zwischen Fans und Bengalos"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -386,7 +438,9 @@
     "pt": "Gola alta em preto e branco",
     "it": "Dolcevita in bianco e nero",
     "ja": "モノクロのタートルネック",
-    "zh": "黑白高领"
+    "zh": "黑白高领",
+    "fr": "Col roulé noir et blanc",
+    "de": "Rollkragen in Schwarz-Weiß"
    },
    "alt": {
     "pl": "Czarno-biały portret Eve w czarnym golfie",
@@ -395,7 +449,9 @@
     "pt": "Retrato em preto e branco da Eve de gola alta preta",
     "it": "Ritratto in bianco e nero di Eve con un dolcevita nero",
     "ja": "黒のタートルネックを着たEveのモノクロポートレート",
-    "zh": "穿黑色高领毛衣的 Eve 黑白肖像"
+    "zh": "穿黑色高领毛衣的 Eve 黑白肖像",
+    "fr": "Portrait en noir et blanc d’Eve en col roulé noir",
+    "de": "Schwarz-Weiß-Porträt von Eve im schwarzen Rollkragenpullover"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -413,7 +469,9 @@
     "pt": "Gorro e cachecol",
     "it": "Berretto e sciarpa",
     "ja": "ニット帽とマフラー",
-    "zh": "毛线帽和围巾"
+    "zh": "毛线帽和围巾",
+    "fr": "Bonnet et écharpe",
+    "de": "Mütze und Schal"
    },
    "alt": {
     "pl": "Eve w kremowej czapce, szaliku i płaszczu jesienią",
@@ -422,7 +480,9 @@
     "pt": "Eve de gorro creme, cachecol e casaco no outono",
     "it": "Eve con berretto color crema, sciarpa e cappotto in autunno",
     "ja": "クリーム色のニット帽にマフラー、コート姿の秋のEve",
-    "zh": "秋天里戴奶油色毛线帽、围巾、穿大衣的 Eve"
+    "zh": "秋天里戴奶油色毛线帽、围巾、穿大衣的 Eve",
+    "fr": "Eve en bonnet crème, écharpe et manteau en automne",
+    "de": "Eve mit cremefarbener Mütze, Schal und Mantel im Herbst"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -440,7 +500,9 @@
     "pt": "Monocromático",
     "it": "Monocromo",
     "ja": "モノクローム",
-    "zh": "单色"
+    "zh": "单色",
+    "fr": "Monochrome",
+    "de": "Monochrom"
    },
    "alt": {
     "pl": "Czarno-biały portret Eve z bliska z kolczykami",
@@ -449,7 +511,9 @@
     "pt": "Close em preto e branco da Eve com seus piercings",
     "it": "Primo piano in bianco e nero di Eve con i suoi piercing",
     "ja": "ピアスが映えるEveのモノクロのクローズアップ",
-    "zh": "Eve 的黑白特写，能看到她的穿孔"
+    "zh": "Eve 的黑白特写，能看到她的穿孔",
+    "fr": "Gros plan en noir et blanc d’Eve avec ses piercings",
+    "de": "Schwarz-Weiß-Nahaufnahme von Eve mit ihren Piercings"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -467,7 +531,9 @@
     "pt": "Noir",
     "it": "Noir",
     "ja": "ノワール",
-    "zh": "黑色电影"
+    "zh": "黑色电影",
+    "fr": "Noir",
+    "de": "Noir"
    },
    "alt": {
     "pl": "Eve w czarnym golfie na ciemnoniebieskim tle",
@@ -476,7 +542,9 @@
     "pt": "Eve de gola alta preta sobre fundo azul-escuro",
     "it": "Eve con un dolcevita nero su sfondo blu scuro",
     "ja": "濃紺の背景に黒のタートルネック姿のEve",
-    "zh": "深蓝背景前穿黑色高领毛衣的 Eve"
+    "zh": "深蓝背景前穿黑色高领毛衣的 Eve",
+    "fr": "Eve en col roulé noir sur fond bleu nuit",
+    "de": "Eve im schwarzen Rollkragenpullover vor dunkelblauem Hintergrund"
    },
    "added": "2026-11-05",
    "source": "bot"
@@ -494,7 +562,9 @@
     "pt": "O chapéu",
     "it": "Il cappello",
     "ja": "帽子",
-    "zh": "帽子"
+    "zh": "帽子",
+    "fr": "Le chapeau",
+    "de": "Der Hut"
    },
    "alt": {
     "pl": "Czarno-biały profil Eve w kapeluszu z szerokim rondem",
@@ -503,7 +573,9 @@
     "pt": "Perfil em preto e branco da Eve com chapéu de aba larga",
     "it": "Profilo in bianco e nero di Eve con un cappello a tesa larga",
     "ja": "つば広帽をかぶったEveのモノクロの横顔",
-    "zh": "戴宽檐帽的 Eve 黑白侧脸"
+    "zh": "戴宽檐帽的 Eve 黑白侧脸",
+    "fr": "Profil en noir et blanc d’Eve avec un chapeau à larges bords",
+    "de": "Schwarz-Weiß-Profil von Eve mit breitkrempigem Hut"
    },
    "added": "2026-11-05",
    "source": "bot"

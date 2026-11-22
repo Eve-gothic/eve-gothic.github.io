@@ -207,7 +207,7 @@ body.linki{min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,var(--
 /* Galeria I: równa siatka na komputerze (jak Galeria II) — 5.11.2026 */
 @media(min-width:901px){.spread{grid-template-columns:repeat(4,1fr);gap:22px}.spread figure{grid-column:auto!important;margin-top:0!important}.spread figure button{aspect-ratio:3/4!important}}
 
-/* ---- przełącznik 7 języków (9.11.2026): rząd skrótów na szerokim ekranie, rozwijana lista na węższym ---- */
+/* ---- przełącznik 9 języków (9.11.2026): rząd skrótów na szerokim ekranie, rozwijana lista na węższym ---- */
 .langdd{display:none;position:relative;font-family:Inter,system-ui,sans-serif}
 .langdd summary{list-style:none;cursor:pointer;color:var(--gold2);border:1px solid rgba(201,163,91,.5);padding:5px 10px;font-size:.68rem;letter-spacing:.18em;min-height:32px;display:flex;align-items:center;gap:6px;user-select:none}
 .langdd summary::-webkit-details-marker{display:none}
@@ -220,6 +220,7 @@ body.linki{min-height:100vh;background:radial-gradient(120% 60% at 50% 0%,var(--
 .langdd nav a[aria-current]{color:var(--gold2)}.langdd nav a[aria-current]::before{content:"✓ ";color:var(--gold)}
 @media(max-width:1180px){.top .langs{display:none}.langdd{display:block}}
 .llangs{flex-wrap:wrap}
+@media(max-width:480px){.llangs{gap:2px}.llangs a{padding:5px 5px;letter-spacing:.12em}}   /* 9 języków w jednym rzędzie na telefonie */
 
 /* ---- japoński i chiński: fonty CJK, łamanie wierszy, bez sztucznej kursywy ---- */
 :lang(ja){--cjk-serif:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif CJK JP","Source Han Serif JP";--cjk-sans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo","Noto Sans JP","Noto Sans CJK JP"}
