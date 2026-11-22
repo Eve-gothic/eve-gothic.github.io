@@ -1,0 +1,12 @@
+  @font-face { font-family: 'Anton'; src: url('./fonts/Anton-Regular.ttf') format('truetype'); font-display: block; }
+  @font-face { font-family: 'BarlowX'; src: url('./fonts/BarlowCondensed-ExtraBold.ttf') format('truetype'); font-display: block; }
+  html, body { margin: 0; height: 100%; background: #07040e; overflow: hidden; touch-action: none; -webkit-user-select: none; user-select: none; }
+  #bgblur { position: fixed; inset: -40px; background: #07040e url('./assets/bg/stadium.webp') center/cover; filter: blur(22px) brightness(.45) saturate(1.2); }
+  #game { position: fixed; inset: 0; }
+  #rot { display: none; position: fixed; right: 10px; bottom: 10px; z-index: 5; color: #e9d7ff; font: 15px BarlowX, sans-serif; background: rgba(11,6,24,.75); border: 1px solid rgba(255,90,209,.5); border-radius: 12px; padding: 8px 12px; pointer-events: none; }
+  @media (orientation: landscape) and (pointer: coarse) { #rot { display: block; } }
+  .fontwarm { position: absolute; left: -999px; }
+
+  .fontwarm { position: absolute; left: -999px; }
+  .font-anton { font-family: Anton, sans-serif; }
+  .font-barlow { font-family: BarlowX, sans-serif; }

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "_info": "Partner cross-promo. mode A = banner on character/club select and between rounds (never over the goal or during a shot) plus the result screen. mode B = result screen only. No tracking. Rotate partners in order.",
+  "mode": "A",
+  "rotation": ["eve", "maddie"],
+  "partners": [
+    {
+      "id": "eve",
+      "name": "Eve",
+      "url": "https://eve-gothic.github.io/",
+      "label": {"pl": "Partner", "en": "Partner", "es": "Partner", "pt": "Parceiro", "it": "Partner", "ja": "パートナー", "zh": "合作伙伴"},
+      "text": {
+        "pl": "Odwiedź stronę Eve",
+        "en": "Visit Eve's site",
+        "es": "Visita la web de Eve",
+        "pt": "Visite o site da Eve",
+        "it": "Visita il sito di Eve",
+        "ja": "Eve のサイトを見る",
+        "zh": "访问 Eve 的网站"
+      }
+    },
+    {
+      "id": "maddie",
+      "name": "Maddison Leigh",
+      "url": "https://maddison-preview.pages.dev/",
+      "label": {"pl": "Partner", "en": "Partner", "es": "Partner", "pt": "Parceiro", "it": "Partner", "ja": "パートナー", "zh": "合作伙伴"},
+      "text": {
+        "pl": "Odwiedź stronę Maddison",
+        "en": "Visit Maddison's site",
+        "es": "Visita la web de Maddison",
+        "pt": "Visite o site da Maddison",
+        "it": "Visita il sito di Maddison",
+        "ja": "Maddison のサイトを見る",
+        "zh": "访问 Maddison 的网站"
+      }
+    }
+  ]
+}

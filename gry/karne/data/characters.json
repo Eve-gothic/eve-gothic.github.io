@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "default": "eve",
+  "characters": [
+    {
+      "id": "eve",
+      "name": {
+        "en": "Eve",
+        "pl": "Eve",
+        "es": "Eve",
+        "pt": "Eve",
+        "it": "Eve",
+        "ja": "Eve",
+        "zh": "Eve"
+      },
+      "tagline": {
+        "en": "Goth striker. Five kicks. No mercy.",
+        "pl": "Gotycka napastniczka. Pięć strzałów. Zero litości.",
+        "es": "Delantera gótica. Cinco tiros. Sin piedad.",
+        "pt": "Atacante gótica. Cinco chutes. Sem piedade.",
+        "it": "Attaccante gotica. Cinque tiri. Nessuna pietà.",
+        "ja": "ゴスなストライカー。5本勝負。容赦なし。",
+        "zh": "哥特前锋。五轮点球。绝不手软。"
+      },
+      "colors": {
+        "primary": "#ff4fb0",
+        "accent": "#ffe14d"
+      },
+      "portrait": "portrait_eve",
+      "sprites": {
+        "runup": "eve_runup",
+        "strike": "eve_strike",
+        "gk_idle": "egk_idle",
+        "gk_dive": "egk_dive",
+        "gk_jump": "egk_jump",
+        "celeb_run": "celeb_run",
+        "celeb_win": "celeb_pull"
+      }
+    },
+    {
+      "id": "maddi",
+      "name": {
+        "en": "Maddi",
+        "pl": "Maddi",
+        "es": "Maddi",
+        "pt": "Maddi",
+        "it": "Maddi",
+        "ja": "Maddi",
+        "zh": "Maddi"
+      },
+      "tagline": {
+        "en": "Blonde ponytails, pink tips. Five kicks. No mercy.",
+        "pl": "Blond kucyki, różowe końcówki. Pięć strzałów. Zero litości.",
+        "es": "Coletas rubias, mechas rosa. Cinco tiros. Sin piedad.",
+        "pt": "Rabos de cavalo loiros, pontas rosa. Cinco chutes. Sem piedade.",
+        "it": "Code bionde, punte rosa. Cinque tiri. Nessuna pietà.",
+        "ja": "金髪ツインテール、ピンクの毛先。5本勝負。容赦なし。",
+        "zh": "金色双马尾，粉色发梢。五轮点球。绝不手软。"
+      },
+      "colors": {
+        "primary": "#ff7ab6",
+        "accent": "#7ad7ff"
+      },
+      "portrait": "portrait_maddi",
+      "sprites": {
+        "runup": "maddi_runup",
+        "strike": "maddi_strike",
+        "gk_idle": "maddi_gk_idle",
+        "gk_dive": "maddi_gk_dive",
+        "gk_jump": "maddi_gk_jump",
+        "celeb_run": "maddi_celeb_run",
+        "celeb_win": "maddi_celeb_run"
+      }
+    }
+  ]
+}
